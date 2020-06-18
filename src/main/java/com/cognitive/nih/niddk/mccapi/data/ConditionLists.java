@@ -35,7 +35,7 @@ public class ConditionLists {
         //Check
     }
 
-    public ConditionSummary findCondtionIfAlreadySeen(Condition c)
+    public ConditionSummary indCondtionIfAlreadySeen(Condition c)
     {
         ConditionSummary out = null;
         //Find the code of the condition
