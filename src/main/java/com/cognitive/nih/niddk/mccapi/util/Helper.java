@@ -7,12 +7,14 @@ import org.hl7.fhir.r4.model.Extension;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Helper {
-    private static String dateFormat="dd/MM/yyyy";
+    private static String dateFormat="MM/dd/yyyy";
     private static SimpleDateFormat fmtDate = new SimpleDateFormat(dateFormat);
-    private static String dateTimeFormat="dd/MM/yyyy hh:mm";
+    private static String dateTimeFormat= "MM/dd/yyyy hh:mm";
     private static SimpleDateFormat fmtDateTime = new SimpleDateFormat(dateFormat);
 
     public static String dateToString(Date d)
@@ -75,6 +77,22 @@ public class Helper {
         return out.toString();
     }
 
+    public static String getConceptsAsDisplayString(CodeableConcept[] concepts)
+    {
+        StringBuffer out = new StringBuffer();
+        boolean extra = false;
+        for(CodeableConcept c: concepts)
+        {
+            if (extra)
+            {
+                out.append(",");
+            }
+            out.append(getConceptDisplayString(c));
+            extra = true;
+        }
+        return out.toString();
+    }
+
     public static String getConceptDisplayString(CodeableConcept concept)
     {
         if (!concept.getText().isBlank())
@@ -105,5 +123,69 @@ public class Helper {
             out = String.format("%s {%s}",cd.getCode(),cd.getSystem());
         }
         return out;
+    }
+
+
+    public static String getConceptCodes(CodeableConcept[] concepts, String system)
+    {
+        StringBuffer out = new StringBuffer();
+        boolean extra = false;
+        for(CodeableConcept c: concepts)
+        {
+            if (extra)
+            {
+                out.append(",");
+            }
+            out.append(getConceptCode(c,system));
+            extra = true;
+        }
+        return out.toString();
+    }
+
+    public static String getConceptCodes(CodeableConcept[] concepts, Set<String> system)
+    {
+        StringBuffer out = new StringBuffer();
+        boolean extra = false;
+        for(CodeableConcept c: concepts)
+        {
+            if (extra)
+            {
+                out.append(",");
+            }
+            out.append(getConceptCode(c,system));
+            extra = true;
+        }
+        return out.toString();
+    }
+
+    public static HashSet<String> getConceptSet(CodeableConcept[] concepts, String system)
+    {
+        HashSet<String> out = new HashSet<>();
+        for(CodeableConcept c: concepts)
+        {
+            out.add(getConceptCode(c,system));
+        }
+        return out;
+    }
+
+    public static String getConceptCode(CodeableConcept concept, String system)
+    {
+        for (Coding cd: concept.getCoding()) {
+            if (cd.getSystem().compareTo(system) == 0) {
+                return cd.getCode();
+            }
+        }
+        return null;
+    }
+
+
+    public static String getConceptCode(CodeableConcept concept, Set<String> system)
+    {
+        for (Coding cd: concept.getCoding()) {
+            if (system.contains(cd.getSystem())) {
+                return cd.getCode();
+            }
+        }
+        return null;
     }
 }

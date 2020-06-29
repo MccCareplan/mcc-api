@@ -1,6 +1,7 @@
 package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.MccPatient;
+import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.*;
 
@@ -8,7 +9,7 @@ public class PatientMapper {
     private static String RACE_KEY = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race";
     private static String ENTHNICITY_KEY = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity";
     private static String OMB_CATEGORY = "ombCategory";
-    public static MccPatient fhir2local(Patient in)
+    public static MccPatient fhir2local(Patient in,  Context ctx)
     {
         MccPatient out = new MccPatient();
         out.setDateOfBirth(Helper.dateToString(in.getBirthDate()));

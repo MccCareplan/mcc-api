@@ -1,5 +1,6 @@
 package com.cognitive.nih.niddk.mccapi.mappers;
 
+import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccCarePlan;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.Annotation;
@@ -13,7 +14,8 @@ public class CareplanMapper {
     private static String RACE_KEY = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race";
     private static String ENTHNICITY_KEY = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity";
     private static String OMB_CATEGORY = "ombCategory";
-    public static MccCarePlan fhir2local(CarePlan in) {
+
+    public static MccCarePlan fhir2local(CarePlan in, Context ctx) {
         MccCarePlan out = new MccCarePlan();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setId(in.hasIdentifier() ? in.getIdentifierFirstRep().getValue() : "Unknown");
@@ -36,7 +38,7 @@ public class CareplanMapper {
             categories = "Not provided";
         }
         out.setCategorySummary(categories);
-        out.setCategories(CodeableConceptMapper.fhir2local(in.getCategory()));
+        out.setCategories(CodeableConceptMapper.fhir2local(in.getCategory(),ctx));
 
         //Reference Elements Handled out side this code
         // Addresses

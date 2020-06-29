@@ -3,8 +3,10 @@ package com.cognitive.nih.niddk.mccapi.controllers;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import com.cognitive.nih.niddk.mccapi.data.ConditionLists;
+import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.FHIRServer;
 import com.cognitive.nih.niddk.mccapi.data.MccCondition;
+import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.FHIRServerManager;
 import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
@@ -20,38 +22,43 @@ import java.util.ArrayList;
 public class ConditionController {
 
     @GetMapping("/conditionsummary")
-    public ConditionLists getConditionSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "server") String serverId) {
+    public ConditionLists getConditionSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestParam(required = false, name = "server") String serverId) {
         ConditionLists out = new ConditionLists();
 
         FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
-        FhirContext ctx = FHIRServices.getFhirServices().getR4Context();
-        IGenericClient client = ctx.newRestfulGenericClient(srv.getBaseURL());
+        FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
+        IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
         Bundle results = client.search().forResource(Condition.class).where(CarePlan.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Condition") {
                 Condition c = (Condition) e.getResource();
-                addCondtionToConditionList(out,c);
+                addCondtionToConditionList(out,c, ctx);
             }
         }
+        out.categorizeConditions();
         return out;
     }
-    private void addCondtionToConditionList(ConditionLists list, Condition c)
+
+    private void addCondtionToConditionList(ConditionLists list, Condition c, Context ctx)
     {
-        //First g
+        list.addCondtion(c, ctx);
     }
+
     @GetMapping("/condition")
     public MccCondition[] getConditions(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "server") String serverId) {
         ArrayList<MccCondition> out = new ArrayList<>();
         FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
-        FhirContext ctx = FHIRServices.getFhirServices().getR4Context();
-        IGenericClient client = ctx.newRestfulGenericClient(srv.getBaseURL());
+        FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
+        IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
         Bundle results = client.search().forResource(Condition.class).where(CarePlan.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Condition") {
                 Condition c = (Condition) e.getResource();
-                out.add(mapCondition(c, client));
+                out.add(mapCondition(c, client, ctx));
             }
         }
 
@@ -60,21 +67,22 @@ public class ConditionController {
         return outA;
     }
 
-    @GetMapping("/codition/{id}")
+    @GetMapping("/condition/{id}")
     public MccCondition getCodition(@PathVariable(value = "id") String id, @RequestParam(required = false) String serverId) {
-        //Create a dummy patient for the mnoment
         MccCondition c;
         FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
-        FhirContext ctx = FHIRServices.getFhirServices().getR4Context();
-        IGenericClient client = ctx.newRestfulGenericClient(srv.getBaseURL());
+        FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
+        IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
         Condition fc = client.read().resource(Condition.class).withId(id).execute();
-        c = mapCondition(fc, client);
+        String subjectId = fc.getSubject().getId();
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
+        c = mapCondition(fc, client, ctx);
         return c;
     }
 
-    private MccCondition mapCondition(Condition fc, IGenericClient client) {
+    private MccCondition mapCondition(Condition fc, IGenericClient client, Context ctx) {
         MccCondition c;
-        c = ConditionMapper.fhir2local(fc);
+        c = ConditionMapper.fhir2local(fc, ctx);
         //Now deal with relationships
 
         /*
