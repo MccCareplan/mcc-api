@@ -1,5 +1,6 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import com.cognitive.nih.niddk.mccapi.managers.ProfileManager;
 import com.cognitive.nih.niddk.mccapi.mappers.CodeableConceptMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
 import com.cognitive.nih.niddk.mccapi.matcher.CodeableConceptMatcher;
@@ -137,6 +138,7 @@ public class ConditionLists {
         {
             summary = new ConditionSummary();
             summary.setCode(CodeableConceptMapper.fhir2local(c.getCode(), ctx));
+            summary.setProfileId(ProfileManager.getProfileManager().getProfileForConcept(c.getCode()));
             conditions.add(summary);
         }
 
