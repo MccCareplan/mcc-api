@@ -8,8 +8,6 @@ import com.cognitive.nih.niddk.mccapi.managers.FHIRServerManager;
 import com.cognitive.nih.niddk.mccapi.mappers.GoalMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.CarePlan;
-import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Goal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,22 +24,18 @@ public class GoalController {
         FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
         FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
         IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
-        Bundle results = client.search().forResource(Condition.class).where(Goal.SUBJECT.hasId(subjectId))
+        Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Goal") {
-                Goal c = (Goal) e.getResource();
-                addGoalToGoalList(out,c, ctx);
+                Goal g = (Goal) e.getResource();
+                GoalSummary gs = GoalMapper.summaryfhir2local(g,ctx);
+                out.addSummary(gs);
             }
         }
         //out.categorizeConditions();
         return out;
-    }
-
-    private void addGoalToGoalList(GoalLists list, Goal g, Context ctx)
-    {
-
     }
 
     @GetMapping("/goal")
@@ -50,7 +44,7 @@ public class GoalController {
         FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
         FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
         IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
-        Bundle results = client.search().forResource(Goal.class).where(CarePlan.SUBJECT.hasId(subjectId))
+        Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
