@@ -7,7 +7,7 @@ import org.hl7.fhir.r4.model.CodeableConcept;
 import java.util.List;
 
 public class ConditionHistory {
-
+    private MccCodeableConcept code;
     private String onset;
     private String abatement;
     private String FHIRid;
@@ -97,5 +97,13 @@ public class ConditionHistory {
     @JsonIgnore
     public void setCategoriesList(List<CodeableConcept> categories) {
         this.categories = categories;
+    }
+
+    public MccCodeableConcept getCode() {
+        return code;
+    }
+
+    public void setCode(MccCodeableConcept code) {
+        this.code = code;
     }
 }
