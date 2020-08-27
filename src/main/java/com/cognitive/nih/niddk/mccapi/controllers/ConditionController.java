@@ -28,7 +28,7 @@ public class ConditionController {
         FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
         FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
         IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
-        Bundle results = client.search().forResource(Condition.class).where(CarePlan.SUBJECT.hasId(subjectId))
+        Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
