@@ -14,6 +14,25 @@ public class Helper {
     private static String dateTimeFormat= "MM/dd/yyyy hh:mm";
     private static SimpleDateFormat fmtDateTime = new SimpleDateFormat(dateFormat);
 
+    public static Coding getCodingForSystem(CodeableConcept concept, String system)
+    {
+        Coding out = null;
+        List<Coding> codings = concept.getCoding();
+        for (Coding code: codings)
+        {
+            String cs = code.getSystem();
+            if (cs != null)
+            {
+                if (cs.compareTo(system)==0)
+                {
+                    out = code;
+                    break;
+                }
+            }
+        }
+        return out;
+    }
+
     public static String dateToString(Date d)
     {
         if (d == null) {
