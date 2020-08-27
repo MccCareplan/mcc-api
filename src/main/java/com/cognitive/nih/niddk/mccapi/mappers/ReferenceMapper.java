@@ -13,9 +13,9 @@ public class ReferenceMapper {
         String ref = in.getReference();
         out.setReference(ref);
         String[] parts = ref.split("/");
-        if (parts.length>0)
+        if (parts.length>1)
         {
-            out.setType(parts[parts.length-1]);
+            out.setType(parts[parts.length-2]);
         }
         else
         {
