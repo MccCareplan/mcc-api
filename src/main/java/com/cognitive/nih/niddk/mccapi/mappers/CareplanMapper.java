@@ -3,12 +3,9 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccCarePlan;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
-import org.hl7.fhir.r4.model.Annotation;
 import org.hl7.fhir.r4.model.CarePlan;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Patient;
-
-import java.util.List;
 
 public class CareplanMapper {
     private static String RACE_KEY = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race";
@@ -21,7 +18,7 @@ public class CareplanMapper {
         out.setId(in.hasIdentifier() ? in.getIdentifierFirstRep().getValue() : "Unknown");
         out.setTitle(in.getTitle());
         out.setDescription(in.getDescription());
-        out.setNotes(AnnotationsToString(in.getNote()));
+        out.setNotes(Helper.AnnotationsToString(in.getNote()));
         out.setStatus(in.getStatus().getDisplay());
         out.setIntent(in.getIntent().getDisplay());
         if (out.getId() == null)
@@ -47,43 +44,6 @@ public class CareplanMapper {
         // Activity
 
         return out;
-    }
-
-    public static String AnnotationsToString(List<Annotation> annotations)
-    {
-        //TODO: Move to an annotation helper?
-
-        StringBuffer out = new StringBuffer();
-        boolean bAddLine = false;
-        for(Annotation a: annotations)
-        {
-            if (bAddLine)
-            {
-                out.append("\n");
-            }
-            if (a.hasTime())
-            {
-                out.append(Helper.dateTimeToString(a.getTime()));
-                out.append(" ");
-            }
-            if (a.hasAuthor())
-            {
-                if (a.hasAuthorStringType())
-                {
-                    out.append(a.getAuthorStringType().getValue());
-                    out.append(" ");
-                }
-                else
-                {
-                    //We have an Author Reference
-                    //TODO: Call a Reference resolver
-                }
-            }
-            //TOOO: Deal with Markdown
-            out.append(a.getText());
-            bAddLine = true;
-        }
-        return out.toString();
     }
 
     public static String buildName(Patient in)
