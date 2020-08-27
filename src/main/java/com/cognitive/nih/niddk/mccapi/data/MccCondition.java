@@ -13,6 +13,7 @@ public class MccCondition {
     private String recorder;
     private String asserter;
     private String note;
+    private String profileId;
     //TODO: Consider Identifier
     //TODO: Deal with stage
     //TODO: Deal with evidence;
@@ -114,4 +115,11 @@ public class MccCondition {
         this.note = note;
     }
 
+    public String getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(String profileId) {
+        this.profileId = profileId;
+    }
 }
