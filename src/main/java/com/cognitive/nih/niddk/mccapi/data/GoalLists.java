@@ -1,2 +1,4 @@
-package com.cognitive.nih.niddk.mccapi.data;public class GoalLists {
+package com.cognitive.nih.niddk.mccapi.data;
+
+public class GoalLists {
 }
