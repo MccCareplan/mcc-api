@@ -15,7 +15,7 @@ public class ConditionSummary {
 
     private HashSet<CodeableConcept> categories;
     private ArrayList<ConditionHistory> history;
-    private String firstOnset;
+    private String profileId;
 
     public ConditionSummary() {
         history = new ArrayList<>();
@@ -86,4 +86,11 @@ public class ConditionSummary {
         return Helper.getConceptCodes(concepts, FHIRCodeSets.US_CORE_CONDITION_CATEGORY_SET);
     }
 
+    public String getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(String profileId) {
+        this.profileId = profileId;
+    }
 }

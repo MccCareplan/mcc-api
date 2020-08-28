@@ -4,6 +4,7 @@ import com.cognitive.nih.niddk.mccapi.data.ConditionHistory;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.FuzzyDate;
 import com.cognitive.nih.niddk.mccapi.data.MccCondition;
+import com.cognitive.nih.niddk.mccapi.managers.ProfileManager;
 import org.hl7.fhir.r4.model.Condition;
 
 public class ConditionMapper {
@@ -23,6 +24,8 @@ public class ConditionMapper {
         out.setAsserter("NYI");
         out.setRecordedDate("NYI");
         out.setRecorder("NYI");
+        //Find what if any profile we have for this
+        out.setProfileId(ProfileManager.getProfileManager().getProfileForConcept(in.getCode()));
         return out;
     }
 
@@ -35,6 +38,7 @@ public class ConditionMapper {
         out.setAbatement(FuzzyDate.buildString(in.getAbatement(),ctx));
         out.setOnset(FuzzyDate.buildString(in.getOnset(),ctx));
         out.setCategoriesList(in.getCategory());
+        out.setCode(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
         return out;
     }
 

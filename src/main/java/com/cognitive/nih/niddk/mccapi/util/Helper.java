@@ -1,9 +1,6 @@
 package com.cognitive.nih.niddk.mccapi.util;
 
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DomainResource;
-import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,6 +13,25 @@ public class Helper {
     private static SimpleDateFormat fmtDate = new SimpleDateFormat(dateFormat);
     private static String dateTimeFormat= "MM/dd/yyyy hh:mm";
     private static SimpleDateFormat fmtDateTime = new SimpleDateFormat(dateFormat);
+
+    public static Coding getCodingForSystem(CodeableConcept concept, String system)
+    {
+        Coding out = null;
+        List<Coding> codings = concept.getCoding();
+        for (Coding code: codings)
+        {
+            String cs = code.getSystem();
+            if (cs != null)
+            {
+                if (cs.compareTo(system)==0)
+                {
+                    out = code;
+                    break;
+                }
+            }
+        }
+        return out;
+    }
 
     public static String dateToString(Date d)
     {
@@ -187,5 +203,64 @@ public class Helper {
             }
         }
         return null;
+    }
+
+
+    public static String AnnotationsToString(List<Annotation> annotations)
+    {
+
+        StringBuffer out = new StringBuffer();
+        boolean bAddLine = false;
+        for(Annotation a: annotations)
+        {
+            if (bAddLine)
+            {
+                out.append("\n");
+            }
+            //TOOO: Deal with Markdown
+            out.append(AnnotationToString(a));
+            bAddLine = true;
+        }
+        return out.toString();
+    }
+
+    public static String AnnotationToString(Annotation a)
+    {
+
+        StringBuffer out = new StringBuffer();
+        boolean bAddLine = false;
+        if (a.hasTime())
+        {
+            out.append(Helper.dateTimeToString(a.getTime()));
+            out.append(" ");
+        }
+        if (a.hasAuthor())
+        {
+            if (a.hasAuthorStringType())
+            {
+                out.append(a.getAuthorStringType().getValue());
+                out.append(" ");
+            }
+            else
+            {
+                //We have an Author Reference
+                //TODO: Call a Reference resolver
+            }
+        }
+        //TOOO: Deal with Markdown
+        out.append(a.getText());
+        return out.toString();
+    }
+
+    public static String[] AnnotationsToStringList(List<Annotation> annotations)
+    {
+        String[] out = new String[annotations.size()];
+        int index = 0;
+        for(Annotation a: annotations)
+        {
+            out[index]=AnnotationToString(a);
+            index++;
+        }
+        return out;
     }
 }
