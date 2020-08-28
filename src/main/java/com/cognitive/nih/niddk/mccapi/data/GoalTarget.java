@@ -2,7 +2,7 @@ package com.cognitive.nih.niddk.mccapi.data;
 
 public class GoalTarget {
     private MccCodeableConcept measure;
-    private GenericValue value;
+    private GenericType value;
 
     private String dueType;
     private String due;
@@ -20,11 +20,11 @@ public class GoalTarget {
         this.measure = measure;
     }
 
-    public GenericValue getValue() {
+    public GenericType getValue() {
         return value;
     }
 
-    public void setValue(GenericValue value) {
+    public void setValue(GenericType value) {
         this.value = value;
     }
 
