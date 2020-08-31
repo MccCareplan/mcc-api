@@ -6,6 +6,7 @@ import com.cognitive.nih.niddk.mccapi.data.ConditionLists;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.FHIRServer;
 import com.cognitive.nih.niddk.mccapi.data.MccCondition;
+import com.cognitive.nih.niddk.mccapi.exception.ItemNotFoundException;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.FHIRServerManager;
 import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
@@ -74,6 +75,10 @@ public class ConditionController {
         FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
         IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
         Condition fc = client.read().resource(Condition.class).withId(id).execute();
+        if (fc == null)
+        {
+            throw new ItemNotFoundException(id);
+        }
         String subjectId = fc.getSubject().getId();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
         c = mapCondition(fc, client, ctx);
