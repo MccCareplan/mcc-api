@@ -1,5 +1,7 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
+
 public class GoalSummary {
     private String FHIRId;
 

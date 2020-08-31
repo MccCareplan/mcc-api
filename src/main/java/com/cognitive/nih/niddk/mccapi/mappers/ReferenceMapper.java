@@ -1,7 +1,7 @@
 package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.Context;
-import com.cognitive.nih.niddk.mccapi.data.MccReference;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
 import org.hl7.fhir.r4.model.Reference;
 
 import java.util.List;

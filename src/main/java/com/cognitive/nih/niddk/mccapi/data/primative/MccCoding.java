@@ -1,6 +1,10 @@
-package com.cognitive.nih.niddk.mccapi.data;
+package com.cognitive.nih.niddk.mccapi.data.primative;
 
-public class MccCoding implements MccType{
+import com.cognitive.nih.niddk.mccapi.data.MccType;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include. NON_NULL)
+public class MccCoding implements MccType {
     private String system;
     private String version;;
     private String code;

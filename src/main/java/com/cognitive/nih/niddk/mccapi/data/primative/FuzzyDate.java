@@ -1,10 +1,12 @@
-package com.cognitive.nih.niddk.mccapi.data;
+package com.cognitive.nih.niddk.mccapi.data.primative;
 
+import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hl7.fhir.r4.model.*;
 
 import java.util.Date;
-
+@JsonInclude(JsonInclude.Include. NON_NULL)
 public class FuzzyDate {
 
 

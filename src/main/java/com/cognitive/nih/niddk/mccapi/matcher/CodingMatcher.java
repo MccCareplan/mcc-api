@@ -1,6 +1,6 @@
 package com.cognitive.nih.niddk.mccapi.matcher;
 
-import com.cognitive.nih.niddk.mccapi.data.MccCoding;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccCoding;
 import org.hl7.fhir.r4.model.Coding;
 
 public class CodingMatcher {
