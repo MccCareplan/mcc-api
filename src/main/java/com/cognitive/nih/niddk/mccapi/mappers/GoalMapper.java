@@ -86,9 +86,13 @@ public class GoalMapper {
         GoalTarget out = new GoalTarget();
         out.setMeasure(CodeableConceptMapper.fhir2local(in.getMeasure(),ctx));
         Type x = in.getDue();
+        in.getDetail();
         if (x != null)
         {
             out.setDueType(x.fhirType());
+        }
+        if (in.getDetail()!= null) {
+            out.setValue(GenericTypeMapper.fhir2local(in.getDetail(), ctx));
         }
         return out;
 
