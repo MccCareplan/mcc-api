@@ -1,5 +1,8 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include. NON_NULL)
 public class MccPatient {
     private String FHIRId;
     private String Name;

@@ -1,7 +1,10 @@
-package com.cognitive.nih.niddk.mccapi.data;
+package com.cognitive.nih.niddk.mccapi.data.primative;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include. NON_NULL)
 public class GenericType {
-    private String valueType;  //Quantity, Range, CodeableConcept, String, Boolean, Integer, Ratio
+    private String valueType;
     private String stringValue;
     private int integerValue;
     private boolean booleanValue;
@@ -13,12 +16,11 @@ public class GenericType {
     private MccDate dateValue;
     private MccTime timeValue;
     private MccDateTime dateTimeValue;
-
-//.... effectiveTiming			Timing
-//..... valueSampledData			SampledData
-
-//
-//.... effectiveInstant Instanc
+    private MccSampledData sampledDataValue;
+    private MccDuration durationValue;
+    private MccTiming timingValue;
+    private MccInstant instantValue;
+    private MccIdentifer identiferValue;
 
     public String getValueType() {
         return valueType;
@@ -115,5 +117,45 @@ public class GenericType {
 
     public void setDateTimeValue(MccDateTime dateTimeValue) {
         this.dateTimeValue = dateTimeValue;
+    }
+
+    public MccSampledData getSampledDataValue() {
+        return sampledDataValue;
+    }
+
+    public void setSampledDataValue(MccSampledData sampledDataValue) {
+        this.sampledDataValue = sampledDataValue;
+    }
+
+    public MccDuration getDurationValue() {
+        return durationValue;
+    }
+
+    public void setDurationValue(MccDuration durationValue) {
+        this.durationValue = durationValue;
+    }
+
+    public MccTiming getTimingValue() {
+        return timingValue;
+    }
+
+    public void setTimingValue(MccTiming timingValue) {
+        this.timingValue = timingValue;
+    }
+
+    public MccInstant getInstantValue() {
+        return instantValue;
+    }
+
+    public void setInstantValue(MccInstant instantValue) {
+        this.instantValue = instantValue;
+    }
+
+    public MccIdentifer getIdentiferValue() {
+        return identiferValue;
+    }
+
+    public void setIdentiferValue(MccIdentifer identiferValue) {
+        this.identiferValue = identiferValue;
     }
 }

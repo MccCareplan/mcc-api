@@ -1,5 +1,10 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include. NON_NULL)
 public class MccGoal {
     private String id;
     private String FHIRId;

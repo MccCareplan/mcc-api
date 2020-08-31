@@ -1,8 +1,9 @@
-package com.cognitive.nih.niddk.mccapi.data;
+package com.cognitive.nih.niddk.mccapi.data.primative;
 
 import java.util.Date;
 
 public class MccDate {
+    public static final String fhirType = "Date";
     private Date rawDate;
     private String date;
 

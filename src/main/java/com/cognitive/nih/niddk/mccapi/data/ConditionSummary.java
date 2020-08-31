@@ -1,5 +1,6 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
 import com.cognitive.nih.niddk.mccapi.util.FHIRCodeSets;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.CodeableConcept;

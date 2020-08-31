@@ -1,6 +1,8 @@
-package com.cognitive.nih.niddk.mccapi.data;
+package com.cognitive.nih.niddk.mccapi.data.primative;
 
 public class MccRatio {
+    public static final String fhirType = "Ratio";
+
     private MccQuantity numerator;
     private MccQuantity denominator;
 

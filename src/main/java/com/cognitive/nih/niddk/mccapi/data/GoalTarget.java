@@ -1,5 +1,10 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import com.cognitive.nih.niddk.mccapi.data.primative.GenericType;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include. NON_NULL)
 public class GoalTarget {
     private MccCodeableConcept measure;
     private GenericType value;
