@@ -1,6 +1,7 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccDate;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -17,10 +18,10 @@ public class MccGoal {
     private MccCodeableConcept[] categories;
     private MccCodeableConcept priority;
     private MccCodeableConcept description;
-    private String startText;  //date or concept
     private boolean useStartConcept;
+    private String startDateText;  //date or concept expressed as test
     private MccCodeableConcept startConcept;
-    //Add private Date startDate
+    private MccDate startDate;
     private GoalTarget[] targets;
     private MccReference[] addresses;
     private String[] notes;
@@ -114,12 +115,20 @@ public class MccGoal {
         this.description = description;
     }
 
-    public String getStartText() {
-        return startText;
+    public String getStartDateText() {
+        return startDateText;
     }
 
-    public void setStartText(String startText) {
-        this.startText = startText;
+    public void setStartDateText(String startDateText) {
+        this.startDateText = startDateText;
+    }
+
+    public MccDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(MccDate startDate) {
+        this.startDate = startDate;
     }
 
     public boolean isUseStartConcept() {
