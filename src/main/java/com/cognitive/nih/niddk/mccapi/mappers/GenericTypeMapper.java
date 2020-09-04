@@ -45,196 +45,165 @@ public class GenericTypeMapper {
 
     private static final Logger logger = LoggerFactory.getLogger(GenericTypeMapper.class);
 
-    private static HashMap<String,Integer> activeKeys = new HashMap<>();
+    private static HashMap<String, Integer> activeKeys = new HashMap<>();
 
     static {
 
-        activeKeys.put(MccRange.fhirType,RANGE);
-        activeKeys.put(MccQuantity.fhirType,QUANTITY);
-        activeKeys.put("Integer",INTEGER);
-        activeKeys.put(MccCodeableConcept.fhirType,CODEABLE_CONCEPT);
-        activeKeys.put("String",STRING);
-        activeKeys.put("Boolean",BOOLEAN);
-        activeKeys.put(MccRatio.fhirType,RATIO);
-        activeKeys.put(MccReference.fhirType,REFERENCE);
-        activeKeys.put(MccPeriod.fhirType,PERIOD);
-        activeKeys.put(MccDate.fhirType,DATE);
-        activeKeys.put("Time",TIME);
-        activeKeys.put(MccDateTime.fhirType,DATETIME);
-        activeKeys.put("SampledData",SAMPLED_DATA);
-        activeKeys.put("SimpleQuantity",SIMPLE_QUANTITY);
+        activeKeys.put(MccRange.fhirType, RANGE);
+        activeKeys.put(MccQuantity.fhirType, QUANTITY);
+        activeKeys.put("Integer", INTEGER);
+        activeKeys.put(MccCodeableConcept.fhirType, CODEABLE_CONCEPT);
+        activeKeys.put("String", STRING);
+        activeKeys.put("Boolean", BOOLEAN);
+        activeKeys.put(MccRatio.fhirType, RATIO);
+        activeKeys.put(MccReference.fhirType, REFERENCE);
+        activeKeys.put(MccPeriod.fhirType, PERIOD);
+        activeKeys.put(MccDate.fhirType, DATE);
+        activeKeys.put("Time", TIME);
+        activeKeys.put(MccDateTime.fhirType, DATETIME);
+        activeKeys.put("SampledData", SAMPLED_DATA);
+        activeKeys.put("SimpleQuantity", SIMPLE_QUANTITY);
         activeKeys.put(MccDuration.fhirType, DURATION);
-        activeKeys.put(MccTiming.fhirType,TIMING);
-        activeKeys.put(MccInstant.fhirType,INSTANT);
-        activeKeys.put(MccIdentifer.fhirType,IDENTIFIER);
+        activeKeys.put(MccTiming.fhirType, TIMING);
+        activeKeys.put(MccInstant.fhirType, INSTANT);
+        activeKeys.put(MccIdentifer.fhirType, IDENTIFIER);
     }
 
-    public static GenericType fhir2local(Type in, Context ctx)
-    {
+    public static GenericType fhir2local(Type in, Context ctx) {
         GenericType out = new GenericType();
         String fhirType = in.fhirType();
         out.setValueType(fhirType);
         Integer localType = activeKeys.get(fhirType);
-        if ( localType != null)
-        {
-            switch (localType.intValue())
-            {
-                case PERIOD:
-                {
-                    out.setPeriodValue(fhir2local( in.castToPeriod(in),ctx));
+        if (localType != null) {
+            switch (localType.intValue()) {
+                case PERIOD: {
+                    out.setPeriodValue(fhir2local(in.castToPeriod(in), ctx));
                     break;
                 }
-                case RANGE:
-                {
-                    out.setRangeValue(fhir2local(in.castToRange(in),ctx));
+                case RANGE: {
+                    out.setRangeValue(fhir2local(in.castToRange(in), ctx));
                     break;
                 }
-                case RATIO:
-                {
-                    out.setRatioValue(fhir2local(in.castToRatio(in),ctx));
+                case RATIO: {
+                    out.setRatioValue(fhir2local(in.castToRatio(in), ctx));
                     break;
                 }
-                case QUANTITY:
-                {
-                    out.setQuantityValue(fhir2local(in.castToQuantity(in),ctx));
+                case QUANTITY: {
+                    out.setQuantityValue(fhir2local(in.castToQuantity(in), ctx));
                     break;
                 }
-                case CODEABLE_CONCEPT:
-                {
-                    out.setCodeableConceptValue(CodeableConceptMapper.fhir2local(in.castToCodeableConcept(in),ctx));
+                case CODEABLE_CONCEPT: {
+                    out.setCodeableConceptValue(CodeableConceptMapper.fhir2local(in.castToCodeableConcept(in), ctx));
                     break;
                 }
-                case BOOLEAN:
-                {
+                case BOOLEAN: {
                     out.setBooleanValue(in.castToBoolean(in).booleanValue());
                     break;
                 }
-                case STRING:
-                {
+                case STRING: {
                     out.setStringValue(in.castToString(in).asStringValue());
                     break;
                 }
-                case INTEGER:
-                {
+                case INTEGER: {
                     out.setIntegerValue(in.castToInteger(in).getValue().intValue());
                     break;
                 }
-                case DATE:
-                {
-                    out.setDateValue(fhir2local(in.castToDate(in),ctx));
+                case DATE: {
+                    out.setDateValue(fhir2local(in.castToDate(in), ctx));
                     break;
                 }
-                case TIME:
-                {
-                    out.setTimeValue(fhir2local(in.castToTime(in),ctx));
+                case TIME: {
+                    out.setTimeValue(fhir2local(in.castToTime(in), ctx));
                     break;
                 }
-                case DATETIME:
-                {
-                    out.setDateTimeValue(fhir2local(in.castToDateTime(in),ctx));
+                case DATETIME: {
+                    out.setDateTimeValue(fhir2local(in.castToDateTime(in), ctx));
                     break;
                 }
-                case SAMPLED_DATA:
-                {
-                    out.setSampledDataValue(fhir2local(in.castToSampledData(in),ctx));
+                case SAMPLED_DATA: {
+                    out.setSampledDataValue(fhir2local(in.castToSampledData(in), ctx));
                     break;
                 }
-                case SIMPLE_QUANTITY:
-                {
-                    out.setQuantityValue(fhir2local(in.castToQuantity(in),ctx));
+                case SIMPLE_QUANTITY: {
+                    out.setQuantityValue(fhir2local(in.castToQuantity(in), ctx));
                     break;
                 }
-                case DURATION:
-                {
-                    out.setDurationValue(fhir2local(in.castToDuration(in),ctx));
+                case DURATION: {
+                    out.setDurationValue(fhir2local(in.castToDuration(in), ctx));
                     break;
                 }
-                case TIMING:
-                {
-                    out.setTimingValue(fhir2local(in.castToTiming(in),ctx));
+                case TIMING: {
+                    out.setTimingValue(fhir2local(in.castToTiming(in), ctx));
                     break;
                 }
-                case INSTANT:
-                {
-                    out.setInstantValue(fhir2local(in.castToInstant(in),ctx));
+                case INSTANT: {
+                    out.setInstantValue(fhir2local(in.castToInstant(in), ctx));
                     break;
                 }
-                case IDENTIFIER:
-                {
-                    out.setIdentiferValue(fhir2local(in.castToIdentifier(in),ctx));
+                case IDENTIFIER: {
+                    out.setIdentiferValue(fhir2local(in.castToIdentifier(in), ctx));
                     break;
                 }
-                default:
-                {
+                default: {
                     logger.warn("Type {} regnogized but not yet handled");
                     break;
                 }
             }
-        }
-        else
-        {
-            logger.warn("Unmapped type {}, ingoring",fhirType);
+        } else {
+            logger.warn("Unmapped type {}, ingoring", fhirType);
         }
 
         return out;
     }
 
-    public static MccDate fhir2local(DateType in, Context ctx)
-    {
+    public static MccDate fhir2local(DateType in, Context ctx) {
         MccDate out = new MccDate();
         out.setRawDate(in.getValue());
         out.setDate(Helper.dateToString(in.getValue()));
         return out;
     }
 
-    public static MccDate fhir2local(Date in, Context ctx)
-    {
+    public static MccDate fhir2local(Date in, Context ctx) {
         MccDate out = new MccDate();
         out.setRawDate(in);
         out.setDate(Helper.dateToString(in));
         return out;
     }
 
-    public static MccDateTime[] fhir2local(List<DateTimeType> in, Context ctx)
-    {
+    public static MccDateTime[] fhir2local(List<DateTimeType> in, Context ctx) {
         MccDateTime[] o = new MccDateTime[in.size()];
-        int i=0;
-        for( DateTimeType dateTime: in)
-        {
-            o[i]=fhir2local(dateTime, ctx);
+        int i = 0;
+        for (DateTimeType dateTime : in) {
+            o[i] = fhir2local(dateTime, ctx);
             i++;
         }
         return o;
     }
 
-    public static MccDateTime fhir2local(DateTimeType in, Context ctx)
-    {
+    public static MccDateTime fhir2local(DateTimeType in, Context ctx) {
         MccDateTime out = new MccDateTime();
         out.setRawDate(in.getValue());
         out.setDate(Helper.dateTimeToString(in.getValue()));
         return out;
     }
 
-    public static MccTime fhir2local(TimeType in, Context ctx)
-    {
+    public static MccTime fhir2local(TimeType in, Context ctx) {
         MccTime out = new MccTime();
         out.setValue(in.getValue());
         return out;
     }
 
-    public static MccPeriod fhir2local(Period in, Context ctx)
-    {
+    public static MccPeriod fhir2local(Period in, Context ctx) {
         MccPeriod out = new MccPeriod();
         Period p = in.castToPeriod(in);
-        out.setStart(fhir2local(p.getStart(),ctx));
-        out.setEnd(fhir2local(p.getEnd(),ctx));
+        out.setStart(fhir2local(p.getStart(), ctx));
+        out.setEnd(fhir2local(p.getEnd(), ctx));
         return out;
     }
 
-    public static MccSampledData fhir2local(SampledData in, Context ctx)
-    {
+    public static MccSampledData fhir2local(SampledData in, Context ctx) {
         MccSampledData out = new MccSampledData();
-        out.setOrigin(fhir2local((SimpleQuantity)in.getOrigin(),ctx));
+        out.setOrigin(fhir2local((SimpleQuantity) in.getOrigin(), ctx));
         out.setData(in.getData());
         out.setDimensions(in.getDimensions());
         out.setFactor(in.getFactor().toPlainString());
@@ -244,8 +213,7 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccSimpleQuantity fhir2local(SimpleQuantity in, Context ctx)
-    {
+    public static MccSimpleQuantity fhir2local(SimpleQuantity in, Context ctx) {
         MccSimpleQuantity out = new MccSimpleQuantity();
         out.setCode(in.getCode());
         out.setSystem(in.getSystem());
@@ -255,46 +223,38 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccIdentifer fhir2local(Identifier in, Context ctx)
-    {
+    public static MccIdentifer fhir2local(Identifier in, Context ctx) {
         MccIdentifer out = new MccIdentifer();
-        if (in.hasUse())
-        {
+        if (in.hasUse()) {
             out.setUse(in.getUse().toCode());
         }
-        if (in.hasType())
-        {
-            out.setType(fhir2local(in.getType(),ctx));
+        if (in.hasType()) {
+            out.setType(fhir2local(in.getType(), ctx));
         }
         out.setSystem(in.getSystem());
         out.setValue(in.getValue());
-        if (in.hasPeriod())
-        {
-            out.setPeriod(fhir2local(in.getPeriod(),ctx));
+        if (in.hasPeriod()) {
+            out.setPeriod(fhir2local(in.getPeriod(), ctx));
         }
-        if (in.hasAssigner())
-        {
-            out.setAssigner(fhir2local(in.getAssigner(),ctx));
+        if (in.hasAssigner()) {
+            out.setAssigner(fhir2local(in.getAssigner(), ctx));
         }
 
         return out;
     }
 
-    public static MccReference fhir2local(Reference in, Context ctx)
-    {
-        return ReferenceMapper.fhir2local(in,ctx);
+    public static MccReference fhir2local(Reference in, Context ctx) {
+        return ReferenceMapper.fhir2local(in, ctx);
     }
 
-    public static MccCodeableConcept fhir2local(CodeableConcept in, Context ctx)
-    {
-        return CodeableConceptMapper.fhir2local(in,ctx);
+    public static MccCodeableConcept fhir2local(CodeableConcept in, Context ctx) {
+        return CodeableConceptMapper.fhir2local(in, ctx);
     }
 
-    public static MccQuantity fhir2local(Quantity in, Context ctx)
-    {
+    public static MccQuantity fhir2local(Quantity in, Context ctx) {
         MccQuantity out = new MccQuantity();
         out.setCode(in.getCode());
-        if(in.getComparator()!= null) {
+        if (in.getComparator() != null) {
             out.setComparator(in.getComparator().toCode());
         }
         out.setSystem(in.getSystem());
@@ -304,27 +264,24 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccRatio fhir2local(Ratio in, Context ctx)
-    {
+    public static MccRatio fhir2local(Ratio in, Context ctx) {
         MccRatio out = new MccRatio();
-        out.setDenominator(fhir2local(in.getDenominator(),ctx));
-        out.setNumerator(fhir2local(in.getNumerator(),ctx));
+        out.setDenominator(fhir2local(in.getDenominator(), ctx));
+        out.setNumerator(fhir2local(in.getNumerator(), ctx));
         return out;
     }
 
-    public static MccRange fhir2local(Range in, Context ctx)
-    {
+    public static MccRange fhir2local(Range in, Context ctx) {
         MccRange out = new MccRange();
-        out.setLow(fhir2local(in.getLow(),ctx));
-        out.setHigh(fhir2local(in.getHigh(),ctx));
+        out.setLow(fhir2local(in.getLow(), ctx));
+        out.setHigh(fhir2local(in.getHigh(), ctx));
         return out;
     }
 
-    public static MccDuration fhir2local(Duration in , Context ctx)
-    {
+    public static MccDuration fhir2local(Duration in, Context ctx) {
         MccDuration out = new MccDuration();
         out.setCode(in.getCode());
-        if(in.getComparator()!= null) {
+        if (in.getComparator() != null) {
             out.setComparator(in.getComparator().toCode());
         }
         out.setSystem(in.getSystem());
@@ -334,50 +291,39 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccInstant fhir2local(InstantType in, Context ctx)
-    {
+    public static MccInstant fhir2local(InstantType in, Context ctx) {
         MccInstant out = new MccInstant();
         out.setValue(in.getValueAsString());
         return out;
     }
-    public static MccTiming fhir2local(Timing in,Context ctx)
-    {
+
+    public static MccTiming fhir2local(Timing in, Context ctx) {
         MccTiming out = new MccTiming();
-        if (in.hasEvent())
-        {
-            out.setEvent(fhir2local(in.getEvent(),ctx));
+        if (in.hasEvent()) {
+            out.setEvent(fhir2local(in.getEvent(), ctx));
         }
-        if (in.hasCode())
-        {
-            out.setCode(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
+        if (in.hasCode()) {
+            out.setCode(CodeableConceptMapper.fhir2local(in.getCode(), ctx));
         }
-        if (in.hasRepeat())
-        {
-            MccTiming.Repeat mccRepeat  = out.defineRepeat();
+        if (in.hasRepeat()) {
+            MccTiming.Repeat mccRepeat = out.defineRepeat();
             Timing.TimingRepeatComponent repeat = in.getRepeat();
-            if (repeat.hasBounds())
-            {
+            if (repeat.hasBounds()) {
                 MccTiming.Repeat.Bounds mccBounds = mccRepeat.defineBounds();
-                if (repeat.hasBoundsDuration())
-                {
-                    mccBounds.setDuration(fhir2local(repeat.getBoundsDuration(),ctx));
-                }
-                else if (repeat.hasBoundsPeriod())
-                {
-                    mccBounds.setPeriod(fhir2local(repeat.getBoundsPeriod(),ctx));
-                }
-                else if (repeat.hasBoundsRange()) {
-                    mccBounds.setRange(fhir2local(repeat.getBoundsRange(),ctx));
+                if (repeat.hasBoundsDuration()) {
+                    mccBounds.setDuration(fhir2local(repeat.getBoundsDuration(), ctx));
+                } else if (repeat.hasBoundsPeriod()) {
+                    mccBounds.setPeriod(fhir2local(repeat.getBoundsPeriod(), ctx));
+                } else if (repeat.hasBoundsRange()) {
+                    mccBounds.setRange(fhir2local(repeat.getBoundsRange(), ctx));
                 }
             }
             mccRepeat.setCount(repeat.getCount());
             mccRepeat.setCountMax(repeat.getCountMax());
-            if (repeat.hasDuration())
-            {
+            if (repeat.hasDuration()) {
                 mccRepeat.setDuration(repeat.getDuration().toPlainString());
             }
-            if (repeat.hasDurationMax())
-            {
+            if (repeat.hasDurationMax()) {
                 mccRepeat.setDurationMax(repeat.getDurationMax().toPlainString());
             }
             if (repeat.hasDurationUnit()) {
@@ -385,49 +331,40 @@ public class GenericTypeMapper {
             }
             mccRepeat.setFrequency(repeat.getFrequency());
             mccRepeat.setFrequencyMax(repeat.getFrequencyMax());
-            if (repeat.hasPeriod())
-            {
+            if (repeat.hasPeriod()) {
                 mccRepeat.setPeriod(repeat.getPeriod().toPlainString());
             }
-            if (repeat.hasPeriodMax())
-            {
+            if (repeat.hasPeriodMax()) {
                 mccRepeat.setPeriodMax(repeat.getPeriodMax().toEngineeringString());
             }
-            if (repeat.hasPeriodUnit())
-            {
+            if (repeat.hasPeriodUnit()) {
                 mccRepeat.setPeriodUnit(repeat.getPeriodUnit().toCode());
             }
-            if (repeat.hasDayOfWeek())
-            {
+            if (repeat.hasDayOfWeek()) {
                 List<Enumeration<Timing.DayOfWeek>> list = repeat.getDayOfWeek();
                 String[] days = new String[list.size()];
-                int i=0;
-                for (Enumeration<Timing.DayOfWeek> t: list)
-                {
+                int i = 0;
+                for (Enumeration<Timing.DayOfWeek> t : list) {
                     days[i] = t.getCode();
                     i++;
                 }
                 mccRepeat.setDayOfWeek(days);
             }
-            if (repeat.hasTimeOfDay())
-            {
+            if (repeat.hasTimeOfDay()) {
                 List<TimeType> list = repeat.getTimeOfDay();
                 MccTime[] times = new MccTime[list.size()];
-                int i =0;
-                for (TimeType t: list)
-                {
-                    times[i] = fhir2local(t,ctx);
+                int i = 0;
+                for (TimeType t : list) {
+                    times[i] = fhir2local(t, ctx);
                     i++;
                 }
                 mccRepeat.setTimeOfDay(times);
             }
-            if (repeat.hasWhen())
-            {
+            if (repeat.hasWhen()) {
                 List<Enumeration<Timing.EventTiming>> list = repeat.getWhen();
                 String when[] = new String[list.size()];
-                int i =0;
-                for (Enumeration<Timing.EventTiming> w: list)
-                {
+                int i = 0;
+                for (Enumeration<Timing.EventTiming> w : list) {
                     when[i] = w.getCode();
                     i++;
                 }
@@ -436,5 +373,109 @@ public class GenericTypeMapper {
         }
         return out;
 
+    }
+
+
+    public static MccDosage fhir2local(Dosage in, Context ctx) {
+        MccDosage out = new MccDosage();
+
+        if (in.hasSequence())
+        {
+            out.setSequence(in.getSequence());
+        }
+        if (in.hasAdditionalInstruction())
+        {
+            out.setAdditionInstructions(CodeableConceptMapper.fhir2local(in.getAdditionalInstruction(),ctx));
+        }
+        if (in.hasText())
+        {
+            out.setText(in.getText());
+        }
+        if (in.hasPatientInstruction())
+        {
+            out.setPatientInstructions(in.getPatientInstruction());
+        }
+        if (in.hasTiming())
+        {
+            out.setTiming(fhir2local(in.getTiming(),ctx));
+        }
+        if (in.hasDoseAndRate())
+        {
+            List<Dosage.DosageDoseAndRateComponent> list = in.getDoseAndRate();
+            MccDosage.DoseAndRate[] outl = out.createDoseAndRateArray(list.size());
+            int i =0;
+            for (Dosage.DosageDoseAndRateComponent dr : list)
+            {
+                MccDosage.DoseAndRate odr = outl[i];
+                i++;
+                if (dr.hasType()) {
+                    odr.setType(fhir2local(dr.getType(),ctx));
+                }
+                if (dr.hasRate())
+                {
+                    if (dr.hasRateQuantity())
+                    {
+                        odr.setRateQuantity(fhir2local((SimpleQuantity)dr.getRateQuantity(),ctx));
+                    }
+                    else if (dr.hasRateRange())
+                    {
+                        odr.setRateRange(fhir2local(dr.getRateRange(),ctx));
+                    }
+                    else if (dr.hasRateRatio())
+                    {
+                        odr.setRateRatio(fhir2local(dr.getRateRatio(),ctx));
+                    }
+                }
+                if (dr.hasDose())
+                {
+                    if (dr.hasDoseQuantity())
+                    {
+                        odr.setDoseQuantity(fhir2local(dr.getDoseQuantity(),ctx));
+                    }
+                    else if (dr.hasDoseRange())
+                    {
+                        odr.setDoseRange(fhir2local(dr.getDoseRange(),ctx));
+                    }
+                }
+            }
+
+        }
+        if (in.hasAsNeeded())
+        {
+            if (in.hasAsNeededBooleanType())
+            {
+                out.setAsNeededBoolean(in.getAsNeededBooleanType().booleanValue());
+            }
+            else if (in.hasAsNeededCodeableConcept())
+            {
+                out.setAsNeededCodableConcept(fhir2local(in.getAsNeededCodeableConcept(),ctx));
+            }
+        }
+        if (in.hasSite())
+        {
+            out.setSite(fhir2local(in.getSite(),ctx));
+        }
+        if (in.hasRoute())
+        {
+            out.setRoute(fhir2local(in.getRoute(),ctx));
+        }
+        if (in.hasMethod())
+        {
+            out.setMethod(fhir2local(in.getMethod(),ctx));
+        }
+
+        if (in.hasMaxDosePerAdministration())
+        {
+            out.setMaxDosePerAdministration(fhir2local((SimpleQuantity)in.getMaxDosePerAdministration(),ctx));
+        }
+        if (in.hasMaxDosePerPeriod())
+        {
+            out.setMaxDosePerPeriod(fhir2local(in.getMaxDosePerPeriod(),ctx));
+        }
+        if (in.hasMaxDosePerLifetime())
+        {
+            out.setMaxDosePerLifetime(fhir2local((SimpleQuantity)in.getMaxDosePerLifetime(),ctx));
+        }
+        return out;
     }
 }
