@@ -178,6 +178,9 @@ public class MccTiming {
             this.offset = offset;
         }
 
+
+
+
         public Bounds defineBounds()
         {
             this.bounds = new Bounds();
