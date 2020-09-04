@@ -1,7 +1,9 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include. NON_NULL)
 public class GoalSummary {
     private String FHIRId;
 
@@ -10,6 +12,8 @@ public class GoalSummary {
     private String description;
     private MccCodeableConcept achievementStatus;
     private String lifecycleStatus;
+    private String startDateText;
+    private String targetDateText;
     private GoalTarget[] targets;
 
     public String getFHIRId() {
@@ -65,5 +69,21 @@ public class GoalSummary {
 
     public void setTargets(GoalTarget[] targets) {
         this.targets = targets;
+    }
+
+    public String getStartDateText() {
+        return startDateText;
+    }
+
+    public void setStartDateText(String startDateText) {
+        this.startDateText = startDateText;
+    }
+
+    public String getTargetDateText() {
+        return targetDateText;
+    }
+
+    public void setTargetDateText(String targetDateText) {
+        this.targetDateText = targetDateText;
     }
 }

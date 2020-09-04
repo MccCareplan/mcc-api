@@ -29,10 +29,18 @@ public class ObservationController {
             FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
             FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
             IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
-            //Eqv query: {{Server}}/Observation/?_sort=-date&_count=1&subject={{subjevct}}&code={{code}}
+            //Eqv query: {{Server}}/Observation/?_sort=-date&_count=1&subject={{subject}}&code={{code}}
             Bundle results = client.search().forResource(Observation.class).where(Observation.SUBJECT.hasId(subjectId)).and(Observation.CODE.exactly().code(code)).sort().descending("date").count(1)
                     .returnBundle(Bundle.class).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
+            //Check if we did not find anything if not then see if maybe it is in an observation.component
+            if (results.getTotal() == 0)
+            {
+                results = client.search().forResource(Observation.class).where(Observation.SUBJECT.hasId(subjectId)).and(Observation.COMPONENT_CODE.exactly().code(code)).sort().descending("date").count(1)
+                        .returnBundle(Bundle.class).execute();
+            }
+
+
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Observation")==0) {
                     Observation o = (Observation) e.getResource();
