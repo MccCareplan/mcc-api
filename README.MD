@@ -1,12 +1,12 @@
-#Introduction
+# Introduction
 This applicationis the backend to a Multiple Chronic Condition CarePlan Application set.
 
 It acts a the primary data anayslis layer and relies on one or more FHIR servers as the source of primary information.
 
-#Public Deployments
+# Public Deployments
 https://mcc-niddk-backend.wl.r.appspot.com/
 
-#Open API
+# Open API
 UI: https://mcc-niddk-backend.wl.r.appspot.com/swagger-ui.html
 DOCS: https://mcc-niddk-backend.wl.r.appspot.com/api-docs
 
