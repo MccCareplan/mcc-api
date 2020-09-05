@@ -237,13 +237,13 @@ public class Helper {
 
         if (timing.getFrequency()>0)
         {
-            if (timing.frequencyMax>timing.frequency)
+            if (timing.frequencyMax()>timing.getFrequency())
             {
 
             }
             else
             {
-                if (frequency == 1)
+                if (timing.getFrequency()== 1)
                 {
 
                 }
@@ -251,13 +251,13 @@ public class Helper {
                 {
 
                 }
-                if (period != null)
+                if (timing.getPeriod() != null)
                 {
 
                 }
             }
         }
-        if (duration != null)
+        if (timing.getDuration() != null)
         {
 
         }
