@@ -1,6 +1,5 @@
 package com.cognitive.nih.niddk.mccapi.util;
 
-import com.cognitive.nih.niddk.mccapi.data.primative.MccTiming;
 import org.hl7.fhir.r4.model.*;
 
 import java.text.SimpleDateFormat;
@@ -235,15 +234,15 @@ public class Helper {
         StringBuilder out = new StringBuilder();
         Timing.TimingRepeatComponent repeat = timing.getRepeat();
 
-        if (timing.getFrequency()>0)
+        if (repeat.getFrequency()>0)
         {
-            if (timing.frequencyMax()>timing.getFrequency())
+            if (repeat.getFrequencyMax()>repeat.getFrequency())
             {
 
             }
             else
             {
-                if (timing.getFrequency()== 1)
+                if (repeat.getFrequency()== 1)
                 {
 
                 }
@@ -251,13 +250,13 @@ public class Helper {
                 {
 
                 }
-                if (timing.getPeriod() != null)
+                if (repeat.getPeriod() != null)
                 {
 
                 }
             }
         }
-        if (timing.getDuration() != null)
+        if (repeat.getDuration() != null)
         {
 
         }
