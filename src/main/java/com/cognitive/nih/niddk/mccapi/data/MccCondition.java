@@ -1,10 +1,15 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccDate;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccIdentifer;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
 @JsonInclude(JsonInclude.Include. NON_NULL)
-public class MccCondition {
+public @Data
+class MccCondition {
     private String FHIRId;
     private MccCodeableConcept clinicalStatus;
     private MccCodeableConcept verifiationStatus;
@@ -13,117 +18,15 @@ public class MccCondition {
     private MccCodeableConcept code;
     private String onset;
     private String abatement;
-    private String recordedDate;
-    private String recorder;
-    private String asserter;
+    private MccDate recordedDate;
+    private MccReference recorder;
+    private MccReference asserter;
     private String note;
     private String profileId;
+    private MccIdentifer[] identifer;
     //TODO: Consider Identifier
     //TODO: Deal with stage
     //TODO: Deal with evidence;
 
 
-    public String getFHIRId() {
-        return FHIRId;
-    }
-
-    public void setFHIRId(String FHIRId) {
-        this.FHIRId = FHIRId;
-    }
-
-    public MccCodeableConcept getClinicalStatus() {
-        return clinicalStatus;
-    }
-
-    public void setClinicalStatus(MccCodeableConcept clinicalStatus) {
-        this.clinicalStatus = clinicalStatus;
-    }
-
-    public MccCodeableConcept getVerifiationStatus() {
-        return verifiationStatus;
-    }
-
-    public void setVerifiationStatus(MccCodeableConcept verifiationStatus) {
-        this.verifiationStatus = verifiationStatus;
-    }
-
-    public MccCodeableConcept[] getCategories() {
-        return categories;
-    }
-
-    public void setCategories(MccCodeableConcept[] categories) {
-        this.categories = categories;
-    }
-
-    public MccCodeableConcept getSeverity() {
-        return severity;
-    }
-
-    public void setSeverity(MccCodeableConcept severity) {
-        this.severity = severity;
-    }
-
-    public MccCodeableConcept getCode() {
-        return code;
-    }
-
-    public void setCode(MccCodeableConcept code) {
-        this.code = code;
-    }
-
-    public String getOnset() {
-        return onset;
-    }
-
-    public void setOnset(String onset) {
-        this.onset = onset;
-    }
-
-    public String getAbatement() {
-        return abatement;
-    }
-
-    public void setAbatement(String abatement) {
-        this.abatement = abatement;
-    }
-
-    public String getRecordedDate() {
-        return recordedDate;
-    }
-
-    public void setRecordedDate(String recordedDate) {
-        this.recordedDate = recordedDate;
-    }
-
-    public String getRecorder() {
-        return recorder;
-    }
-
-    public void setRecorder(String recorder) {
-        this.recorder = recorder;
-    }
-
-    public String getAsserter() {
-        return asserter;
-    }
-
-    public void setAsserter(String asserter) {
-        this.asserter = asserter;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public String getProfileId() {
-        return profileId;
-    }
-
-    public void setProfileId(String profileId) {
-        this.profileId = profileId;
-    }
 }

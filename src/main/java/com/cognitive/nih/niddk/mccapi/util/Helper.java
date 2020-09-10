@@ -2,17 +2,35 @@ package com.cognitive.nih.niddk.mccapi.util;
 
 import org.hl7.fhir.r4.model.*;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Helper {
-    private static String dateFormat = "MM/dd/yyyy";
-    private static SimpleDateFormat fmtDate = new SimpleDateFormat(dateFormat);
-    private static String dateTimeFormat = "MM/dd/yyyy hh:mm";
-    private static SimpleDateFormat fmtDateTime = new SimpleDateFormat(dateFormat);
+    private static final String dateFormat = "MM/dd/yyyy";
+    private static final SimpleDateFormat fmtDate = new SimpleDateFormat(dateFormat);
+    private static final String dateTimeFormat = "MM/dd/yyyy hh:mm";
+    private static final SimpleDateFormat fmtDateTime = new SimpleDateFormat(dateFormat);
+
+    private static final HashMap<String, String> unitsOfTime = new HashMap<>();
+    private static final HashMap<String, String> unitOfTimePlural = new HashMap<>();
+
+    static {
+        unitsOfTime.put("s", "second");
+        unitOfTimePlural.put("s", "seconds");
+        unitsOfTime.put("min", "minute");
+        unitOfTimePlural.put("min", "minutes");
+        unitsOfTime.put("h", "hour");
+        unitOfTimePlural.put("h", "hours");
+        unitsOfTime.put("d", "day");
+        unitOfTimePlural.put("d", "days");
+        unitsOfTime.put("wk", "week");
+        unitOfTimePlural.put("wk", "weeks");
+        unitsOfTime.put("mo", "month");
+        unitOfTimePlural.put("mo", "months");
+        unitsOfTime.put("a", "year");
+        unitOfTimePlural.put("a", "years");
+    }
 
     public static Coding getCodingForSystem(CodeableConcept concept, String system) {
         Coding out = null;
@@ -107,13 +125,13 @@ public class Helper {
         }
         if (out == null) {
             //No coding text was found (grrr)
-            //No we have a few choices -
+            //Now we have a few choices -
             //  1) Grab and try to look up a description for each code
             //  2) Build a System, Code representtion
             //  3) return a default value
             //  4) return null
             //
-            // For Diagnositic purposes we are going to
+            // For Diagnositic purposes we are going to...
             Coding cd = concept.getCodingFirstRep();
             out = String.format("%s {%s}", cd.getCode(), cd.getSystem());
         }
@@ -222,61 +240,115 @@ public class Helper {
         return out;
     }
 
-    public static String translateRepeat( Timing.TimingRepeatComponent repeat) {
+    public static String translateRepeat(Timing.TimingRepeatComponent repeat) {
         StringBuilder out = new StringBuilder();
+
+        if (repeat.getFrequency() > 0) {
+            if (repeat.getFrequencyMax() > repeat.getFrequency()) {
+                out.append(repeat.getFrequency());
+                out.append("-");
+                out.append(repeat.getFrequencyMax());
+                out.append(" times");
+            } else {
+                if (repeat.getFrequency() == 1) {
+                    out.append("Every");
+                } else {
+                    out.append(repeat.getFrequency());
+                    out.append(" times");
+                    if (repeat.hasPeriod())
+                    {
+                        out.append(" per");
+                    }
+                }
+                if (repeat.getPeriod() != null) {
+                    BigDecimal period = repeat.getPeriod();
+                    boolean plural = period.compareTo(BigDecimal.ONE) != 0;
+                    if (repeat.hasPeriodMax()) {
+                        out.append(" ");
+                        out.append(period.toPlainString());
+                        out.append("-");
+                        out.append(repeat.getPeriodMax().toPlainString());
+                    } else {
+                        if (plural) {
+                            out.append(" ");
+                            out.append(period.toPlainString());
+                        }
+                    }
+                    if (repeat.hasPeriodUnit()) {
+                        out.append(" ");
+                        out.append(unitOfTime(repeat.getPeriodUnit().toCode(), plural));
+                    }
+
+                }
+
+            }
+        }
+
+        boolean pluralDuration = false;
+        if (repeat.getDuration() != null) {
+            out.append(" for ");
+            BigDecimal one = BigDecimal.valueOf(1);
+            BigDecimal d = repeat.getDuration();
+
+            if (d.compareTo(one) > 0) {
+                pluralDuration = true;
+            }
+            //TODO: Deal with Fractions
+            out.append(repeat.getDuration().toPlainString());
+            if (repeat.getDurationMax() != null) {
+                out.append(" to ");
+                if (repeat.getDurationMax().compareTo(one) > 0) {
+                    pluralDuration = true;
+                }
+                out.append(repeat.getDurationMax().toPlainString());
+            }
+
+        }
+        if (repeat.hasDurationUnitElement()) {
+            out.append(" ");
+            out.append(unitOfTime(repeat.getDurationUnitElement().getCode(), pluralDuration));
+        }
         return out.toString();
     }
 
 
-    public static String translateTiming(Timing timing)
-    {
+    public static String translateTiming(Timing timing) {
         timing.getCode().getText();
         StringBuilder out = new StringBuilder();
-        Timing.TimingRepeatComponent repeat = timing.getRepeat();
-
-        if (repeat.getFrequency()>0)
-        {
-            if (repeat.getFrequencyMax()>repeat.getFrequency())
-            {
-
-            }
-            else
-            {
-                if (repeat.getFrequency()== 1)
-                {
-
-                }
-                else
-                {
-
-                }
-                if (repeat.getPeriod() != null)
-                {
-
-                }
-            }
+        if (timing.hasRepeat()) {
+            out.append(translateRepeat(timing.getRepeat()));
         }
-        if (repeat.getDuration() != null)
-        {
 
+
+        if (out.length() == 0 && timing.hasCode()) {
+            return timing.getCode().getText();
         }
         return out.toString();
     }
 
-  public static String DurationToString(Duration duration)
-    {
-        if (duration.hasDisplay())
-        {
+    public static String bigDecimalAsString(BigDecimal in) {
+        return "";
+    }
+
+    public static String unitOfTime(String code, boolean plural) {
+        if (plural) {
+            return unitOfTimePlural.get(code);
+        } else {
+            return unitsOfTime.get(code);
+        }
+    }
+
+    public static String durationToString(Duration duration) {
+        if (duration.hasDisplay()) {
             return duration.getDisplay();
         }
+
         StringBuffer out = new StringBuffer();
 
-        if (duration.hasComparator())
-        {
+        if (duration.hasComparator()) {
             out.append(duration.getComparator().getDisplay());
         }
-        if (duration.hasValue())
-        {
+        if (duration.hasValue()) {
             out.append(duration.getValue().toPlainString());
         }
         if (duration.hasUnit()) {
@@ -284,5 +356,4 @@ public class Helper {
         }
         return out.toString();
     }
-
 }

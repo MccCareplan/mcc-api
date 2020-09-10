@@ -1,12 +1,14 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import com.cognitive.nih.niddk.mccapi.mappers.MedicationMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.MedicationRequest;
 import org.hl7.fhir.r4.model.MedicationStatement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+@Slf4j
 public class MedicationLists {
     private ArrayList<MccMedicationRecord> activeMedications;
     private ArrayList<MccMedicationRecord> inactiveMedications;
@@ -22,66 +24,30 @@ public class MedicationLists {
     private static HashMap<String,Integer> activeMedStmtKeys = new HashMap<>();
 
     static {
-
         //Hash as verified
         Integer active = Integer.valueOf(ACTIVE_LIST);
         Integer inactive = Integer.valueOf(INACTIVE_LIST);
         Integer ignore = Integer.valueOf(IGNORE);
-        //	active | recurrence | relapse
-        activeMedReqKeys.put("active:confirmed",active);
-        activeMedReqKeys.put("active:provisional",active);
-        activeMedReqKeys.put("active:missing",active);
-        activeMedReqKeys.put("active:undefined",active);
-        activeMedReqKeys.put("active:differential",active);
-        activeMedReqKeys.put("active:unconfirmed",active);
-        activeMedReqKeys.put("active:refuted",inactive);
-        activeMedReqKeys.put("active:entered-in-error",ignore);
 
-        activeMedReqKeys.put("recurrence:confirmed",active);
-        activeMedReqKeys.put("recurrence:provisional",active);
-        activeMedReqKeys.put("recurrence:missing",active);
-        activeMedReqKeys.put("recurrence:undefined",active);
-        activeMedReqKeys.put("recurrence:differential",active);
-        activeMedReqKeys.put("recurrence:unconfirmed",active);
-        activeMedReqKeys.put("recurrence:refuted",inactive);
-        activeMedReqKeys.put("recurrence:entered-in-error",ignore);
+        //Medication Request Status: 	active | on-hold | cancelled | completed | entered-in-error | not-taken | draft | unknown
+        activeMedReqKeys.put("active",active);
+        activeMedReqKeys.put("on-hold",inactive);
+        activeMedReqKeys.put("cancelled",inactive);
+        activeMedReqKeys.put("completed",inactive);
+        activeMedReqKeys.put("entered-in-error",ignore);
+        activeMedReqKeys.put("not-taken",inactive);
+        activeMedReqKeys.put("unknown",inactive);
 
-        activeMedReqKeys.put("relapse:confirmed",active);
-        activeMedReqKeys.put("relapse:provisional",active);
-        activeMedReqKeys.put("relapse:missing",active);
-        activeMedReqKeys.put("relapse:undefined",active);
-        activeMedReqKeys.put("relapse:differential",active);
-        activeMedReqKeys.put("relapse:unconfirmed",active);
-        activeMedReqKeys.put("relapse:refuted",inactive);
-        activeMedReqKeys.put("relapse:entered-in-error",ignore);
+        //Medication Statement Status: 	active | completed | entered-in-error | intended | stopped | on-hold | unknown | not-taken
+        activeMedStmtKeys.put("active",active);
+        activeMedStmtKeys.put("completed",inactive);
+        activeMedStmtKeys.put("entered-in-error",ignore);
+        activeMedStmtKeys.put("intended",inactive);
+        activeMedStmtKeys.put("stopped",inactive);
+        activeMedStmtKeys.put("on-hold",inactive);
+        activeMedStmtKeys.put("unknown",inactive);
+        activeMedStmtKeys.put("not-taken",inactive);
 
-        // inactive | remission | resolved
-        activeMedReqKeys.put("inactive:confirmed",inactive);
-        activeMedReqKeys.put("inactive:provisional",inactive);
-        activeMedReqKeys.put("inactive:missing",inactive);
-        activeMedReqKeys.put("inactive:undefined",inactive);
-        activeMedReqKeys.put("inactive:diffe77rential",inactive);
-        activeMedReqKeys.put("inactive:unconfirmed",inactive);
-        activeMedReqKeys.put("inactive:refuted",inactive);
-        activeMedReqKeys.put("inactive:entered-in-error",ignore);
-
-        activeMedReqKeys.put("remission:confirmed",inactive);
-        activeMedReqKeys.put("remission:provisional",inactive);
-        activeMedReqKeys.put("remission:missing",inactive);
-        activeMedReqKeys.put("remission:undefined",inactive);
-        activeMedReqKeys.put("remission:differential",inactive);
-        activeMedReqKeys.put("remission:unconfirmed",inactive);
-        activeMedReqKeys.put("remission:refuted",inactive);
-        activeMedReqKeys.put("remission:entered-in-error",ignore);
-
-        activeMedReqKeys.put("resolved:confirmed",inactive);
-        activeMedReqKeys.put("resolved:provisional",inactive);
-        activeMedReqKeys.put("resolved:missing",inactive);
-        activeMedReqKeys.put("resolved:undefined",inactive);
-        activeMedReqKeys.put("resolved:differential",inactive);
-        activeMedReqKeys.put("resolved:unconfirmed",inactive);
-        activeMedReqKeys.put("resolved:refuted",inactive);
-        activeMedReqKeys.put("resolved:entered-in-error",ignore);
     }
 
     public MedicationLists()
@@ -107,11 +73,63 @@ public class MedicationLists {
 
     public void addMedicationStatement(MedicationStatement ms, Context ctx)
     {
+        MccMedicationRecord mr = MedicationMapper.fhir2local(ms,ctx);
+        String status = mr.getStatus();
+        Integer s = activeMedStmtKeys.get(status);
+        if (s != null) {
+            int active = s.intValue();
 
+            switch (active) {
+                case ACTIVE_LIST: {
+                    activeMedications.add(mr);
+                }
+                case INACTIVE_LIST: {
+                    inactiveMedications.add(mr);
+                }
+                case IGNORE: {
+                    log.debug("Ignoring status ");
+                    break;
+                }
+                default: {
+                    log.debug("Code error - Unhandled status swithc");
+                }
+            }
+        }
+        else
+        {
+            log.warn("Unknown Medication Status: "+status);
+        }
     }
 
-    public void addMedicationRequest(MedicationRequest mr, Context ctx)
+    public void addMedicationRequest(MedicationRequest mreq, Context ctx)
     {
+        MccMedicationRecord mr = MedicationMapper.fhir2local(mreq,ctx);
+        String status = mr.getStatus();
+        Integer s = activeMedReqKeys.get(status);
+        if (s != null) {
+            int active = s.intValue();
+
+            switch (active) {
+                case ACTIVE_LIST: {
+                    activeMedications.add(mr);
+                }
+                case INACTIVE_LIST: {
+                    inactiveMedications.add(mr);
+                }
+                case IGNORE: {
+                    log.debug("Ignoring status ");
+                    break;
+                }
+                default: {
+                    log.debug("Code error - Unhandled status swithc");
+                }
+            }
+        }
+        else
+        {
+            log.warn("Unknown Medication Status: "+status);
+        }
+
     }
 
     private boolean duplicateAndConflictCheck(MccMedicationRecord mr)

@@ -96,7 +96,7 @@ public class GoalMapper {
                     }
                     else if (t.hasDueDuration())
                     {
-                        out.setTargetDateText(Helper.DurationToString(t.getDueDuration()));
+                        out.setTargetDateText(Helper.durationToString(t.getDueDuration()));
                     }
                     needTargetDate = false;
                 }

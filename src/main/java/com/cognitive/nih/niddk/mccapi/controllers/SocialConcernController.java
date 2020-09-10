@@ -1,34 +1,32 @@
 package com.cognitive.nih.niddk.mccapi.controllers;
 
-import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
-import com.cognitive.nih.niddk.mccapi.data.*;
+import com.cognitive.nih.niddk.mccapi.data.ConditionLists;
+import com.cognitive.nih.niddk.mccapi.data.ConditionSummary;
+import com.cognitive.nih.niddk.mccapi.data.Context;
+import com.cognitive.nih.niddk.mccapi.data.SocialConcern;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
-import com.cognitive.nih.niddk.mccapi.managers.FHIRServerManager;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class SocialConcernController {
     @GetMapping("/socialconcernsummary")
-    public ConditionLists getConditionSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestParam(required = false, name = "server") String serverId) {
+    public ConditionLists getConditionSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers) {
         ConditionLists out = new ConditionLists();
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
 
-        FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
-        FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
-        IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
         Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
                 .and(Condition.CATEGORY.exactly().code("health-concern")).returnBundle(Bundle.class).execute();
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Condition") {
                 Condition c = (Condition) e.getResource();
@@ -46,12 +44,12 @@ public class SocialConcernController {
     }
 
     @GetMapping("/socialconcerns")
-    public SocialConcern[] getCarePlans(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "server") String serverId) {
+    public SocialConcern[] getCarePlans(@RequestParam(required = true, name = "subject") String subjectId, @RequestHeader Map<String, String> headers) {
         ArrayList<SocialConcern> out = new ArrayList<>();
-        FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
-        FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
-        IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
+
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
         //TODO: Query for concerns
         //Bundle results = client.search().forResource(CarePlan.class).where(CarePlan.SUBJECT.hasId(subjectId))
         //        .returnBundle(Bundle.class).execute();

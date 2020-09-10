@@ -1,10 +1,11 @@
 package com.cognitive.nih.niddk.mccapi.controllers;
 
-import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
-import com.cognitive.nih.niddk.mccapi.data.*;
+import com.cognitive.nih.niddk.mccapi.data.Context;
+import com.cognitive.nih.niddk.mccapi.data.GoalLists;
+import com.cognitive.nih.niddk.mccapi.data.GoalSummary;
+import com.cognitive.nih.niddk.mccapi.data.MccGoal;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
-import com.cognitive.nih.niddk.mccapi.managers.FHIRServerManager;
 import com.cognitive.nih.niddk.mccapi.mappers.GoalMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import org.hl7.fhir.r4.model.Bundle;
@@ -12,21 +13,21 @@ import org.hl7.fhir.r4.model.Goal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class GoalController {
 
     @GetMapping("/goalsummary")
-    public GoalLists getGoalSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestParam(required = false, name = "server") String serverId) {
+    public GoalLists getGoalSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers) {
         GoalLists out = new GoalLists();
 
-        FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
-        FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
-        IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
         Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Goal") {
                 Goal g = (Goal) e.getResource();
@@ -39,14 +40,13 @@ public class GoalController {
     }
 
     @GetMapping("/goal")
-    public MccGoal[] getGoals(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "server") String serverId) {
+    public MccGoal[] getGoals(@RequestParam(required = true, name = "subject") String subjectId, @RequestHeader Map<String, String> headers) {
         ArrayList<MccGoal> out = new ArrayList<>();
-        FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
-        FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
-        IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
         Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Goal") {
                 Goal g = (Goal) e.getResource();
@@ -60,14 +60,13 @@ public class GoalController {
     }
 
     @GetMapping("/goal/{id}")
-    public MccGoal getGoal(@PathVariable(value = "id") String id, @RequestParam(required = false) String serverId) {
+    public MccGoal getGoal(@PathVariable(value = "id") String id, @RequestHeader Map<String, String> headers) {
         MccGoal g;
-        FHIRServer srv = FHIRServerManager.getManager().getServerWithDefault(serverId);
-        FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
-        IGenericClient client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
         Goal fg = client.read().resource(Goal.class).withId(id).execute();
         String subjectId = fg.getSubject().getId();
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId);
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
         g = GoalMapper.fhir2local(fg,ctx);
         return g;
     }
