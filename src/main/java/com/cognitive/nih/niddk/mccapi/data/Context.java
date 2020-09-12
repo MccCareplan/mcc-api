@@ -1,5 +1,8 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import ca.uhn.fhir.rest.client.api.IGenericClient;
+import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
+
 import java.util.Date;
 import java.util.HashMap;
 
@@ -9,6 +12,7 @@ public class Context {
     private Date dob;
     private HashMap<String, String> headers;
     private Context parent;
+    private IGenericClient client;
 
     public static final Context NULL_CONTEXT = new Context();
 
@@ -69,5 +73,18 @@ public class Context {
 
     public void setHeaders(HashMap<String, String> headers) {
         this.headers = headers;
+    }
+
+    public IGenericClient getClient() {
+        if (this.client == null)
+        {
+            FHIRServices fhirSrv = FHIRServices.getFhirServices();
+            this.client = fhirSrv.getClient(this.headers);
+        }
+        return client;
+    }
+
+    public void setClient(IGenericClient client) {
+        this.client = client;
     }
 }

@@ -49,7 +49,7 @@ public class ObservationMapper {
         }
         if (in.hasNote())
         {
-            out.setNote(Helper.AnnotationsToString(in.getNote()));
+            out.setNote(Helper.annotationsToString(in.getNote()));
 
         }
         if (in.hasReferenceRange()) {

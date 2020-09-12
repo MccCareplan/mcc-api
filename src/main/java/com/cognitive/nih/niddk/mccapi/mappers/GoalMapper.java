@@ -28,7 +28,7 @@ public class GoalMapper {
 
         out.setStatusDate(Helper.dateTimeToString(in.getStatusDate()));
         out.setStatusReason(in.getStatusReason());
-        out.setNotes(Helper.AnnotationsToStringList(in.getNote()));
+        out.setNotes(Helper.annotationsToStringList(in.getNote()));
 
 
         if (in.hasStartCodeableConcept())

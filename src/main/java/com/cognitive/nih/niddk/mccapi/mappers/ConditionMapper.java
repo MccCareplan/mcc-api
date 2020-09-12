@@ -28,7 +28,7 @@ public class ConditionMapper {
                 out.setOnset(FuzzyDate.buildString(in.getOnset(), ctx));
             }
             if (in.hasNote()) {
-                out.setNote(Helper.AnnotationsToString(in.getNote()));
+                out.setNote(Helper.annotationsToString(in.getNote()));
             }
             if (in.hasAsserter()) {
                 out.setAsserter(GenericTypeMapper.fhir2local(in.getAsserter(), ctx));

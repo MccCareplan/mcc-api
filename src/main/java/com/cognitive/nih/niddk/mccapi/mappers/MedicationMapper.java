@@ -46,7 +46,7 @@ public class MedicationMapper {
             out.setDosages(GenericTypeMapper.fhir2local_dosageList(in.getDosageInstruction(), ctx));
         }
         if (in.hasNote()) {
-            out.setNote(Helper.AnnotationsToString(in.getNote()));
+            out.setNote(Helper.annotationsToString(in.getNote()));
         }
         if (in.hasPriority()) {
             out.setPriority(in.getPriority().getDisplay());
@@ -91,7 +91,7 @@ public class MedicationMapper {
         }
 
         if (in.hasNote()) {
-            out.setNote(Helper.AnnotationsToString(in.getNote()));
+            out.setNote(Helper.annotationsToString(in.getNote()));
         }
         if (in.hasReasonReference()) {
             out.setReasonReferences(ReferenceMapper.fhir2local(in.getReasonReference(), ctx));
