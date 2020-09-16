@@ -11,6 +11,7 @@ import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class ContactController {
         }
 
         //If a care plan is presented then we process it to find the care teams
-        if (carePlanId != null) {
+        if (!StringUtils.isEmpty(carePlanId)) {
             // Fetch Careplan
 
             try {
@@ -81,7 +82,7 @@ public class ContactController {
                     }
                 }
             } catch (Exception exp) {
-                log.warn("Error tyring to fetch careplan " + carePlanId + " , " + exp.getMessage());
+                log.warn("Error tyring to fetch careplan " + carePlanId + ", while loading contact " + exp.getMessage());
             }
         }
 

@@ -2,6 +2,7 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
+import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.services.ReferenceResolver;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.*;
@@ -128,6 +129,11 @@ public class CareTeamMapper {
 
         if (out != null) {
             out.setRole(role);
+            if (in.hasOnBehalfOf())
+            {
+                Reference m = in.getOnBehalfOf();
+                out.setOrganizationName(NameResolver.getReferenceName(m,ctx));
+            }
         }
         return out;
     }
