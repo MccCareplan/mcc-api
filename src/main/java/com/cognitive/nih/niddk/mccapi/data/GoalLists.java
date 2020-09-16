@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class GoalLists {
+    private ArrayList<GoalSummary> allGoals = new ArrayList<>();
     private ArrayList<GoalSummary> activeClinicalGoals = new ArrayList<>();
     private ArrayList<GoalSummary> inactiveClinicalGoals = new ArrayList<>();
     private ArrayList<GoalSummary> activePatientGoals = new ArrayList<>();
@@ -64,6 +65,7 @@ public class GoalLists {
         {
             case ACTIVE_LIST:
             {
+                allGoals.add(goal);
                 if(goal.getExpressedByType().compareTo("Patient")==0)
                 {
                     activePatientGoals.add(goal);
@@ -77,6 +79,7 @@ public class GoalLists {
             }
             case INACTIVE_LIST:
             {
+                allGoals.add(goal);
                 if(goal.getExpressedByType().compareTo("Patient")==0)
                 {
                     inactivePatientGoals.add(goal);
@@ -125,6 +128,12 @@ public class GoalLists {
 
         GoalSummary[] out = new GoalSummary[inactivePatientGoals.size()];
         return inactivePatientGoals.toArray(out);
+    }
+
+    public GoalSummary[] getAllGoals() {
+
+        GoalSummary[] out = new GoalSummary[allGoals.size()];
+        return allGoals.toArray(out);
     }
 
     public GoalTarget[] getActiveTargets()

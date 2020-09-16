@@ -13,8 +13,11 @@ class GoalSummary {
     private String expressedByType;
     private String description;
     private MccCodeableConcept achievementStatus;
+    private String achievementText;
     private String lifecycleStatus;
     private String startDateText;
     private String targetDateText;
+    private String addresses;
+    private String expressedBy;
     private GoalTarget[] targets;
 }

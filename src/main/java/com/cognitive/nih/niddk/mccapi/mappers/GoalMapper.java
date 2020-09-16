@@ -2,6 +2,7 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
+import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Goal;
@@ -71,6 +72,7 @@ public class GoalMapper {
         MccReference ref = ReferenceMapper.fhir2local(in.getExpressedBy(),ctx);
         out.setExpressedByType(ref.getType());
         out.setAchievementStatus(CodeableConceptMapper.fhir2local(in.getAchievementStatus(),ctx));
+        out.setAchievementText(Helper.getConceptDisplayString(in.getAchievementStatus()));
         if (in.hasStart())
         {
             if (in.hasStartCodeableConcept())
@@ -104,6 +106,14 @@ public class GoalMapper {
                 index++;
             }
             out.setTargets(otargets);
+        }
+        if (in.hasAddresses())
+        {
+            out.setAddresses(NameResolver.getReferenceNames(in.getAddresses(),ctx));
+        }
+
+        if (in.hasExpressedBy()) {
+            out.setExpressedBy(NameResolver.getReferenceName(in.getExpressedBy(), ctx));
         }
         return out;
     }
