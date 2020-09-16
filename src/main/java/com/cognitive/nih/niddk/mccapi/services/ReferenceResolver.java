@@ -94,7 +94,7 @@ public class ReferenceResolver {
 
     public static PractitionerRole findPractitionerRole(Reference ref, Context ctx) {
         PractitionerRole out = null;
-        if (Helper.isReferenceOfType(ref, "Condition"))
+        if (Helper.isReferenceOfType(ref, "PractitionerRole"))
         {
             try {
                 out = ctx.getClient().fetchResourceFromUrl( PractitionerRole.class, ref.getReference());

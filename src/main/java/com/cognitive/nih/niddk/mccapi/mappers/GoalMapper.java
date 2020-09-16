@@ -72,7 +72,9 @@ public class GoalMapper {
         MccReference ref = ReferenceMapper.fhir2local(in.getExpressedBy(),ctx);
         out.setExpressedByType(ref.getType());
         out.setAchievementStatus(CodeableConceptMapper.fhir2local(in.getAchievementStatus(),ctx));
-        out.setAchievementText(Helper.getConceptDisplayString(in.getAchievementStatus()));
+        if (in.hasAchievementStatus()) {
+            out.setAchievementText(Helper.getConceptDisplayString(in.getAchievementStatus()));
+        }
         if (in.hasStart())
         {
             if (in.hasStartCodeableConcept())
