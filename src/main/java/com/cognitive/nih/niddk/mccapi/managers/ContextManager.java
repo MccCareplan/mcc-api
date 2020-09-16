@@ -25,16 +25,22 @@ public class ContextManager {
 
         if (subjectId != null) {
             fnd = subjectMap.get(subjectId);
+
+            if (fnd == null) {
+                out = new Context();
+                out.setSubjectId(subjectId);
+                subjectMap.put(subjectId, out);
+            }
+            else
+            {
+                out = new Context(fnd);
+                out.setHeaders(copyHeaders(headers));
+            }
         }
-        if (fnd == null)
+
+        if (out == null )
         {
             out = new Context();
-            out.setSubjectId(subjectId);
-            subjectMap.put(subjectId,out);
-        }
-        else
-        {
-            out = new Context(fnd);
             out.setHeaders(copyHeaders(headers));
         }
 
