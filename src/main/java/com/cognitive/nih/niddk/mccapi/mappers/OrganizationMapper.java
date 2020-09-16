@@ -2,6 +2,7 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
+import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.ContactPoint;
@@ -14,7 +15,7 @@ public class OrganizationMapper {
 
     public static Contact fhir2Contact(Organization in, Context ctx) {
         Contact out = new Contact();
-        out.setName(in.getName());
+        out.setName(NameResolver.getName(in,ctx));
         out.setRelFhirId(Helper.getIdString(in.getIdElement()));
 
         Address a = Helper.findBestAddress(in.getAddress(), "home");
