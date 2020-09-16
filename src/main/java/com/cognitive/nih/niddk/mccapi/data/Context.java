@@ -13,6 +13,7 @@ public class Context {
     private HashMap<String, String> headers;
     private Context parent;
     private IGenericClient client;
+    private Date now;
 
     public static final Context NULL_CONTEXT = new Context();
 
@@ -86,5 +87,15 @@ public class Context {
 
     public void setClient(IGenericClient client) {
         this.client = client;
+    }
+
+    public Date getNow()
+    {
+        if (now == null)
+        {
+            now = new Date();
+        }
+        return now;
+
     }
 }
