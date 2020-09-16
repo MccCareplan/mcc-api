@@ -192,6 +192,108 @@ public class Helper {
         return fmtDate.format(d);
     }
 
+    public static StringBuffer quantityToStringBuf(@NonNull Quantity q)
+    {
+        StringBuffer out = new StringBuffer();
+        if (q.hasDisplay())
+        {
+            out.append(q.getDisplay());
+        }
+        else
+        {
+            if (q.hasComparator())
+            {
+                Quantity.QuantityComparator c = q.getComparator();
+                out.append(c.getDisplay()!=null?c.getDisplay():c.toCode());
+            }
+            if (q.hasValue())
+            {
+                out.append(q.getValue().toPlainString());
+            }
+            if (q.hasUnit())
+            {
+                out.append(q.getDisplay());
+            }
+        }
+        return out;
+    }
+
+    public static StringBuffer rangeToStringBuf(@NonNull Range r)
+    {
+        StringBuffer out = new StringBuffer();
+        out.append(quantityToStringBuf(r.getLow()));
+        out.append("-");
+        out.append(quantityToStringBuf(r.getHigh()));
+        return out;
+    }
+
+    public static StringBuffer ratioToStringBuf(Ratio r)
+    {
+        StringBuffer out = new StringBuffer();
+        out.append(quantityToStringBuf(r.getNumerator()));
+        out.append("/");
+        out.append(quantityToStringBuf(r.getDenominator()));
+        return out;
+    }
+
+    public static String dosageToString(@NonNull Dosage dosage)
+    {
+        //TODO: Beef up for more complex dosages
+        StringBuffer out = new StringBuffer();
+        //Form:   Dose Units Timing
+        if (dosage.hasText())
+        {
+            out.append(dosage.getText());
+        }
+        else
+        {
+            if (dosage.hasDoseAndRate())
+            {
+                List<Dosage.DosageDoseAndRateComponent> doses = dosage.getDoseAndRate();
+                if (doses.size()>1)
+                {
+                    return "Complex Dose and Rate...";
+                }
+                Dosage.DosageDoseAndRateComponent dose = doses.get(0);
+                if (dose.hasDose())
+                {
+                    if (dose.hasDoseQuantity())
+                    {
+                        Quantity q = dose.getDoseQuantity();
+                        out.append(quantityToStringBuf(q));
+                    }
+                    else if (dose.hasDoseRange())
+                    {
+                        Range r = dose.getDoseRange();
+                        out.append(rangeToStringBuf(r));
+                    }
+                    else if (dose.hasRateRatio())
+                    {
+                        Ratio r = dose.getRateRatio();
+                        out.append(ratioToStringBuf(r));
+                    }
+                }
+            }
+            if (dosage.hasTiming())
+            {
+                Timing t = dosage.getTiming();
+                addStringToBufferWithSep(out,translateTiming(t) ," ");;
+            }
+            if (dosage.hasAsNeeded())
+            {
+                if (dosage.hasAsNeededCodeableConcept())
+                {
+                    addStringToBufferWithSep(out,dosage.getAsNeededCodeableConcept().getText() ," ");
+                }
+                else
+                {
+                    addStringToBufferWithSep(out,"As needed"," ");
+                }
+            }
+        }
+        return out.toString();
+    }
+
     public static String durationToString(@NonNull Duration duration) {
         if (duration.hasDisplay()) {
             return duration.getDisplay();
@@ -552,6 +654,17 @@ public class Helper {
         addr.append("/");
         addr.append(ide.getIdPart());
         return addr.toString();
+    }
+
+    public static StringBuffer addStringToBufferWithSep(StringBuffer buf, String str,String sep)
+    {
+        if (buf.length()>0)
+        {
+            buf.append(sep);
+        }
+        buf.append(str);
+
+        return buf;
     }
 
     public static Map<String, List<ContactPoint>> organizeContactTypesBySystem(List<ContactPoint> points) {
