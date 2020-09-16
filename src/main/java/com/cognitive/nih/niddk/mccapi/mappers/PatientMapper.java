@@ -3,7 +3,7 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccPatient;
-import com.cognitive.nih.niddk.mccapi.services.ReferenceResolver;
+import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.*;
 
@@ -89,14 +89,7 @@ public class PatientMapper {
                 if (orgRef.hasReference()) {
                     out.setRelFhirId(orgRef.getReference());
                 }
-                if (orgRef.hasDisplay()) {
-                    out.setName(orgRef.getDisplay());
-                } else if (orgRef.hasReference()) {
-                    Organization org = ReferenceResolver.findOrganization(orgRef.getReference(),ctx);
-                    if (org != null) {
-                        out.setName(org.getName());
-                    }
-                }
+                out.setName(NameResolver.getReferenceName(orgRef,ctx));
             }
         }
 
