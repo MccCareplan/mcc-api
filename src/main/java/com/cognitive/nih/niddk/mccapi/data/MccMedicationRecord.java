@@ -38,7 +38,8 @@ public class MccMedicationRecord {
     private String priority;  //Request Only
     //Supporting Information
     //authoredOn
-    //requester
+    //requester (requester)
+    private MccReference requester;
     //performer
     //performerType
     private MccReference[] reasonReferences;
@@ -46,7 +47,8 @@ public class MccMedicationRecord {
     //despenseRequest
     //substitution
     //priorPrescription
-    //detectedIssue
+    private MccReference[] detectedIssues;
+    private String onCareplans;
     //eventHistory
 
 }

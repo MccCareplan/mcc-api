@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Slf4j
-public class MedicationLists {
-    private ArrayList<MccMedicationRecord> activeMedications;
-    private ArrayList<MccMedicationRecord> inactiveMedications;
-    private HashMap<String, MccMedicationRecord> actMedConflictMap;
+public class MedicationSummaryList {
+
+    private ArrayList<MedicationSummary> activeMedications;
+    private ArrayList<MedicationSummary> inactiveMedications;
+    private HashMap<String, MedicationSummary> actMedConflictMap;
 
     private static final int ACTIVE_LIST = 0;
     private static final int INACTIVE_LIST = 1;
@@ -50,7 +51,7 @@ public class MedicationLists {
 
     }
 
-    public MedicationLists()
+    public MedicationSummaryList()
     {
         activeMedications = new ArrayList<>();
         inactiveMedications = new ArrayList<>();
@@ -58,22 +59,22 @@ public class MedicationLists {
         //medications = new HashMap<>();
     }
 
-    public MccMedicationRecord[] getActiveMedications() {
+    public MedicationSummary[] getActiveMedications() {
 
-        MccMedicationRecord[] out = new MccMedicationRecord[activeMedications.size()];
+        MedicationSummary[] out = new MedicationSummary[activeMedications.size()];
         return activeMedications.toArray(out);
     }
 
 
-    public MccMedicationRecord[] getInactiveMedications() {
+    public MedicationSummary[] getInactiveMedications() {
 
-        MccMedicationRecord[] out = new MccMedicationRecord[inactiveMedications.size()];
+        MedicationSummary[] out = new MedicationSummary[inactiveMedications.size()];
         return inactiveMedications.toArray(out);
     }
 
     public void addMedicationStatement(MedicationStatement ms, Context ctx)
     {
-        MccMedicationRecord mr = MedicationMapper.fhir2local(ms,ctx);
+        MedicationSummary mr = MedicationMapper.fhir2summary(ms,ctx);
         String status = mr.getStatus();
         Integer s = activeMedStmtKeys.get(status);
         if (s != null) {
@@ -103,9 +104,9 @@ public class MedicationLists {
         }
     }
 
-    public void addMedicationRequest(MedicationRequest mreq,  HashMap<String,String> cpRefs, Context ctx)
+    public void addMedicationRequest(MedicationRequest mreq, HashMap<String,String> cpRefs, Context ctx)
     {
-        MccMedicationRecord mr = MedicationMapper.fhir2local(mreq,ctx);
+        MedicationSummary mr = MedicationMapper.fhir2summary(mreq,ctx);
         if (cpRefs.containsKey(mr.getFhirId()))
         {
             mr.setOnCareplans(cpRefs.get(mr.getFhirId()));
