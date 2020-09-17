@@ -25,6 +25,7 @@ public class ObservationMapper {
         if (in.hasEffective())
         {
             MccObservation.Effective effective = out.defineEffective();
+
             if (in.hasEffectiveDateTimeType())
             {
                 effective.setDateTime(GenericTypeMapper.fhir2local(in.getEffectiveDateTimeType(),ctx));
@@ -48,7 +49,7 @@ public class ObservationMapper {
         }
         if (in.hasNote())
         {
-            out.setNote(Helper.AnnotationsToString(in.getNote()));
+            out.setNote(Helper.annotationsToString(in.getNote()));
 
         }
         if (in.hasReferenceRange()) {

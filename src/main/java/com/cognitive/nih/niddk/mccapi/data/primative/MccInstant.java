@@ -1,15 +1,12 @@
 package com.cognitive.nih.niddk.mccapi.data.primative;
 
-public class MccInstant {
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+
+@JsonInclude(JsonInclude.Include. NON_NULL)
+public @Data
+class MccInstant {
     public static final String fhirType = "Instant";
 
     private String value;
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
 }

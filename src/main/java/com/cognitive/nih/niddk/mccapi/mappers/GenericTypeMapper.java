@@ -12,9 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * TODO:   Switch this to instance based mechanimsm, abstract interface, handle fhir version
+ * TODO:   Switch this to instance based mechanism, abstract interface, handle fhir version
  *
- *  Likely operstions like - getMapperForR4. getMapperForR5 etc.
+ *  Likely operations like - getMapperForR4. getMapperForR5 etc.
  *  Consumers will need to know HAPI input model in anycase
  *
  */
@@ -150,7 +150,7 @@ public class GenericTypeMapper {
                 }
             }
         } else {
-            logger.warn("Unmapped type {}, ingoring", fhirType);
+            logger.warn("Unmapped type {}, ignoring", fhirType);
         }
 
         return out;
@@ -168,6 +168,15 @@ public class GenericTypeMapper {
         out.setRawDate(in);
         out.setDate(Helper.dateToString(in));
         return out;
+    }
+    public static MccIdentifer[] fhir2local_identifierArray(List<Identifier> in, Context ctx) {
+        MccIdentifer[] o = new MccIdentifer[in.size()];
+        int i = 0;
+        for (Identifier id : in) {
+            o[i] = fhir2local(id, ctx);
+            i++;
+        }
+        return o;
     }
 
     public static MccDateTime[] fhir2local(List<DateTimeType> in, Context ctx) {
@@ -206,10 +215,10 @@ public class GenericTypeMapper {
         out.setOrigin(fhir2local((SimpleQuantity) in.getOrigin(), ctx));
         out.setData(in.getData());
         out.setDimensions(in.getDimensions());
-        out.setFactor(in.getFactor().toPlainString());
-        out.setLowerlimit(in.getLowerLimit().toPlainString());
-        out.setUpperlimit(in.getUpperLimit().toPlainString());
-        out.setPeriod(in.getPeriod().toPlainString());
+        out.setFactor(in.getFactor());
+        out.setLowerlimit(in.getLowerLimit());
+        out.setUpperlimit(in.getUpperLimit());
+        out.setPeriod(in.getPeriod());
         return out;
     }
 
@@ -218,7 +227,7 @@ public class GenericTypeMapper {
         out.setCode(in.getCode());
         out.setSystem(in.getSystem());
         out.setUnit(in.getUnit());
-        out.setValue(in.getValue().toPlainString());
+        out.setValue(in.getValue());
         out.setDisplay(in.getDisplay());
         return out;
     }
@@ -243,7 +252,7 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccReference fhir2local(Reference in, Context ctx) {
+        public static MccReference fhir2local(Reference in, Context ctx) {
         return ReferenceMapper.fhir2local(in, ctx);
     }
 
@@ -259,7 +268,7 @@ public class GenericTypeMapper {
         }
         out.setSystem(in.getSystem());
         out.setUnit(in.getUnit());
-        out.setValue(in.getValue().toPlainString());
+        out.setValue(in.getValue());
         out.setDisplay(in.getDisplay());
         return out;
     }
@@ -286,7 +295,7 @@ public class GenericTypeMapper {
         }
         out.setSystem(in.getSystem());
         out.setUnit(in.getUnit());
-        out.setValue(in.getValue().toPlainString());
+        out.setValue(in.getValue());
         out.setDisplay(in.getDisplay());
         return out;
     }
@@ -369,12 +378,24 @@ public class GenericTypeMapper {
                     i++;
                 }
             }
+            mccRepeat.setReadable(Helper.translateRepeat(repeat));
             mccRepeat.setOffset(repeat.getOffset());
         }
+        out.setReadable(Helper.translateTiming(in));
         return out;
 
     }
 
+    public static MccDosage[] fhir2local_dosageList(List<Dosage> in, Context ctx) {
+        MccDosage[] o = new MccDosage[in.size()];
+        int i = 0;
+        for (Dosage dosage : in) {
+            o[i] = fhir2local(dosage, ctx);
+            i++;
+        }
+        return o;
+
+    }
 
     public static MccDosage fhir2local(Dosage in, Context ctx) {
         MccDosage out = new MccDosage();
