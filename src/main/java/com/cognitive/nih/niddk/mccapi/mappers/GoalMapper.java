@@ -29,7 +29,7 @@ public class GoalMapper {
 
         out.setStatusDate(Helper.dateTimeToString(in.getStatusDate()));
         out.setStatusReason(in.getStatusReason());
-        out.setNotes(Helper.annotationsToStringList(in.getNote()));
+        out.setNotes(Helper.annotationsToStringList(in.getNote(),ctx));
 
 
         if (in.hasStartCodeableConcept())
@@ -49,12 +49,12 @@ public class GoalMapper {
         if (targets.size()>0)
         {
             int index=0;
-            GoalTarget[] otargets = new GoalTarget[targets.size()];
+            GoalTarget[] outTargets = new GoalTarget[targets.size()];
             for (Goal.GoalTargetComponent t: targets) {
-               otargets[index] = fhir2local(t,ctx);
+               outTargets[index] = fhir2local(t,ctx);
                index++;
             }
-            out.setTargets(otargets);
+            out.setTargets(outTargets);
         }
 
         return out;
@@ -90,7 +90,7 @@ public class GoalMapper {
         if (targets.size()>0)
         {
             int index=0;
-            GoalTarget[] otargets = new GoalTarget[targets.size()];
+            GoalTarget[] outputTargets = new GoalTarget[targets.size()];
             for (Goal.GoalTargetComponent t: targets) {
                 if ( needTargetDate && t.hasDue())
                 {
@@ -104,10 +104,10 @@ public class GoalMapper {
                     }
                     needTargetDate = false;
                 }
-                otargets[index] = fhir2local(t,ctx);
+                outputTargets[index] = fhir2local(t,ctx);
                 index++;
             }
-            out.setTargets(otargets);
+            out.setTargets(outputTargets);
         }
         if (in.hasAddresses())
         {
@@ -125,7 +125,6 @@ public class GoalMapper {
         GoalTarget out = new GoalTarget();
         out.setMeasure(CodeableConceptMapper.fhir2local(in.getMeasure(),ctx));
         Type x = in.getDue();
-        in.getDetail();
         if (x != null)
         {
             out.setDueType(x.fhirType());

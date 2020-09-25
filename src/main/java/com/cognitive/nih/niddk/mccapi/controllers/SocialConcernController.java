@@ -27,6 +27,7 @@ public class SocialConcernController {
         Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
                 .and(Condition.CATEGORY.exactly().code("health-concern")).returnBundle(Bundle.class).execute();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
+        ctx.setClient(client);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Condition") {
                 Condition c = (Condition) e.getResource();
@@ -40,7 +41,7 @@ public class SocialConcernController {
 
     private void addCondtionToConditionList(ConditionLists list, Condition c, Context ctx)
     {
-        list.addCondtion(c, ctx);
+        list.addCondition(c, ctx);
     }
 
     @GetMapping("/socialconcerns")
@@ -50,6 +51,7 @@ public class SocialConcernController {
         IGenericClient client = fhirSrv.getClient(headers);
 
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
+        ctx.setClient(client);
         //TODO: Query for concerns
         //Bundle results = client.search().forResource(CarePlan.class).where(CarePlan.SUBJECT.hasId(subjectId))
         //        .returnBundle(Bundle.class).execute();

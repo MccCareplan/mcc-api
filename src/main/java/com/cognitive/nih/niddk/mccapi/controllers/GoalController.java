@@ -28,6 +28,7 @@ public class GoalController {
         Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
+        ctx.setClient(client);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Goal") {
                 Goal g = (Goal) e.getResource();
@@ -47,6 +48,7 @@ public class GoalController {
         Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
+        ctx.setClient(client);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Goal") {
                 Goal g = (Goal) e.getResource();

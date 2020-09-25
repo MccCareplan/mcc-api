@@ -30,6 +30,7 @@ public class ConditionController {
         Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
+        ctx.setClient(client);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Condition") {
                 Condition c = (Condition) e.getResource();
@@ -42,7 +43,7 @@ public class ConditionController {
 
     private void addCondtionToConditionList(ConditionLists list, Condition c, Context ctx)
     {
-        list.addCondtion(c, ctx);
+        list.addCondition(c, ctx);
     }
 
     @GetMapping("/condition")
@@ -53,6 +54,7 @@ public class ConditionController {
         Bundle results = client.search().forResource(Condition.class).where(CarePlan.SUBJECT.hasId(subjectId))
                 .returnBundle(Bundle.class).execute();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
+        ctx.setClient(client);
         for (Bundle.BundleEntryComponent e : results.getEntry()) {
             if (e.getResource().fhirType() == "Condition") {
                 Condition c = (Condition) e.getResource();
@@ -77,6 +79,7 @@ public class ConditionController {
         }
         String subjectId = fc.getSubject().getId();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
+        ctx.setClient(client);
         c = mapCondition(fc, client, ctx);
         return c;
     }
@@ -89,7 +92,7 @@ public class ConditionController {
         /*
         //Start with Addresses
         int index = 0;
-        StringBuffer addSum = new StringBuffer();
+        StringBuilder addSum = new StringBuilder();
         List<Reference> addresses = fc.getAddresses();
         MccCondition[] mccAddrs = new MccCondition[addresses.size()];
         for(Reference reference: addresses)

@@ -29,6 +29,7 @@ public class ObservationController {
             Bundle results = client.search().forResource(Observation.class).where(Observation.SUBJECT.hasId(subjectId)).and(Observation.CODE.exactly().code(code)).sort().descending("date").count(1)
                     .returnBundle(Bundle.class).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
+            ctx.setClient(client);
             //Check if we did not find anything if not then see if maybe it is in an observation.component
             if (results.getTotal() == 0)
             {
@@ -49,5 +50,60 @@ public class ObservationController {
             }
             return out;
         }
+
+    @GetMapping("/observations")
+    public MccObservation[] getObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code, @RequestParam(name ="max", defaultValue = "100") int maxItems, @RequestParam(name="sort", defaultValue = "ascending") String sortOrder, @RequestHeader Map<String, String> headers) {
+
+        MccObservation out[] = null;
+
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
+
+        //Eqv query: {{Server}}/Observation/?_sort=-date&_count=1&subject={{subject}}&code={{code}}
+        Bundle results = client.search().forResource(Observation.class).where(Observation.SUBJECT.hasId(subjectId)).and(Observation.CODE.exactly().code(code)).sort().descending("date").count(maxItems)
+                .returnBundle(Bundle.class).execute();
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
+        ctx.setClient(client);
+        //Check if we did not find anything if not then see if maybe it is in an observation.component
+        if (results.getTotal() == 0)
+        {
+            results = client.search().forResource(Observation.class).where(Observation.SUBJECT.hasId(subjectId)).and(Observation.COMPONENT_CODE.exactly().code(code)).sort().descending("date").count(maxItems)
+                    .returnBundle(Bundle.class).execute();
+        }
+
+        int fnd = results.getTotal();
+        if (fnd != 0) {
+            out = new MccObservation[fnd];
+            if (sortOrder.compareTo("ascending")==0) {
+                fnd--;
+                for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                    if (e.getResource().fhirType().compareTo("Observation") == 0) {
+                        Observation o = (Observation) e.getResource();
+                        //We resort
+                        out[fnd] = ObservationMapper.fhir2local(o, ctx);
+                        fnd--;
+                    }
+                }
+            }
+            else
+            {
+                int c = 0;
+                for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                    if (e.getResource().fhirType().compareTo("Observation") == 0) {
+                        Observation o = (Observation) e.getResource();
+                        //We resort
+                        out[c] = ObservationMapper.fhir2local(o, ctx);
+                        c++;
+                    }
+                }
+
+            }
+        }
+        else
+        {
+            throw new ItemNotFoundException(code);
+        }
+        return out;
+    }
 
 }

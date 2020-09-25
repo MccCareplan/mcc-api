@@ -36,7 +36,7 @@ public class PractitionerMapper {
         try {
             String id = in.getId();
             Bundle bundle = ctx.getClient().search().forResource(PractitionerRole.class).where(PractitionerRole.PRACTITIONER.hasId(id)).returnBundle(Bundle.class).execute();
-            StringBuffer orgs = new StringBuffer();
+            StringBuilder orgs = new StringBuilder();
             int orgCount = 0;
 
             for (Bundle.BundleEntryComponent e : bundle.getEntry()) {

@@ -1,6 +1,10 @@
 package com.cognitive.nih.niddk.mccapi.util;
 
+import com.cognitive.nih.niddk.mccapi.data.Context;
+import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.r4.model.Enumeration;
 import org.hl7.fhir.r4.model.*;
 
 import java.math.BigDecimal;
@@ -11,13 +15,16 @@ public class Helper {
     private static final String dateFormat = "MM/dd/yyyy";
     private static final SimpleDateFormat fmtDate = new SimpleDateFormat(dateFormat);
     private static final String dateTimeFormat = "MM/dd/yyyy hh:mm";
-    private static final SimpleDateFormat fmtDateTime = new SimpleDateFormat(dateFormat);
+    private static final SimpleDateFormat fmtDateTime = new SimpleDateFormat(dateTimeFormat);
 
     private static final HashMap<String, String> unitsOfTime = new HashMap<>();
     private static final HashMap<String, String> unitOfTimePlural = new HashMap<>();
+    private static final HashMap<String, String> whenDisplay = new HashMap<>();
+    private static final HashMap<String, String> dayOfWeekDisplay = new HashMap<>();
+
 
     static {
-        unitsOfTime.put("s", "second");
+        unitsOfTime.put("HS", "before the hour of sleep");
         unitOfTimePlural.put("s", "seconds");
         unitsOfTime.put("min", "minute");
         unitOfTimePlural.put("min", "minutes");
@@ -31,6 +38,28 @@ public class Helper {
         unitOfTimePlural.put("mo", "months");
         unitsOfTime.put("a", "year");
         unitOfTimePlural.put("a", "years");
+
+
+        whenDisplay.put("MORN","Morning");
+        whenDisplay.put("MORN.early","Early Morning");
+        whenDisplay.put("MORN.late","Late Morning");
+        whenDisplay.put("NOON","Noon");
+        whenDisplay.put("AFT","Afternoon");
+        whenDisplay.put("AFT.early","Early Afternoon");
+        whenDisplay.put("AFT.late","Late Afternoon");
+        whenDisplay.put("EVE","Evening");
+        whenDisplay.put("EVE.early","Early Evening");
+        whenDisplay.put("EVE.late","Late Evening");
+        whenDisplay.put("NIGHT","Evening");
+        whenDisplay.put("PHS","After Sleep");
+
+        dayOfWeekDisplay.put("mon","Monday");
+        dayOfWeekDisplay.put("tue","Tuesday");
+        dayOfWeekDisplay.put("wed","Wednesday");
+        dayOfWeekDisplay.put("thu","Thursday");
+        dayOfWeekDisplay.put("fri","Friday");
+        dayOfWeekDisplay.put("sat","Saturday");
+        dayOfWeekDisplay.put("sun","Sunday");
     }
 
     public static String[] addressToLines(@NonNull Address address) {
@@ -43,7 +72,7 @@ public class Helper {
             out[i] = line.toString();
             i++;
         }
-        StringBuffer csz = new StringBuffer();
+        StringBuilder csz = new StringBuilder();
         if (address.hasCountry()) {
             //Use Local conventions (USA) for now - Check https://www.upu.int/en/Home for more info
             if (address.getCountry().compareTo("US") == 0) {
@@ -88,7 +117,7 @@ public class Helper {
         if (address.hasText()) {
             return address.getText();
         } else {
-            StringBuffer out = new StringBuffer();
+            StringBuilder out = new StringBuilder();
             String[] lines = addressToLines(address);
             for (int i = 0; i < lines.length; i++) {
                 if (i != 0) {
@@ -100,9 +129,9 @@ public class Helper {
         }
     }
 
-    public static String annotationToString(@NonNull Annotation a) {
+    public static String annotationToString(@NonNull Annotation a, Context ctx) {
 
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         boolean bAddLine = false;
         if (a.hasTime()) {
             out.append(Helper.dateTimeToString(a.getTime()));
@@ -114,36 +143,37 @@ public class Helper {
                 out.append(" ");
             } else {
                 //We have an Author Reference
-                //TODO: Call a Reference resolver
+                //Call a Reference resolver
+                NameResolver.getReferenceName(a.getAuthorReference(),ctx);
             }
         }
-        //TOOO: Deal with Markdown
+        // TODO: Deal with Markdown
         out.append(a.getText());
         return out.toString();
     }
 
-    public static String annotationsToString(List<Annotation> annotations) {
+    public static String annotationsToString(List<Annotation> annotations, Context ctx) {
 
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         if (annotations != null) {
             boolean bAddLine = false;
             for (Annotation a : annotations) {
                 if (bAddLine) {
                     out.append("\n");
                 }
-                //TOOO: Deal with Markdown
-                out.append(annotationToString(a));
+                // TODO: Deal with Markdown
+                out.append(annotationToString(a,ctx));
                 bAddLine = true;
             }
         }
         return out.toString();
     }
 
-    public static String[] annotationsToStringList(@NonNull List<Annotation> annotations) {
+    public static String[] annotationsToStringList(@NonNull List<Annotation> annotations, Context ctx) {
         String[] out = new String[annotations.size()];
         int index = 0;
         for (Annotation a : annotations) {
-            out[index] = annotationToString(a);
+            out[index] = annotationToString(a, ctx);
             index++;
         }
         return out;
@@ -155,7 +185,6 @@ public class Helper {
     }
 
     public static boolean containsCode(CodeableConcept concept, String system, String code) {
-        String out = null;
         for (Coding cd : concept.getCoding()) {
             if (cd.getSystem().compareTo(system) == 0) {
                 if (cd.getCode().compareTo(code) == 0) {
@@ -192,9 +221,9 @@ public class Helper {
         return fmtDate.format(d);
     }
 
-    public static StringBuffer quantityToStringBuf(@NonNull Quantity q)
+    public static StringBuilder quantityToStringBuilder(@NonNull Quantity q)
     {
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         if (q.hasDisplay())
         {
             out.append(q.getDisplay());
@@ -212,34 +241,35 @@ public class Helper {
             }
             if (q.hasUnit())
             {
-                out.append(q.getDisplay());
+                out.append(" ");
+                out.append(q.getUnit());
             }
         }
         return out;
     }
 
-    public static StringBuffer rangeToStringBuf(@NonNull Range r)
+    public static StringBuilder rangeToStringBuilder(@NonNull Range r)
     {
-        StringBuffer out = new StringBuffer();
-        out.append(quantityToStringBuf(r.getLow()));
+        StringBuilder out = new StringBuilder();
+        out.append(quantityToStringBuilder(r.getLow()));
         out.append("-");
-        out.append(quantityToStringBuf(r.getHigh()));
+        out.append(quantityToStringBuilder(r.getHigh()));
         return out;
     }
 
-    public static StringBuffer ratioToStringBuf(Ratio r)
+    public static StringBuilder ratioToStringBuilder(Ratio r)
     {
-        StringBuffer out = new StringBuffer();
-        out.append(quantityToStringBuf(r.getNumerator()));
+        StringBuilder out = new StringBuilder();
+        out.append(quantityToStringBuilder(r.getNumerator()));
         out.append("/");
-        out.append(quantityToStringBuf(r.getDenominator()));
+        out.append(quantityToStringBuilder(r.getDenominator()));
         return out;
     }
 
     public static String dosageToString(@NonNull Dosage dosage)
     {
         //TODO: Beef up for more complex dosages
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         //Form:   Dose Units Timing
         if (dosage.hasText())
         {
@@ -260,17 +290,17 @@ public class Helper {
                     if (dose.hasDoseQuantity())
                     {
                         Quantity q = dose.getDoseQuantity();
-                        out.append(quantityToStringBuf(q));
+                        out.append(quantityToStringBuilder(q));
                     }
                     else if (dose.hasDoseRange())
                     {
                         Range r = dose.getDoseRange();
-                        out.append(rangeToStringBuf(r));
+                        out.append(rangeToStringBuilder(r));
                     }
                     else if (dose.hasRateRatio())
                     {
                         Ratio r = dose.getRateRatio();
-                        out.append(ratioToStringBuf(r));
+                        out.append(ratioToStringBuilder(r));
                     }
                 }
             }
@@ -299,7 +329,7 @@ public class Helper {
             return duration.getDisplay();
         }
 
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
 
         if (duration.hasComparator()) {
             out.append(duration.getComparator().getDisplay());
@@ -476,7 +506,7 @@ public class Helper {
     }
 
     public static String getConceptCodes(CodeableConcept[] concepts, String system) {
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         boolean extra = false;
         for (CodeableConcept c : concepts) {
             if (extra) {
@@ -489,7 +519,7 @@ public class Helper {
     }
 
     public static String getConceptCodes(CodeableConcept[] concepts, Set<String> system) {
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         boolean extra = false;
         for (CodeableConcept c : concepts) {
             if (extra) {
@@ -517,11 +547,11 @@ public class Helper {
             //No coding text was found (grrr)
             //Now we have a few choices -
             //  1) Grab and try to look up a description for each code
-            //  2) Build a System, Code representtion
+            //  2) Build a System, Code representation
             //  3) return a default value
             //  4) return null
             //
-            // For Diagnositic purposes we are going to...
+            // For Diagnostic purposes we are going to...
             Coding cd = concept.getCodingFirstRep();
             out = String.format("%s {%s}", cd.getCode(), cd.getSystem());
         }
@@ -537,7 +567,7 @@ public class Helper {
     }
 
     public static String getConceptsAsDisplayString(List<CodeableConcept> concepts) {
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         boolean extra = false;
         for (CodeableConcept c : concepts) {
             if (extra) {
@@ -550,7 +580,7 @@ public class Helper {
     }
 
     public static String getConceptsAsDisplayString(CodeableConcept[] concepts) {
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         boolean extra = false;
         for (CodeableConcept c : concepts) {
             if (extra) {
@@ -649,14 +679,10 @@ public class Helper {
 
     public static String getIdString(IdType ide)
     {
-        StringBuffer addr = new StringBuffer();
-        addr.append(ide.getResourceType());
-        addr.append("/");
-        addr.append(ide.getIdPart());
-        return addr.toString();
+        return ide.getResourceType()+"/"+ide.getIdPart();
     }
 
-    public static StringBuffer addStringToBufferWithSep(StringBuffer buf, String str,String sep)
+    public static StringBuilder addStringToBufferWithSep(StringBuilder buf, String str,String sep)
     {
         if (buf.length()>0)
         {
@@ -772,8 +798,52 @@ public class Helper {
             out.append(" ");
             out.append(unitOfTime(repeat.getDurationUnitElement().getCode(), pluralDuration));
         }
+
+        if (repeat.hasTimeOfDay())
+        {
+            out.append(" at ");
+            List<TimeType> times = repeat.getTimeOfDay();
+            StringBuilder timesBuf = new StringBuilder();
+            for (TimeType t: times)
+            {
+                Helper.addStringToBufferWithSep(timesBuf,t.getValue(),",");
+            }
+            out.append(timesBuf.toString());
+        }
+
+        if (repeat.hasDayOfWeek())
+        {
+            out.append(" ");
+            StringBuilder daysBuf = new StringBuilder();
+            List<Enumeration<Timing.DayOfWeek>> days = repeat.getDayOfWeek();
+            for(Enumeration<Timing.DayOfWeek> day: days)
+            {
+                Helper.addStringToBufferWithSep(daysBuf,StringUtils.capitalize(day.getCode()),",");
+            }
+            out.append(daysBuf.toString())
+;        }
+
+        if (repeat.hasWhen())
+        {
+            List<Enumeration<Timing.EventTiming>> whens = repeat.getWhen();
+            for (Enumeration<Timing.EventTiming> when: whens)
+            {
+                if (repeat.hasOffset())
+                {
+                    out.append(" ");
+                    out.append(repeat.getOffset());
+                    out.append(" minutes");
+
+                }
+                out.append(" ");
+                String w = when.getCode();
+                out.append(whenDisplay.containsKey(w)?whenDisplay.get(w):w);
+            }
+        }
+
         return out.toString();
     }
+
 
     public static String translateTiming(@NonNull Timing timing) {
         timing.getCode().getText();

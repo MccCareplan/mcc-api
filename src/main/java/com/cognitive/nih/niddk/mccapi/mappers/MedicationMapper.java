@@ -55,7 +55,7 @@ public class MedicationMapper {
             out.setDosages(GenericTypeMapper.fhir2local_dosageList(in.getDosageInstruction(), ctx));
         }
         if (in.hasNote()) {
-            out.setNote(Helper.annotationsToString(in.getNote()));
+            out.setNote(Helper.annotationsToString(in.getNote(),ctx));
         }
         if (in.hasPriority()) {
             out.setPriority(in.getPriority().getDisplay());
@@ -111,7 +111,7 @@ public class MedicationMapper {
         }
 
         if (in.hasNote()) {
-            out.setNote(Helper.annotationsToString(in.getNote()));
+            out.setNote(Helper.annotationsToString(in.getNote(),ctx));
         }
         if (in.hasReasonReference()) {
             out.setReasonReferences(ReferenceMapper.fhir2local(in.getReasonReference(), ctx));
@@ -152,7 +152,7 @@ public class MedicationMapper {
         }
 
         ///Handle Reasons
-        StringBuffer reasons = new StringBuffer();
+        StringBuilder reasons = new StringBuilder();
         if (in.hasReasonCode()) {
             reasons.append(Helper.getConceptsAsDisplayString(in.getReasonCode()));
         }
@@ -167,7 +167,7 @@ public class MedicationMapper {
 
         //Boil down the dosage instructions
         if (in.hasDosageInstruction()) {
-            StringBuffer inst = new StringBuffer();
+            StringBuilder inst = new StringBuilder();
             List<Dosage> instructions = in.getDosageInstruction();
             if (instructions.size() > 1) {
                 inst.append("Multiple Dosage Instructions...");
@@ -232,7 +232,7 @@ public class MedicationMapper {
         }
 
         ///Handle Reasons
-        StringBuffer reasons = new StringBuffer();
+        StringBuilder reasons = new StringBuilder();
         if (in.hasReasonCode()) {
             reasons.append(Helper.getConceptsAsDisplayString(in.getReasonCode()));
         }
@@ -245,7 +245,7 @@ public class MedicationMapper {
 
         if (in.hasDosage())
         {
-            StringBuffer inst = new StringBuffer();
+            StringBuilder inst = new StringBuilder();
             List<Dosage> instructions = in.getDosage();
             if (instructions.size() > 1) {
                 inst.append("Multiple Dosages...");
@@ -278,7 +278,7 @@ public class MedicationMapper {
         */
         return out;
     }
-    public static void handleReasonReference(List<Reference> reasonRefs, StringBuffer reasons, Context ctx) {
+    public static void handleReasonReference(List<Reference> reasonRefs, StringBuilder reasons, Context ctx) {
         for (Reference r : reasonRefs) {
             if (r.hasDisplay()) {
                 Helper.addStringToBufferWithSep(reasons, r.getDisplay(), ", ");
@@ -311,7 +311,7 @@ public class MedicationMapper {
     }
 
     public static String handleIssues(List<Reference> issueReferences, Context ctx) {
-        StringBuffer issues = new StringBuffer();
+        StringBuilder issues = new StringBuilder();
         int count = 0;
         for (Reference ref : issueReferences) {
             if (count > 0) {

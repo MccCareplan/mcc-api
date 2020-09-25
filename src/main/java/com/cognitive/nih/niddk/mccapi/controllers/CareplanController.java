@@ -68,7 +68,7 @@ public class CareplanController {
 
         //Start with Addresses
         int index = 0;
-        StringBuffer addSum = new StringBuffer();
+        StringBuilder addSum = new StringBuilder();
         List<Reference> addresses = fc.getAddresses();
         MccCondition[] mccAddrs = new MccCondition[addresses.size()];
         for(Reference reference: addresses)
