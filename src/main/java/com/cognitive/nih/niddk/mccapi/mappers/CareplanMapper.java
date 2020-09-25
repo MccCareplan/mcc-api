@@ -18,7 +18,7 @@ public class CareplanMapper {
         out.setId(in.hasIdentifier() ? in.getIdentifierFirstRep().getValue() : "Unknown");
         out.setTitle(in.getTitle());
         out.setDescription(in.getDescription());
-        out.setNotes(Helper.annotationsToString(in.getNote()));
+        out.setNotes(Helper.annotationsToString(in.getNote(),ctx));
         out.setStatus(in.getStatus().getDisplay());
         out.setIntent(in.getIntent().getDisplay());
         if (out.getId() == null)

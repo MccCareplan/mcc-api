@@ -28,7 +28,7 @@ public class ConditionMapper {
                 out.setOnset(FuzzyDate.buildString(in.getOnset(), ctx));
             }
             if (in.hasNote()) {
-                out.setNote(Helper.annotationsToString(in.getNote()));
+                out.setNote(Helper.annotationsToString(in.getNote(),ctx));
             }
             if (in.hasAsserter()) {
                 out.setAsserter(GenericTypeMapper.fhir2local(in.getAsserter(), ctx));
@@ -44,7 +44,7 @@ public class ConditionMapper {
                 out.setIdentifer(GenericTypeMapper.fhir2local_identifierArray(in.getIdentifier(),ctx));
             }
             //Find what if any profile we have for this
-            out.setProfileId(ProfileManager.getProfileManager().getProfileForConcept(in.getCode()));
+            out.setProfileId(ProfileManager.getProfileManager().getProfilesForConcept(in.getCode()));
         }
         return out;
     }

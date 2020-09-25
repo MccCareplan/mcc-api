@@ -34,6 +34,7 @@ public class PatientController {
             if (e.getResource().fhirType() == "Patient") {
                 Patient bp = (Patient) e.getResource();
                 Context ctx = ContextManager.getManager().findContextForSubject(bp.hasIdentifier()?bp.getIdentifierFirstRep().getValue():"Unknown",headers);
+                ctx.setClient(client);
                 p = PatientMapper.fhir2local(bp,ctx);
                 out.add(p);
             }
@@ -55,6 +56,7 @@ public class PatientController {
 
         Patient fp = client.read().resource(Patient.class).withId(id).execute();
         Context ctx = ContextManager.getManager().findContextForSubject(id,headers);
+        ctx.setClient(client);
         p = PatientMapper.fhir2local(fp,ctx);
         return p;
     }
