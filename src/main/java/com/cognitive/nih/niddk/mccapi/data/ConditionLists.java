@@ -131,14 +131,19 @@ public class ConditionLists {
 
 
 
-    public void addCondtion(Condition c, Context ctx)
+    public void addCondition(Condition c, Context ctx)
     {
+        // We need to logic for groups by profile/common translations - This is esp. true of staged conditions
+        // As a general rue we want group all condition that have the same base concept into the common concept.
+        // The most current representative of the concept should be the displayed concept
+
+        
         ConditionSummary summary = findConditionIfAlreadySeen(c);
         if (summary == null)
         {
             summary = new ConditionSummary();
             summary.setCode(CodeableConceptMapper.fhir2local(c.getCode(), ctx));
-            summary.setProfileId(ProfileManager.getProfileManager().getProfileForConcept(c.getCode()));
+            summary.setProfileId(ProfileManager.getProfileManager().getProfilesForConcept(c.getCode()));
             conditions.add(summary);
         }
 
@@ -165,7 +170,7 @@ public class ConditionLists {
 
         for (ConditionSummary c: this.conditions)
         {
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             buf.append(c.getClinicalStatus());
             buf.append(":");
             buf.append(c.getVerificationStatus());
