@@ -6,7 +6,7 @@ import com.cognitive.nih.niddk.mccapi.data.ObservationComponent;
 import com.cognitive.nih.niddk.mccapi.data.ReferenceRange;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.SimpleQuantity;
+import org.hl7.fhir.r4.model.Quantity;
 
 import java.util.List;
 
@@ -104,11 +104,11 @@ public class ObservationMapper {
 
         if (in.hasLow())
         {
-            out.setLow(GenericTypeMapper.fhir2local((SimpleQuantity) in.getLow(),ctx));
+            out.setLow(GenericTypeMapper.fhir2local((Quantity) in.getLow(),ctx));
         }
         if (in.hasHigh())
         {
-            out.setLow(GenericTypeMapper.fhir2local((SimpleQuantity) in.getHigh(),ctx));
+            out.setLow(GenericTypeMapper.fhir2local((Quantity) in.getHigh(),ctx));
         }
         if (in.hasType())
         {

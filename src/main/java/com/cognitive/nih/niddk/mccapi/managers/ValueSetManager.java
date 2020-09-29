@@ -15,16 +15,26 @@ import java.util.List;
 @Slf4j
 public class ValueSetManager {
 
-    private static ValueSetManager singlton = new ValueSetManager();
+    private static ValueSetManager singlton;
 
-    public static ValueSetManager getValueSetManager() {return singlton;}
+    public static ValueSetManager getValueSetManager() {
+        if (singlton== null)
+        {
+            singlton = new ValueSetManager();
+            singlton.init();
+        }
+        return singlton;}
 
     private static HashMap<String, ArrayList<String>>  codeMap = new HashMap<>();
     private static HashMap<String, MccValueSet> valueSetMap = new HashMap<>();
 
     public ValueSetManager()
     {
+    }
 
+    private void init()
+    {
+        loadValueSets();
     }
 
     public void loadValueSets()
@@ -49,7 +59,7 @@ public class ValueSetManager {
 
     private static String internalGetCodeKey(String uuesystem, String code)
     {
-        return uuesystem+"|"+code;
+        return uuesystem+"%7C"+code;
     }
 
     public ArrayList<String> findCodesValuesSets(String codeToken)
