@@ -1,0 +1,107 @@
+System,Version,Code,Display
+http://snomed.info/sct,2020-03,10365005,Right main coronary artery thrombosis (disorder)
+http://snomed.info/sct,2020-03,123641001,Left coronary artery occlusion (disorder)
+http://snomed.info/sct,2020-03,123642008,Right coronary artery occlusion (disorder)
+http://snomed.info/sct,2020-03,19057007,Status anginosus (disorder)
+http://snomed.info/sct,2020-03,194823009,Acute coronary insufficiency (disorder)
+http://snomed.info/sct,2020-03,194828000,Angina (disorder)
+http://snomed.info/sct,2020-03,194842008,Single coronary vessel disease (disorder)
+http://snomed.info/sct,2020-03,194843003,Double coronary vessel disease (disorder)
+http://snomed.info/sct,2020-03,21470009,Syncope anginosa (disorder)
+http://snomed.info/sct,2020-03,233817007,Triple vessel disease of the heart (disorder)
+http://snomed.info/sct,2020-03,233819005,Stable angina (disorder)
+http://snomed.info/sct,2020-03,233821000,New onset angina (disorder)
+http://snomed.info/sct,2020-03,233970002,Coronary artery stenosis (disorder)
+http://snomed.info/sct,2020-03,28248000,Left anterior descending coronary artery thrombosis (disorder)
+http://snomed.info/sct,2020-03,29899005,Coronary artery embolism (disorder)
+http://snomed.info/sct,2020-03,300995000,Exercise-induced angina (disorder)
+http://snomed.info/sct,2020-03,314116003,Post infarct angina (disorder)
+http://snomed.info/sct,2020-03,315025001,Refractory angina (disorder)
+http://snomed.info/sct,2020-03,315348000,Asymptomatic coronary heart disease (disorder)
+http://snomed.info/sct,2020-03,35928006,Nocturnal angina (disorder)
+http://snomed.info/sct,2020-03,371803003,Multi vessel coronary artery disease (disorder)
+http://snomed.info/sct,2020-03,371804009,Left main coronary artery disease (disorder)
+http://snomed.info/sct,2020-03,371805005,Significant coronary bypass graft disease (disorder)
+http://snomed.info/sct,2020-03,371806006,Progressive angina (disorder)
+http://snomed.info/sct,2020-03,371807002,Atypical angina (disorder)
+http://snomed.info/sct,2020-03,371808007,Recurrent angina status post percutaneous transluminal coronary angioplasty (disorder)
+http://snomed.info/sct,2020-03,371809004,Recurrent angina status post coronary stent placement (disorder)
+http://snomed.info/sct,2020-03,371810009,Recurrent angina status post coronary artery bypass graft (disorder)
+http://snomed.info/sct,2020-03,371811008,Recurrent angina status post rotational atherectomy (disorder)
+http://snomed.info/sct,2020-03,371812001,Recurrent angina status post directional coronary atherectomy (disorder)
+http://snomed.info/sct,2020-03,398274000,Coronary artery thrombosis (disorder)
+http://snomed.info/sct,2020-03,408546009,Coronary artery bypass graft occlusion (disorder)
+http://snomed.info/sct,2020-03,41334000,Angina, class II (disorder)
+http://snomed.info/sct,2020-03,420006002,Obliterative coronary artery disease (disorder)
+http://snomed.info/sct,2020-03,421327009,Coronary artery stent thrombosis (disorder)
+http://snomed.info/sct,2020-03,427919004,Coronary arteriosclerosis caused by radiation (disorder)
+http://snomed.info/sct,2020-03,429245005,Recurrent coronary arteriosclerosis after percutaneous transluminal coronary angioplasty (disorder)
+http://snomed.info/sct,2020-03,429559004,Typical angina (disorder)
+http://snomed.info/sct,2020-03,443502000,Atherosclerosis of coronary artery (disorder)
+http://snomed.info/sct,2020-03,4557003,Preinfarction syndrome (disorder)
+http://snomed.info/sct,2020-03,50570003,Aneurysm of coronary vessels (disorder)
+http://snomed.info/sct,2020-03,53741008,Coronary arteriosclerosis (disorder)
+http://snomed.info/sct,2020-03,59021001,Angina decubitus (disorder)
+http://snomed.info/sct,2020-03,61490001,Angina, class I (disorder)
+http://snomed.info/sct,2020-03,62207008,Syphilitic ostial coronary disease (disorder)
+http://snomed.info/sct,2020-03,63739005,Coronary occlusion (disorder)
+http://snomed.info/sct,2020-03,67682002,Coronary artery atheroma (disorder)
+http://snomed.info/sct,2020-03,74218008,Coronary artery arising from main pulmonary artery (disorder)
+http://snomed.info/sct,2020-03,75398000,Anomalous origin of coronary artery (disorder)
+http://snomed.info/sct,2020-03,85284003,Angina, class III (disorder)
+http://snomed.info/sct,2020-03,87343002,Prinzmetal angina (disorder)
+http://snomed.info/sct,2020-03,89323001,Angina, class IV (disorder)
+http://snomed.info/sct,2020-03,92517006,Calcific coronary arteriosclerosis (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2021,I20.0,Unstable angina
+http://hl7.org/fhir/sid/icd-10-cm,2021,I20.1,Angina pectoris with documented spasm
+http://hl7.org/fhir/sid/icd-10-cm,2021,I20.8,Other forms of angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I20.9,Angina pectoris, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,I24.0,Acute coronary thrombosis not resulting in myocardial infarction
+http://hl7.org/fhir/sid/icd-10-cm,2021,I24.1,Dressler's syndrome
+http://hl7.org/fhir/sid/icd-10-cm,2021,I24.8,Other forms of acute ischemic heart disease
+http://hl7.org/fhir/sid/icd-10-cm,2021,I24.9,Acute ischemic heart disease, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.10,Atherosclerotic heart disease of native coronary artery without angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.110,Atherosclerotic heart disease of native coronary artery with unstable angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.111,Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.118,Atherosclerotic heart disease of native coronary artery with other forms of angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.119,Atherosclerotic heart disease of native coronary artery with unspecified angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.5,Ischemic cardiomyopathy
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.6,Silent myocardial ischemia
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.700,Atherosclerosis of coronary artery bypass graft(s), unspecified, with unstable angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.701,Atherosclerosis of coronary artery bypass graft(s), unspecified, with angina pectoris with documented spasm
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.708,Atherosclerosis of coronary artery bypass graft(s), unspecified, with other forms of angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.709,Atherosclerosis of coronary artery bypass graft(s), unspecified, with unspecified angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.710,Atherosclerosis of autologous vein coronary artery bypass graft(s) with unstable angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.711,Atherosclerosis of autologous vein coronary artery bypass graft(s) with angina pectoris with documented spasm
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.718,Atherosclerosis of autologous vein coronary artery bypass graft(s) with other forms of angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.719,Atherosclerosis of autologous vein coronary artery bypass graft(s) with unspecified angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.720,Atherosclerosis of autologous artery coronary artery bypass graft(s) with unstable angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.721,Atherosclerosis of autologous artery coronary artery bypass graft(s) with angina pectoris with documented spasm
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.728,Atherosclerosis of autologous artery coronary artery bypass graft(s) with other forms of angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.729,Atherosclerosis of autologous artery coronary artery bypass graft(s) with unspecified angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.730,Atherosclerosis of nonautologous biological coronary artery bypass graft(s) with unstable angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.731,Atherosclerosis of nonautologous biological coronary artery bypass graft(s) with angina pectoris with documented spasm
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.738,Atherosclerosis of nonautologous biological coronary artery bypass graft(s) with other forms of angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.739,Atherosclerosis of nonautologous biological coronary artery bypass graft(s) with unspecified angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.750,Atherosclerosis of native coronary artery of transplanted heart with unstable angina
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.751,Atherosclerosis of native coronary artery of transplanted heart with angina pectoris with documented spasm
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.758,Atherosclerosis of native coronary artery of transplanted heart with other forms of angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.759,Atherosclerosis of native coronary artery of transplanted heart with unspecified angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.760,Atherosclerosis of bypass graft of coronary artery of transplanted heart with unstable angina
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.761,Atherosclerosis of bypass graft of coronary artery of transplanted heart with angina pectoris with documented spasm
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.768,Atherosclerosis of bypass graft of coronary artery of transplanted heart with other forms of angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.769,Atherosclerosis of bypass graft of coronary artery of transplanted heart with unspecified angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.790,Atherosclerosis of other coronary artery bypass graft(s) with unstable angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.791,Atherosclerosis of other coronary artery bypass graft(s) with angina pectoris with documented spasm
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.798,Atherosclerosis of other coronary artery bypass graft(s) with other forms of angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.799,Atherosclerosis of other coronary artery bypass graft(s) with unspecified angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.810,Atherosclerosis of coronary artery bypass graft(s) without angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.811,Atherosclerosis of native coronary artery of transplanted heart without angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.812,Atherosclerosis of bypass graft of coronary artery of transplanted heart without angina pectoris
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.82,Chronic total occlusion of coronary artery
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.83,Coronary atherosclerosis due to lipid rich plaque
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.89,Other forms of chronic ischemic heart disease
+http://hl7.org/fhir/sid/icd-10-cm,2021,I25.9,Chronic ischemic heart disease, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,Z95.1,Presence of aortocoronary bypass graft
+http://hl7.org/fhir/sid/icd-10-cm,2021,Z95.5,Presence of coronary angioplasty implant and graft
+http://hl7.org/fhir/sid/icd-10-cm,2021,Z98.61,Coronary angioplasty status

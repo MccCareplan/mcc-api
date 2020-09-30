@@ -1,0 +1,5 @@
+System,Version,Code,Display
+http://snomed.info/sct,2020-03,403733004,Hemodialysis-associated pruritus (disorder)
+http://snomed.info/sct,2020-03,707151000,Uremic pruritus (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2021,L29.8,Other pruritus
+http://hl7.org/fhir/sid/icd-10-cm,2021,L29.9,Pruritus, unspecified

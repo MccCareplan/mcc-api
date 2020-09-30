@@ -1,0 +1,5 @@
+System,Version,Code,Display
+http://loinc.org,2.68,26464-8,Leukocytes [#/volume] in Blood
+http://loinc.org,2.68,49498-9,Leukocytes [#/volume] in Blood by Estimate
+http://loinc.org,2.68,6690-2,Leukocytes [#/volume] in Blood by Automated count
+http://loinc.org,2.68,804-5,Leukocytes [#/volume] in Blood by Manual count

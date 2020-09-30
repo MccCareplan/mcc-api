@@ -1,0 +1,94 @@
+System,Version,Code,Display
+http://snomed.info/sct,2020-03,10091002,High output heart failure (disorder)
+http://snomed.info/sct,2020-03,101281000119107,Congestive heart failure due to cardiomyopathy (disorder)
+http://snomed.info/sct,2020-03,10633002,Acute congestive heart failure (disorder)
+http://snomed.info/sct,2020-03,111283005,Chronic left-sided heart failure (disorder)
+http://snomed.info/sct,2020-03,120851000119104,Systolic heart failure stage D (disorder)
+http://snomed.info/sct,2020-03,120861000119102,Systolic heart failure stage C (disorder)
+http://snomed.info/sct,2020-03,120871000119108,Systolic heart failure stage B (disorder)
+http://snomed.info/sct,2020-03,120881000119106,Diastolic heart failure stage D (disorder)
+http://snomed.info/sct,2020-03,120891000119109,Diastolic heart failure stage C (disorder)
+http://snomed.info/sct,2020-03,120901000119108,Diastolic heart failure stage B (disorder)
+http://snomed.info/sct,2020-03,153931000119109,Acute combined systolic and diastolic heart failure (disorder)
+http://snomed.info/sct,2020-03,153941000119100,Chronic combined systolic and diastolic heart failure (disorder)
+http://snomed.info/sct,2020-03,153951000119103,Acute on chronic combined systolic and diastolic heart failure (disorder)
+http://snomed.info/sct,2020-03,15629541000119106,Congestive heart failure stage C due to ischemic cardiomyopathy (disorder)
+http://snomed.info/sct,2020-03,15629591000119103,Congestive heart failure stage B due to ischemic cardiomyopathy (disorder)
+http://snomed.info/sct,2020-03,15629641000119107,Systolic heart failure stage B due to ischemic cardiomyopathy (disorder)
+http://snomed.info/sct,2020-03,15629741000119102,Systolic heart failure stage C due to ischemic cardiomyopathy (disorder)
+http://snomed.info/sct,2020-03,15781000119107,Hypertensive heart AND chronic kidney disease with congestive heart failure (disorder)
+http://snomed.info/sct,2020-03,15964701000119109,Acute cor pulmonale co-occurrent and due to saddle embolus of pulmonary artery (disorder)
+http://snomed.info/sct,2020-03,194767001,Benign hypertensive heart disease with congestive cardiac failure (disorder)
+http://snomed.info/sct,2020-03,194779001,Hypertensive heart and renal disease with (congestive) heart failure (disorder)
+http://snomed.info/sct,2020-03,194781004,Hypertensive heart and renal disease with both (congestive) heart failure and renal failure (disorder)
+http://snomed.info/sct,2020-03,195111005,Decompensated cardiac failure (disorder)
+http://snomed.info/sct,2020-03,195112003,Compensated cardiac failure (disorder)
+http://snomed.info/sct,2020-03,195114002,Acute left ventricular failure (disorder)
+http://snomed.info/sct,2020-03,206586007,Congenital cardiac failure (disorder)
+http://snomed.info/sct,2020-03,23341000119109,Congestive heart failure with right heart failure (disorder)
+http://snomed.info/sct,2020-03,233924009,Heart failure as a complication of care (disorder)
+http://snomed.info/sct,2020-03,25544003,Low output heart failure (disorder)
+http://snomed.info/sct,2020-03,314206003,Refractory heart failure (disorder)
+http://snomed.info/sct,2020-03,364006,Acute left-sided heart failure (disorder)
+http://snomed.info/sct,2020-03,410431009,Cardiorespiratory failure (disorder)
+http://snomed.info/sct,2020-03,417996009,Systolic heart failure (disorder)
+http://snomed.info/sct,2020-03,418304008,Diastolic heart failure (disorder)
+http://snomed.info/sct,2020-03,42343007,Congestive heart failure (disorder)
+http://snomed.info/sct,2020-03,424404003,Decompensated chronic heart failure (disorder)
+http://snomed.info/sct,2020-03,426263006,Congestive heart failure due to left ventricular systolic dysfunction (disorder)
+http://snomed.info/sct,2020-03,426611007,Congestive heart failure due to valvular disease (disorder)
+http://snomed.info/sct,2020-03,43736008,Rheumatic left ventricular failure (disorder)
+http://snomed.info/sct,2020-03,44088000,Low cardiac output syndrome (disorder)
+http://snomed.info/sct,2020-03,441481004,Chronic systolic heart failure (disorder)
+http://snomed.info/sct,2020-03,441530006,Chronic diastolic heart failure (disorder)
+http://snomed.info/sct,2020-03,44313006,Right heart failure secondary to left heart failure (disorder)
+http://snomed.info/sct,2020-03,443253003,Acute on chronic systolic heart failure (disorder)
+http://snomed.info/sct,2020-03,443254009,Acute systolic heart failure (disorder)
+http://snomed.info/sct,2020-03,443343001,Acute diastolic heart failure (disorder)
+http://snomed.info/sct,2020-03,443344007,Acute on chronic diastolic heart failure (disorder)
+http://snomed.info/sct,2020-03,46113002,Hypertensive heart failure (disorder)
+http://snomed.info/sct,2020-03,471880001,Heart failure due to end stage congenital heart disease (disorder)
+http://snomed.info/sct,2020-03,48447003,Chronic heart failure (disorder)
+http://snomed.info/sct,2020-03,5148006,Hypertensive heart disease with congestive heart failure (disorder)
+http://snomed.info/sct,2020-03,5375005,Chronic left-sided congestive heart failure (disorder)
+http://snomed.info/sct,2020-03,56675007,Acute heart failure (disorder)
+http://snomed.info/sct,2020-03,67431000119105,Congestive heart failure stage D (disorder)
+http://snomed.info/sct,2020-03,67441000119101,Congestive heart failure stage C (disorder)
+http://snomed.info/sct,2020-03,698594003,Symptomatic congestive heart failure (disorder)
+http://snomed.info/sct,2020-03,703272007,Heart failure with reduced ejection fraction (disorder)
+http://snomed.info/sct,2020-03,703273002,Heart failure with reduced ejection fraction due to coronary artery disease (disorder)
+http://snomed.info/sct,2020-03,703274008,Heart failure with reduced ejection fraction due to myocarditis (disorder)
+http://snomed.info/sct,2020-03,703275009,Heart failure with reduced ejection fraction due to cardiomyopathy (disorder)
+http://snomed.info/sct,2020-03,703276005,Heart failure with reduced ejection fraction due to heart valve disease (disorder)
+http://snomed.info/sct,2020-03,717840005,Congestive heart failure stage B (disorder)
+http://snomed.info/sct,2020-03,72481000119103,Congestive heart failure as early postoperative complication (disorder)
+http://snomed.info/sct,2020-03,74960003,Acute left-sided congestive heart failure (disorder)
+http://snomed.info/sct,2020-03,82523003,Congestive rheumatic heart failure (disorder)
+http://snomed.info/sct,2020-03,83105008,Malignant hypertensive heart disease with congestive heart failure (disorder)
+http://snomed.info/sct,2020-03,84114007,Heart failure (disorder)
+http://snomed.info/sct,2020-03,85232009,Left heart failure (disorder)
+http://snomed.info/sct,2020-03,88805009,Chronic congestive heart failure (disorder)
+http://snomed.info/sct,2020-03,90727007,Pleural effusion due to congestive heart failure (disorder)
+http://snomed.info/sct,2020-03,92506005,Biventricular congestive heart failure (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2021,I11.0,Hypertensive heart disease with heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I13.0,Hypertensive heart and chronic kidney disease with heart failure and stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease
+http://hl7.org/fhir/sid/icd-10-cm,2021,I13.2,Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.1,Left ventricular failure, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.20,Unspecified systolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.21,Acute systolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.22,Chronic systolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.23,Acute on chronic systolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.30,Unspecified diastolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.31,Acute diastolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.32,Chronic diastolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.33,Acute on chronic diastolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.40,Unspecified combined systolic (congestive) and diastolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.41,Acute combined systolic (congestive) and diastolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.42,Chronic combined systolic (congestive) and diastolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.43,Acute on chronic combined systolic (congestive) and diastolic (congestive) heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.814,Right heart failure due to left heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.82,Biventricular heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.83,High output heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.84,End stage heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.89,Other heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I50.9,Heart failure, unspecified

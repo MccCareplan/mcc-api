@@ -1,0 +1,88 @@
+System,Version,Code,Display
+http://snomed.info/sct,2020-03,10725009,Benign hypertension (disorder)
+http://snomed.info/sct,2020-03,111438007,Hypertension secondary to renal disease in obstetric context (disorder)
+http://snomed.info/sct,2020-03,1201005,Benign essential hypertension (disorder)
+http://snomed.info/sct,2020-03,123799005,Renovascular hypertension (disorder)
+http://snomed.info/sct,2020-03,123800009,Goldblatt hypertension (disorder)
+http://snomed.info/sct,2020-03,14973001,Renal sclerosis with hypertension (disorder)
+http://snomed.info/sct,2020-03,169465000,Hypertension caused by oral contraceptive pill (disorder)
+http://snomed.info/sct,2020-03,194783001,Secondary malignant renovascular hypertension (disorder)
+http://snomed.info/sct,2020-03,194785008,Secondary benign hypertension (disorder)
+http://snomed.info/sct,2020-03,194788005,Hypertension secondary to endocrine disorder (disorder)
+http://snomed.info/sct,2020-03,194791005,Hypertension caused by drug (disorder)
+http://snomed.info/sct,2020-03,199008003,Pre-existing secondary hypertension complicating pregnancy, childbirth and puerperium (disorder)
+http://snomed.info/sct,2020-03,26078007,Hypertension secondary to renal disease complicating AND/OR reason for care during childbirth (disorder)
+http://snomed.info/sct,2020-03,28119000,Renal hypertension (disorder)
+http://snomed.info/sct,2020-03,31992008,Secondary hypertension (disorder)
+http://snomed.info/sct,2020-03,371125006,Labile essential hypertension (disorder)
+http://snomed.info/sct,2020-03,39018007,Renal arterial hypertension (disorder)
+http://snomed.info/sct,2020-03,39727004,Hypertension secondary to renal disease complicating AND/OR reason for care during puerperium (disorder)
+2.16.840.1.113883.6.103,2013,401.0,Malignant essential hypertension
+2.16.840.1.113883.6.103,2013,401.1,Benign essential hypertension
+2.16.840.1.113883.6.103,2013,401.9,Unspecified essential hypertension
+2.16.840.1.113883.6.103,2013,402.00,Malignant hypertensive heart disease without heart failure
+2.16.840.1.113883.6.103,2013,402.01,Malignant hypertensive heart disease with heart failure
+2.16.840.1.113883.6.103,2013,402.10,Benign hypertensive heart disease without heart failure
+2.16.840.1.113883.6.103,2013,402.11,Benign hypertensive heart disease with heart failure
+2.16.840.1.113883.6.103,2013,402.90,Unspecified hypertensive heart disease without heart failure
+2.16.840.1.113883.6.103,2013,402.91,Unspecified hypertensive heart disease with heart failure
+2.16.840.1.113883.6.103,2013,403.00,Hypertensive chronic kidney disease, malignant, with chronic kidney disease stage I through stage IV, or unspecified
+2.16.840.1.113883.6.103,2013,403.01,Hypertensive chronic kidney disease, malignant, with chronic kidney disease stage V or end stage renal disease
+2.16.840.1.113883.6.103,2013,403.10,Hypertensive chronic kidney disease, benign, with chronic kidney disease stage I through stage IV, or unspecified
+2.16.840.1.113883.6.103,2013,403.11,Hypertensive chronic kidney disease, benign, with chronic kidney disease stage V or end stage renal disease
+2.16.840.1.113883.6.103,2013,403.90,Hypertensive chronic kidney disease, unspecified, with chronic kidney disease stage I through stage IV, or unspecified
+2.16.840.1.113883.6.103,2013,403.91,Hypertensive chronic kidney disease, unspecified, with chronic kidney disease stage V or end stage renal disease
+2.16.840.1.113883.6.103,2013,404.00,Hypertensive heart and chronic kidney disease, malignant, without heart failure and with chronic kidney disease stage I through stage IV, or unspecified
+2.16.840.1.113883.6.103,2013,404.01,Hypertensive heart and chronic kidney disease, malignant, with heart failure and with chronic kidney disease stage I through stage IV, or unspecified
+2.16.840.1.113883.6.103,2013,404.02,Hypertensive heart and chronic kidney disease, malignant, without heart failure and with chronic kidney disease stage V or end stage renal disease
+2.16.840.1.113883.6.103,2013,404.03,Hypertensive heart and chronic kidney disease, malignant, with heart failure and with chronic kidney disease stage V or end stage renal disease
+2.16.840.1.113883.6.103,2013,404.10,Hypertensive heart and chronic kidney disease, benign, without heart failure and with chronic kidney disease stage I through stage IV, or unspecified
+2.16.840.1.113883.6.103,2013,404.11,Hypertensive heart and chronic kidney disease, benign, with heart failure and with chronic kidney disease stage I through stage IV, or unspecified
+2.16.840.1.113883.6.103,2013,404.12,Hypertensive heart and chronic kidney disease, benign, without heart failure and with chronic kidney disease stage V or end stage renal disease
+2.16.840.1.113883.6.103,2013,404.13,Hypertensive heart and chronic kidney disease, benign, with heart failure and chronic kidney disease stage V or end stage renal disease
+2.16.840.1.113883.6.103,2013,404.90,Hypertensive heart and chronic kidney disease, unspecified, without heart failure and with chronic kidney disease stage I through stage IV, or unspecified
+2.16.840.1.113883.6.103,2013,404.91,Hypertensive heart and chronic kidney disease, unspecified, with heart failure and with chronic kidney disease stage I through stage IV, or unspecified
+2.16.840.1.113883.6.103,2013,404.92,Hypertensive heart and chronic kidney disease, unspecified, without heart failure and with chronic kidney disease stage V or end stage renal disease
+2.16.840.1.113883.6.103,2013,404.93,Hypertensive heart and chronic kidney disease, unspecified, with heart failure and chronic kidney disease stage V or end stage renal disease
+2.16.840.1.113883.6.103,2013,405.01,Malignant renovascular hypertension
+2.16.840.1.113883.6.103,2013,405.09,Other malignant secondary hypertension
+2.16.840.1.113883.6.103,2013,405.11,Benign renovascular hypertension
+2.16.840.1.113883.6.103,2013,405.19,Other benign secondary hypertension
+2.16.840.1.113883.6.103,2013,405.91,Unspecified renovascular hypertension
+2.16.840.1.113883.6.103,2013,405.99,Other unspecified secondary hypertension
+http://snomed.info/sct,2020-03,427889009,Hypertension associated with transplantation (disorder)
+http://snomed.info/sct,2020-03,428575007,Hypertension secondary to kidney transplant (disorder)
+http://snomed.info/sct,2020-03,429457004,Systolic essential hypertension (disorder)
+http://snomed.info/sct,2020-03,46481004,Low-renin essential hypertension (disorder)
+http://snomed.info/sct,2020-03,48146000,Diastolic hypertension (disorder)
+http://snomed.info/sct,2020-03,48552006,Hypertension secondary to renal disease complicating AND/OR reason for care during pregnancy (disorder)
+http://snomed.info/sct,2020-03,56218007,Systolic hypertension (disorder)
+http://snomed.info/sct,2020-03,57684003,Parenchymal renal hypertension (disorder)
+http://snomed.info/sct,2020-03,59621000,Essential hypertension (disorder)
+http://snomed.info/sct,2020-03,59720008,Sustained diastolic hypertension (disorder)
+http://snomed.info/sct,2020-03,65518004,Labile diastolic hypertension (disorder)
+http://snomed.info/sct,2020-03,73410007,Benign secondary renovascular hypertension (disorder)
+http://snomed.info/sct,2020-03,74451002,Secondary diastolic hypertension (disorder)
+http://snomed.info/sct,2020-03,762463000,Diastolic hypertension co-occurrent with systolic hypertension (disorder)
+http://snomed.info/sct,2020-03,78975002,Malignant essential hypertension (disorder)
+http://snomed.info/sct,2020-03,89242004,Malignant secondary hypertension (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2021,I10,Essential (primary) hypertension
+http://hl7.org/fhir/sid/icd-10-cm,2021,I11.0,Hypertensive heart disease with heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I11.9,Hypertensive heart disease without heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I12.0,Hypertensive chronic kidney disease with stage 5 chronic kidney disease or end stage renal disease
+http://hl7.org/fhir/sid/icd-10-cm,2021,I12.9,Hypertensive chronic kidney disease with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease
+http://hl7.org/fhir/sid/icd-10-cm,2021,I13.0,Hypertensive heart and chronic kidney disease with heart failure and stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease
+http://hl7.org/fhir/sid/icd-10-cm,2021,I13.1,Hypertensive heart and chronic kidney disease without heart failure
+http://hl7.org/fhir/sid/icd-10-cm,2021,I13.10,Hypertensive heart and chronic kidney disease without heart failure, with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease
+http://hl7.org/fhir/sid/icd-10-cm,2021,I13.11,Hypertensive heart and chronic kidney disease without heart failure, with stage 5 chronic kidney disease, or end stage renal disease
+http://hl7.org/fhir/sid/icd-10-cm,2021,I13.2,Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease
+http://hl7.org/fhir/sid/icd-10-cm,2021,I15,Secondary hypertension
+http://hl7.org/fhir/sid/icd-10-cm,2021,I15.0,Renovascular hypertension
+http://hl7.org/fhir/sid/icd-10-cm,2021,I15.1,Hypertension secondary to other renal disorders
+http://hl7.org/fhir/sid/icd-10-cm,2021,I15.2,Hypertension secondary to endocrine disorders
+http://hl7.org/fhir/sid/icd-10-cm,2021,I15.8,Other secondary hypertension
+http://hl7.org/fhir/sid/icd-10-cm,2021,I15.9,Secondary hypertension, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,I16,Hypertensive crisis
+http://hl7.org/fhir/sid/icd-10-cm,2021,I16.0,Hypertensive urgency
+http://hl7.org/fhir/sid/icd-10-cm,2021,I16.1,Hypertensive emergency
+http://hl7.org/fhir/sid/icd-10-cm,2021,I16.9,Hypertensive crisis, unspecified

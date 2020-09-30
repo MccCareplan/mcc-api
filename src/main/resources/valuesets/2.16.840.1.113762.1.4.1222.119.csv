@@ -1,0 +1,9 @@
+System,Version,Code,Display
+http://loinc.org,2.68,17855-8,Hemoglobin A1c/Hemoglobin.total in Blood by calculation
+http://loinc.org,2.68,17856-6,Hemoglobin A1c/Hemoglobin.total in Blood by HPLC
+http://loinc.org,2.68,41995-2,Hemoglobin A1c [Mass/volume] in Blood
+http://loinc.org,2.68,4548-4,Hemoglobin A1c/Hemoglobin.total in Blood
+http://loinc.org,2.68,4549-2,Hemoglobin A1c/Hemoglobin.total in Blood by Electrophoresis
+http://loinc.org,2.68,59261-8,Hemoglobin A1c/Hemoglobin.total in Blood by IFCC protocol
+http://loinc.org,2.68,62388-4,Hemoglobin A1c/Hemoglobin.total in Blood by JDS/JSCC protocol
+http://loinc.org,2.68,71875-9,Hemoglobin A1c/Hemoglobin.total [Pure mass fraction] in Blood

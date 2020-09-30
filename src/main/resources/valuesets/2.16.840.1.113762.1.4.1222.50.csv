@@ -1,0 +1,12 @@
+System,Version,Code,Display
+http://snomed.info/sct,2020-03,14140009,Hyperkalemia (disorder)
+http://snomed.info/sct,2020-03,237846001,Hyperkalemic alkalosis (disorder)
+http://snomed.info/sct,2020-03,237847005,Hyperkalemic acidosis (disorder)
+http://snomed.info/sct,2020-03,237848000,Hyperkalemia with normal acid-base balance (disorder)
+http://snomed.info/sct,2020-03,237849008,Drug-induced hyperkalemia (disorder)
+http://snomed.info/sct,2020-03,40777006,Chronic hyperkalemia (disorder)
+http://snomed.info/sct,2020-03,427195008,Hyperkalemia caused by angiotensin-converting enzyme inhibitor (disorder)
+http://snomed.info/sct,2020-03,5354002,Hyperkalemia, transcellular shifts (disorder)
+http://snomed.info/sct,2020-03,54781007,Hyperkalemia, diminished renal excretion (disorder)
+http://snomed.info/sct,2020-03,5579000,Acute hyperkalemia (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2021,E87.5,Hyperkalemia

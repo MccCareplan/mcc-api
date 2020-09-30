@@ -1,0 +1,7 @@
+System,Version,Code,Display
+http://snomed.info/sct,2020-03,20165001,Hyperphosphatemia (disorder)
+http://snomed.info/sct,2020-03,237904006,Renal failure-associated hyperphosphatemia (disorder)
+http://snomed.info/sct,2020-03,237905007,Iatrogenic hyperphosphatemia (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2021,E83.3,Disorders of phosphorus metabolism and phosphatases
+http://hl7.org/fhir/sid/icd-10-cm,2021,E83.30,Disorder of phosphorus metabolism, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,E83.39,Other disorders of phosphorus metabolism

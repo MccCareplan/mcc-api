@@ -1,0 +1,22 @@
+System,Version,Code,Display
+http://loinc.org,2.68,12951-0,Triglyceride [Mass/volume] in Serum or Plasma by calculation
+http://loinc.org,2.68,14927-8,Triglyceride [Moles/volume] in Serum or Plasma
+http://loinc.org,2.68,1644-4,Triglyceride [Mass/volume] in Serum or Plasma --12 hours fasting
+http://loinc.org,2.68,2571-8,Triglyceride [Mass/volume] in Serum or Plasma
+http://loinc.org,2.68,28554-4,Triglyceride [Presence] in Serum or Plasma
+http://loinc.org,2.68,3043-7,Triglyceride [Mass/volume] in Blood
+http://loinc.org,2.68,3045-2,Triglyceride+ester in IDL [Mass/volume] in Serum or Plasma
+http://loinc.org,2.68,3046-0,Triglyceride+ester in LDL [Mass/volume] in Serum or Plasma
+http://loinc.org,2.68,3047-8,Triglyceride+ester in VLDL [Mass/volume] in Serum or Plasma
+http://loinc.org,2.68,3048-6,Triglyceride [Mass/volume] in Serum or Plasma --fasting
+http://loinc.org,2.68,30524-3,Triglyceride [Moles/volume] in Serum or Plasma --12 hours fasting
+http://loinc.org,2.68,30570-6,Triglyceride [Percentile]
+http://loinc.org,2.68,35360-7,Triglyceride in Lipoprotein a [Mass/volume] in Serum or Plasma
+http://loinc.org,2.68,35361-5,Triglyceride in Lipoprotein a [Presence] in Serum or Plasma
+http://loinc.org,2.68,35362-3,Triglyceride in Chylomicrons [Presence] in Serum or Plasma
+http://loinc.org,2.68,35363-1,Triglyceride in Chylomicrons [Mass/volume] in Serum or Plasma
+http://loinc.org,2.68,47210-0,Triglyceride [Moles/volume] in Serum or Plasma --fasting
+http://loinc.org,2.68,53526-0,Triglyceride in VLDL [Moles/volume] in Serum or Plasma
+http://loinc.org,2.68,53527-8,Triglyceride in HDL 2 [Moles/volume] in Serum or Plasma
+http://loinc.org,2.68,53528-6,Triglyceride in HDL 3 [Moles/volume] in Serum or Plasma
+http://loinc.org,2.68,70218-3,Triglyceride [Moles/volume] in Blood

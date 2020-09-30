@@ -1,0 +1,9 @@
+System,Version,Code,Display
+http://loinc.org,2.68,70960-0,Kt/V.Peritoneal Dialysis
+http://loinc.org,2.68,70961-8,Kt/V.Hemodialysis
+http://loinc.org,2.68,70963-4,Kt/V.Peritoneal Dialysis [Hume]
+http://loinc.org,2.68,70964-2,Kt/V.Peritoneal Dialysis [Watson]
+http://loinc.org,2.68,70965-9,Kt/V.Hemodialysis [Daugirdas II]
+http://loinc.org,2.68,70966-7,Kt/V.Hemodialysis [UKM]
+http://loinc.org,2.68,71341-2,Kt/V.Peritoneal Dialysis [Percent of body weight]
+http://loinc.org,2.68,71342-0,Kt/V.Hemodialysis [Derived]
