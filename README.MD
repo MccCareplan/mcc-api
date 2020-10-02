@@ -7,7 +7,7 @@ It acts a the primary data anayslis layer and relies on one or more FHIR servers
 https://mcc-niddk-backend.wl.r.appspot.com/
 
 # Open API
-UI: https://mcc-niddk-backend.wl.r.appspot.com/swagger-ui.html
+UI: https://mcc-niddk-backend.wl.r.appspot.com/swagger-ui/index.html?configUrl=/api-docs/swagger-config
 DOCS: https://mcc-niddk-backend.wl.r.appspot.com/api-docs
 
 # Security
