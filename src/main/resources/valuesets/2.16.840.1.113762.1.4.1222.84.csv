@@ -1,0 +1,37 @@
+System,Version,Code,Display
+http://snomed.info/sct,2020-03,161807003,History of severe pre-eclampsia (situation)
+http://snomed.info/sct,2020-03,198983002,Severe pre-eclampsia - delivered (disorder)
+http://snomed.info/sct,2020-03,198984008,Severe pre-eclampsia - delivered with postnatal complication (disorder)
+http://snomed.info/sct,2020-03,198985009,Severe pre-eclampsia - not delivered (disorder)
+http://snomed.info/sct,2020-03,198986005,Severe pre-eclampsia with postnatal complication (disorder)
+http://snomed.info/sct,2020-03,398254007,Pre-eclampsia (disorder)
+http://snomed.info/sct,2020-03,41114007,Mild pre-eclampsia (disorder)
+http://snomed.info/sct,2020-03,46764007,Severe pre-eclampsia (disorder)
+http://snomed.info/sct,2020-03,67359005,Pre-eclampsia added to pre-existing hypertension (disorder)
+http://snomed.info/sct,2020-03,765182005,Pre-eclampsia in puerperium (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2021,O11,Pre-existing hypertension with pre-eclampsia
+http://hl7.org/fhir/sid/icd-10-cm,2021,O11.1,Pre-existing hypertension with pre-eclampsia, first trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O11.2,Pre-existing hypertension with pre-eclampsia, second trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O11.3,Pre-existing hypertension with pre-eclampsia, third trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O11.4,Pre-existing hypertension with pre-eclampsia, complicating childbirth
+http://hl7.org/fhir/sid/icd-10-cm,2021,O11.5,Pre-existing hypertension with pre-eclampsia, complicating the puerperium
+http://hl7.org/fhir/sid/icd-10-cm,2021,O11.9,Pre-existing hypertension with pre-eclampsia, unspecified trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14,Pre-eclampsia
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.0,Mild to moderate pre-eclampsia
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.00,Mild to moderate pre-eclampsia, unspecified trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.02,Mild to moderate pre-eclampsia, second trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.03,Mild to moderate pre-eclampsia, third trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.04,Mild to moderate pre-eclampsia, complicating childbirth
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.05,Mild to moderate pre-eclampsia, complicating the puerperium
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.1,Severe pre-eclampsia
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.10,Severe pre-eclampsia, unspecified trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.12,Severe pre-eclampsia, second trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.13,Severe pre-eclampsia, third trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.14,Severe pre-eclampsia complicating childbirth
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.15,Severe pre-eclampsia, complicating the puerperium
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.9,Unspecified pre-eclampsia
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.90,Unspecified pre-eclampsia, unspecified trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.92,Unspecified pre-eclampsia, second trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.93,Unspecified pre-eclampsia, third trimester
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.94,Unspecified pre-eclampsia, complicating childbirth
+http://hl7.org/fhir/sid/icd-10-cm,2021,O14.95,Unspecified pre-eclampsia, complicating the puerperium

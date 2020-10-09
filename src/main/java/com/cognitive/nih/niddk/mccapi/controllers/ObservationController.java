@@ -100,7 +100,7 @@ public class ObservationController {
     @GetMapping("/observationsbyvalueset")
     public MccObservation[] getObservationsByValueSet(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "valueset") String valueset, @RequestParam(name ="max", defaultValue = "100") int maxItems, @RequestParam(name="sort", defaultValue = "ascending") String sortOrder, @RequestHeader Map<String, String> headers) {
 
-        MccObservation out[] = null;
+        MccObservation out[] = new MccObservation[0];
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
@@ -147,9 +147,6 @@ public class ObservationController {
                     }
 
                 }
-            }
-            else {
-                throw new ItemNotFoundException(valueset);
             }
         }
         else

@@ -1,0 +1,90 @@
+System,Version,Code,Display
+http://snomed.info/sct,2020-03,10741871000119101,Alcohol dependence in pregnancy (disorder)
+http://snomed.info/sct,2020-03,10755041000119100,Alcohol dependence in childbirth (disorder)
+http://snomed.info/sct,2020-03,15167005,Alcohol abuse (disorder)
+http://snomed.info/sct,2020-03,191811004,Continuous chronic alcoholism (disorder)
+http://snomed.info/sct,2020-03,191812006,Episodic chronic alcoholism (disorder)
+http://snomed.info/sct,2020-03,191813001,Chronic alcoholism in remission (disorder)
+http://snomed.info/sct,2020-03,191882002,Nondependent alcohol abuse, continuous (disorder)
+http://snomed.info/sct,2020-03,191883007,Nondependent alcohol abuse, episodic (disorder)
+http://snomed.info/sct,2020-03,191884001,Nondependent alcohol abuse in remission (disorder)
+http://snomed.info/sct,2020-03,268645007,Nondependent alcohol abuse (disorder)
+http://snomed.info/sct,2020-03,284591009,Persistent alcohol abuse (disorder)
+http://snomed.info/sct,2020-03,288031000119105,Alcohol induced disorder co-occurrent and due to alcohol dependence (disorder)
+http://snomed.info/sct,2020-03,66590003,Alcohol dependence (disorder)
+http://snomed.info/sct,2020-03,713583005,Mild alcohol dependence (disorder)
+http://snomed.info/sct,2020-03,713862009,Severe alcohol dependence (disorder)
+http://snomed.info/sct,2020-03,714829008,Moderate alcohol dependence (disorder)
+http://snomed.info/sct,2020-03,7200002,Alcoholism (disorder)
+http://snomed.info/sct,2020-03,97571000119109,Thrombocytopenia co-occurrent and due to alcoholism (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.1,Alcohol abuse
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.10,Alcohol abuse, uncomplicated
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.11,Alcohol abuse, in remission
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.12,Alcohol abuse with intoxication
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.120,Alcohol abuse with intoxication, uncomplicated
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.121,Alcohol abuse with intoxication delirium
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.129,Alcohol abuse with intoxication, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.13,Alcohol abuse, with withdrawal
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.130,Alcohol abuse with withdrawal, uncomplicated
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.131,Alcohol abuse with withdrawal delirium
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.132,Alcohol abuse with withdrawal with perceptual disturbance
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.139,Alcohol abuse with withdrawal, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.14,Alcohol abuse with alcohol-induced mood disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.15,Alcohol abuse with alcohol-induced psychotic disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.150,Alcohol abuse with alcohol-induced psychotic disorder with delusions
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.151,Alcohol abuse with alcohol-induced psychotic disorder with hallucinations
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.159,Alcohol abuse with alcohol-induced psychotic disorder, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.18,Alcohol abuse with other alcohol-induced disorders
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.180,Alcohol abuse with alcohol-induced anxiety disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.181,Alcohol abuse with alcohol-induced sexual dysfunction
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.182,Alcohol abuse with alcohol-induced sleep disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.188,Alcohol abuse with other alcohol-induced disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.19,Alcohol abuse with unspecified alcohol-induced disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.2,Alcohol dependence
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.20,Alcohol dependence, uncomplicated
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.21,Alcohol dependence, in remission
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.22,Alcohol dependence with intoxication
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.220,Alcohol dependence with intoxication, uncomplicated
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.221,Alcohol dependence with intoxication delirium
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.229,Alcohol dependence with intoxication, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.23,Alcohol dependence with withdrawal
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.230,Alcohol dependence with withdrawal, uncomplicated
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.231,Alcohol dependence with withdrawal delirium
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.232,Alcohol dependence with withdrawal with perceptual disturbance
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.239,Alcohol dependence with withdrawal, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.24,Alcohol dependence with alcohol-induced mood disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.25,Alcohol dependence with alcohol-induced psychotic disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.250,Alcohol dependence with alcohol-induced psychotic disorder with delusions
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.251,Alcohol dependence with alcohol-induced psychotic disorder with hallucinations
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.259,Alcohol dependence with alcohol-induced psychotic disorder, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.26,Alcohol dependence with alcohol-induced persisting amnestic disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.27,Alcohol dependence with alcohol-induced persisting dementia
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.28,Alcohol dependence with other alcohol-induced disorders
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.280,Alcohol dependence with alcohol-induced anxiety disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.281,Alcohol dependence with alcohol-induced sexual dysfunction
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.282,Alcohol dependence with alcohol-induced sleep disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.288,Alcohol dependence with other alcohol-induced disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.29,Alcohol dependence with unspecified alcohol-induced disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.9,Alcohol use, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.92,Alcohol use, unspecified with intoxication
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.920,Alcohol use, unspecified with intoxication, uncomplicated
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.921,Alcohol use, unspecified with intoxication delirium
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.929,Alcohol use, unspecified with intoxication, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.93,Alcohol use, unspecified with withdrawal
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.930,Alcohol use, unspecified with withdrawal, uncomplicated
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.931,Alcohol use, unspecified with withdrawal delirium
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.932,Alcohol use, unspecified with withdrawal with perceptual disturbance
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.939,Alcohol use, unspecified with withdrawal, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.94,Alcohol use, unspecified with alcohol-induced mood disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.95,Alcohol use, unspecified with alcohol-induced psychotic disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.950,Alcohol use, unspecified with alcohol-induced psychotic disorder with delusions
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.951,Alcohol use, unspecified with alcohol-induced psychotic disorder with hallucinations
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.959,Alcohol use, unspecified with alcohol-induced psychotic disorder, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.96,Alcohol use, unspecified with alcohol-induced persisting amnestic disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.97,Alcohol use, unspecified with alcohol-induced persisting dementia
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.98,Alcohol use, unspecified with other alcohol-induced disorders
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.980,Alcohol use, unspecified with alcohol-induced anxiety disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.981,Alcohol use, unspecified with alcohol-induced sexual dysfunction
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.982,Alcohol use, unspecified with alcohol-induced sleep disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.988,Alcohol use, unspecified with other alcohol-induced disorder
+http://hl7.org/fhir/sid/icd-10-cm,2021,F10.99,Alcohol use, unspecified with unspecified alcohol-induced disorder

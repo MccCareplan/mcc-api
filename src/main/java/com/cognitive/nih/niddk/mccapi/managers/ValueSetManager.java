@@ -34,6 +34,7 @@ public class ValueSetManager {
 
     private void init()
     {
+        //TODO: Enhance for database/local loading
         loadValueSets();
     }
 
@@ -42,13 +43,7 @@ public class ValueSetManager {
         List<String> list = getLoadList();
         for (String id:list)
         {
-            try {
-                loadValueSet(id);
-            }
-            catch(IOException ioException)
-            {
-                log.error("Error loading value set: "+id,ioException);
-            }
+            loadValueSet(id);
         }
     }
 
@@ -59,57 +54,65 @@ public class ValueSetManager {
 
     private static String internalGetCodeKey(String uuesystem, String code)
     {
+        // Token|Code (Token is UUEncoded already)
         return uuesystem+"%7C"+code;
     }
 
     public ArrayList<String> findCodesValuesSets(String codeToken)
     {
+        // TODO: Block if reloading
         return codeMap.get(codeToken);
     }
+
     public ArrayList<String> findCodesValuesSets(String system, String code)
     {
+        // TODO: Block if reloading
         return codeMap.get(getCodeKey(system,code));
     }
 
     public MccValueSet findValueSet(String valueSetId)
     {
+        // TODO: Block if reloading
         return valueSetMap.get(valueSetId);
     }
 
-    public void  loadValueSet(String setId) throws IOException {
+    public void  loadValueSet(String setId) {
 
         MccValueSet vs = new MccValueSet();
         vs.setId(setId);
         String fileName = getFileName(setId);
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
-        Reader in = new InputStreamReader(inputStream);
+        if (inputStream != null) {
+            Reader in = new InputStreamReader(inputStream);
+            try {
+                Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
+                for (CSVRecord record : records) {
+                    String system = record.get("System");
+                    //String version = record.get("Version");
+                    String code = record.get("Code");
+                    //String display = record.get("Display");
 
-        Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
-        for (CSVRecord record : records) {
-            String system = record.get("System");
-            //String version = record.get("Version");
-            String code = record.get("Code");
-            //String display = record.get("Display");
+                    String key = getCodeKey(system, code);
+                    if (codeMap.containsKey(key)) {
+                        ArrayList<String> array = codeMap.get(key);
+                        array.add(setId);
+                        //Consider a String list here
+                    } else {
+                        ArrayList<String> array = new ArrayList<>();
+                        array.add(setId);
+                        codeMap.put(key, array);
+                    }
+                    vs.addCode(key);
+                }
 
-            String key = getCodeKey(system,code);
-            if (codeMap.containsKey(key))
-            {
-                ArrayList<String> array = codeMap.get(key);
-                array.add(setId);
-                //Consider a String list here
+                valueSetMap.put(setId, vs);
+                //So we ned to both add the value code to the value set and add the value set
             }
-            else
+            catch (IOException exp)
             {
-                ArrayList<String > array = new ArrayList<>();
-                array.add(setId);
-                codeMap.put(key,array);
+                log.error("Error loading valueset "+setId,exp);
             }
-            vs.addCode(key);
         }
-
-        valueSetMap.put(setId,vs);
-        //So we ned to both add the value code to the value set and add the value set a
-
     }
     public String getFileName(String valueSetId)
     {
@@ -126,7 +129,24 @@ public class ValueSetManager {
         ArrayList<String> out = new ArrayList<>();
         //Todo + Scan directory or load from inventory
         out.add("2.16.840.1.113762.1.4.1222.159");   //CKD
-        out.add("2.16.840.1.113883.3.6929.3.1000");  //eGFR
+        //out.add("2.16.840.1.113883.3.6929.3.1000");  //eGFR
+        String loadFile = getFileName("valueset_loadlist");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(loadFile);
+        if (inputStream != null) {
+            Reader in = new InputStreamReader(inputStream);
+
+            Iterable<CSVRecord> records = null;
+            try {
+                records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
+                for (CSVRecord record : records) {
+                    String oid = record.get("Oid");
+                    out.add(oid);
+                }
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
+        }
         return out;
     }
 
