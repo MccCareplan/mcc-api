@@ -19,10 +19,14 @@ public class GoalMapper {
         out.setId(in.getIdElement().getValue());
         out.setDescription(CodeableConceptMapper.fhir2local(in.getDescription(),ctx));
         out.setOutcomeCodes(CodeableConceptMapper.fhir2local(in.getOutcomeCode(),ctx));
-        out.setAddresses(ReferenceMapper.fhir2local(in.getAddresses(),ctx));
+        if (in.hasAddresses()) {
+            out.setAddresses(ReferenceMapper.fhir2local(in.getAddresses(), ctx));
+        }
         out.setCategories(CodeableConceptMapper.fhir2local(in.getCategory(),ctx));
         out.setCategorySummary(Helper.getConceptsAsDisplayString(in.getOutcomeCode()));
-        out.setExpressedBy(ReferenceMapper.fhir2local(in.getExpressedBy(),ctx));
+        if (in.hasExpressedBy()) {
+            out.setExpressedBy(ReferenceMapper.fhir2local(in.getExpressedBy(), ctx));
+        }
         out.setLifecycleStatus(in.getLifecycleStatus().toCode()); //Weird mapping
         out.setPriority(CodeableConceptMapper.fhir2local(in.getPriority(),ctx));
         out.setCategories(CodeableConceptMapper.fhir2local(in.getCategory(),ctx));

@@ -10,18 +10,19 @@ public class ReferenceMapper {
 
     public static MccReference fhir2local(Reference in, Context ctx) {
         MccReference out  = new MccReference();
-        String ref = in.getReference();
-        out.setReference(ref);
-        String[] parts = ref.split("/");
-        if (parts.length>1)
-        {
-            out.setType(parts[parts.length-2]);
+        if (in.hasReference()) {
+            String ref = in.getReference();
+            out.setReference(ref);
+            String[] parts = ref.split("/");
+            if (parts.length > 1) {
+                out.setType(parts[parts.length - 2]);
+            } else {
+                out.setType("Undefined");
+            }
         }
-        else
-        {
-            out.setType("Undefined");
+        if (in.hasDisplay()) {
+            out.setDisplay(in.getDisplay());
         }
-        out.setDisplay(in.getDisplay());
         return out;
     }
 
