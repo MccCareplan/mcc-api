@@ -36,13 +36,26 @@ Preliminary testings of the effect of the use of Native FHIR types on OpenAPI/Sw
 ## Docker
 
 ### Building
+$ mvn clean install -Pprod
 $ docker build -t mcccareplan/mccapi .
+
+### Pushing
+$ docker push mcccareplan/mccapi
+
 
 ### Running
 
-Running mcc-api with docker on port 8090
+Running mcc-api with docker on port 8080
 
-$ docker run -p 8090:80 mcccareplan/mccapi
+$ docker run -p 8080:8080 mcccareplan/mccapi
+
+### Running Detached
+
+$ docker run -d -p 8080:8080 mcccareplan/mccapi
+
+### Confirming the image is running
+
+$ curl --location --request GET 'http://localhost:8080/conditionsummary?subject=cc-pat-pnoelle'
 
 ### Latest Images
 The latest docker images are found on docker hub at https://hub.docker.com/repository/docker/mcccareplan/mccapi
