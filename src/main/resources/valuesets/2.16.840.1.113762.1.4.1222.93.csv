@@ -1,13 +1,13 @@
 System,Version,Code,Display
-http://snomed.info/sct,2020-03,190859005,Hypophosphatasia (disorder)
-http://snomed.info/sct,2020-03,20756002,Adult hypophosphatasia (disorder)
-http://snomed.info/sct,2020-03,30174008,Childhood hypophosphatasia (disorder)
-http://snomed.info/sct,2020-03,360792001,Deficiency of alkaline phosphatase (disorder)
-http://snomed.info/sct,2020-03,55236002,Infantile hypophosphatasia (disorder)
-http://snomed.info/sct,2020-03,708672004,Odontohypophosphatasia (disorder)
-http://snomed.info/sct,2020-03,709556009,Periodontitis co-occurrent with hypophosphatasia (disorder)
-http://snomed.info/sct,2020-03,721183009,Low alkaline phosphatase due to chronic kidney disease (disorder)
-http://snomed.info/sct,2020-03,85487008,Renal phosphaturia (disorder)
+http://snomed.info/sct,2020-09,190859005,Hypophosphatasia (disorder)
+http://snomed.info/sct,2020-09,20756002,Adult hypophosphatasia (disorder)
+http://snomed.info/sct,2020-09,30174008,Childhood hypophosphatasia (disorder)
+http://snomed.info/sct,2020-09,360792001,Deficiency of alkaline phosphatase (disorder)
+http://snomed.info/sct,2020-09,55236002,Infantile hypophosphatasia (disorder)
+http://snomed.info/sct,2020-09,708672004,Odontohypophosphatasia (disorder)
+http://snomed.info/sct,2020-09,709556009,Periodontitis co-occurrent with hypophosphatasia (disorder)
+http://snomed.info/sct,2020-09,721183009,Low alkaline phosphatase due to chronic kidney disease (disorder)
+http://snomed.info/sct,2020-09,85487008,Renal phosphaturia (disorder)
 http://hl7.org/fhir/sid/icd-10-cm,2021,E83.3,Disorders of phosphorus metabolism and phosphatases
 http://hl7.org/fhir/sid/icd-10-cm,2021,E83.30,Disorder of phosphorus metabolism, unspecified
 http://hl7.org/fhir/sid/icd-10-cm,2021,E83.31,Familial hypophosphatemia

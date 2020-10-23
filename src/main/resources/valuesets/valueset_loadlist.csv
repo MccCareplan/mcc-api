@@ -93,3 +93,4 @@ LowDensityLipoproteinLevelTarget,Goal,memory,2.16.840.1.113883.3.117.1.7.1.215
 PhosphorusLevelTarget,Goal,memory,2.16.840.1.113762.1.4.1222.123
 PotasssiumLevelTarget,Goal,memory,2.16.840.1.113762.1.4.1222.120
 VitaminDLevelTarget,Goal,memory,2.16.840.1.113762.1.4.1222.126
+UrineSediment,LaboratoryResultObservation,memory,2.16.840.1.113762.1.4.1222.176

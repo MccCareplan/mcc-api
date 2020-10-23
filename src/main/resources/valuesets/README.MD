@@ -13,7 +13,7 @@ Last Expansion Date: 9/30/2020
 
 ## To find again:
 
-UrineSediment,LaboratoryResultObservation,memory,?
+- None
 
 ## Manual Entries
 - CKD,Condition,memory,2.16.840.1.113762.1.4.1222.159

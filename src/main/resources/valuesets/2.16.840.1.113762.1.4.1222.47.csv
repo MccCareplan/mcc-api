@@ -1,6 +1,6 @@
 System,Version,Code,Display
-http://snomed.info/sct,2020-03,119247004,Hypoalbuminemia (disorder)
-http://snomed.info/sct,2020-03,97361000119109,Hypoalbuminemia due to protein calorie malnutrition (disorder)
+http://snomed.info/sct,2020-09,119247004,Hypoalbuminemia (disorder)
+http://snomed.info/sct,2020-09,97361000119109,Hypoalbuminemia due to protein calorie malnutrition (disorder)
 http://hl7.org/fhir/sid/icd-10-cm,2021,E43,Unspecified severe protein-calorie malnutrition
 http://hl7.org/fhir/sid/icd-10-cm,2021,E44,Protein-calorie malnutrition of moderate and mild degree
 http://hl7.org/fhir/sid/icd-10-cm,2021,E44.0,Moderate protein-calorie malnutrition
