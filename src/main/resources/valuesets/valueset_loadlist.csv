@@ -49,7 +49,7 @@ CorrectedCalcium,LaboratoryResultObservation,memory,2.16.840.1.113762.1.4.1222.1
 CystatinC,LaboratoryResultObservation,memory,2.16.840.1.113762.1.4.1222.138
 ErythrocyteDistributionWidth,LaboratoryResultObservation,memory,2.16.840.1.113762.1.4.1222.147
 EstimatedAverageGlucose,LaboratoryResultObservation,memory,2.16.840.1.113762.1.4.1222.150
-EstimatedGlomerularFiltrationRate,LaboratoryResultObservation,memory,2.16.840.1.113883.3.6929.3.1000
+EstimatedGlomerularFiltrationRate,LaboratoryResultObservation,memory,2.16.840.1.113762.1.4.1222.179
 Ferritin,LaboratoryResultObservation,memory,2.16.840.1.113762.1.4.1222.140
 Hematocrit,LaboratoryResultObservation,memory,2.16.840.1.113762.1.4.1222.143
 Hemoglobin,LaboratoryResultObservation,memory,2.16.840.1.113762.1.4.1222.114
