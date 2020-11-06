@@ -1,10 +1,12 @@
 # Introduction
-This applicationis the backend to a Multiple Chronic Condition CarePlan Application set.
+This applicatis the backend to a Multiple Chronic Condition CarePlan Application set.
 
 It acts a the primary data anayslis layer and relies on one or more FHIR servers as the source of primary information.
 
 # Public Deployments
 https://mcc-niddk-backend.wl.r.appspot.com/
+
+deployed using:  $gcloud app deploy
 
 # Open API
 UI: https://mcc-niddk-backend.wl.r.appspot.com/swagger-ui.html
@@ -32,6 +34,27 @@ Preliminary testings of the effect of the use of Native FHIR types on OpenAPI/Sw
 - Observation - Conflicting setter definitions for property "referenceElement"
 - Reference - Conflicting setter definitions for property "referenceElement"
 
+## Environment Variables
+All environment variables are stored in the applications.properties file. 
+In the default configuration the profiles that are provided are: [dfefault], dev and prod. 
+The profile used may be overridden at runtime by either selecting a different profile 
+or by providing and entirely different definition for the properties file. See the 
+details on Spring boot.
+
+ | Property Name | System Env. Variable eqv | Description | Dev | Prod |
+ | -------------- | ---------------------- | ---------------- | --------- | ------ |
+| server.port | SERVER_PORT | The port on whihc tomcat runs | 8081 | Tomcat Def (8080) |
+| fhir.default.server.address | FHIR_DEFAULT_SERVER_ADDRESS | Default open fhir server| https://api.logicahealth.org/MCCeCarePlanTest/open | https://api.logicahealth.org/MCCeCarePlanTest/open |
+| fhir.secure.server.address | FHIR_SECURE_SERVER_ADDRESS |Default secure fhir server | https://api.logicahealth.org/MCCeCarePlanTest/data | https://api.logicahealth.org/MCCeCarePlanTest/data |
+
+### Overriding via command line
+
+ $java -jar target/mcc-api-1.0.2Y-SNAPSHOT.jar --fhir.secure.server.address='testvalue'
+
+### Overriding via ENVIRONMENT variable
+
+ $export  FHIR_SECURE_SERVER_ADDRESS=https://localhost:9011
+ 
 
 ## Docker
 
@@ -52,6 +75,12 @@ $ docker run -p 8080:8080 mcccareplan/mccapi
 ### Running Detached
 
 $ docker run -d -p 8080:8080 mcccareplan/mccapi
+
+### Running with environement variables 
+
+The follow is an example of passing a new default FHIR server address to the API and running detached.
+
+$ docker run -d -e FHIR_DEFAULT_SERVER_ADDRESS='http://myfhireServer' -p 8080:8080 mcccareplan/mccapi
 
 ### Confirming the image is running
 
