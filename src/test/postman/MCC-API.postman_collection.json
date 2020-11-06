@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "9b266918-8add-4357-8866-44977c811804",
+		"name": "MCC-API",
+		"description": "MCC-API Basic tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Fetch Patient Contacts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"resourceType\": \"QuestionnaireResponse\",\n  \"id\":\"cc-qr-pnoelle-pain\",\n  \"meta\": {\n    \"profile\": [\n      \"http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaireresponse|2.7\"\n    ],\n    \"tag\": [\n      {\n        \"code\": \"lformsVersion: 25.1.2\"\n      }\n    ]\n  },\n  \"status\": \"completed\",\n  \"subject\": \"Patient/cc-pat-pnoelle\"\n  \"authored\": \"2020-09-10T18:13:14.026Z\",\n  \"item\": [\n    {\n      \"linkId\": \"/75262-6\",\n      \"text\": \"In the past 7 days - How intense was your pain at its worst?\",\n      \"answer\": [\n        {\n          \"valueCoding\": {\n            \"code\": \"LA6752-5\",\n            \"display\": \"Mild\"\n          }\n        }\n      ]\n    },\n    {\n      \"linkId\": \"/75261-8\",\n      \"text\": \"In the past 7 days - How intense was your average pain?\",\n      \"answer\": [\n        {\n          \"valueCoding\": {\n            \"code\": \"LA6751-7\",\n            \"display\": \"Moderate\"\n          }\n        }\n      ]\n    },\n    {\n      \"linkId\": \"/75260-0\",\n      \"text\": \"What is your level of pain right now?\",\n      \"answer\": [\n        {\n          \"valueCoding\": {\n            \"code\": \"LA6752-5\",\n            \"display\": \"Mild\"\n          }\n        }\n      ]\n    },\n    {\n      \"linkId\": \"/77825-8\",\n      \"text\": \"PROMIS short form - pain intensity 3a - version 1.0 raw score\",\n      \"answer\": [\n        {\n          \"valueDecimal\": 7\n        }\n      ]\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Server}}/contact/?subject=cc-pat-pnoelle",
+					"host": [
+						"{{Server}}"
+					],
+					"path": [
+						"contact",
+						""
+					],
+					"query": [
+						{
+							"key": "subject",
+							"value": "cc-pat-pnoelle"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Observations By ValueSet",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Server}}/observationsbyvalueset/?subject=cc-pat-pnoelle&valueset=2.16.840.1.113883.3.6929.3.1000",
+					"host": [
+						"{{Server}}"
+					],
+					"path": [
+						"observationsbyvalueset",
+						""
+					],
+					"query": [
+						{
+							"key": "subject",
+							"value": "cc-pat-pnoelle"
+						},
+						{
+							"key": "valueset",
+							"value": "2.16.840.1.113883.3.6929.3.1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Conditon Summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Server}}/conditionsummary?subject=cc-pat-pnoelle",
+					"host": [
+						"{{Server}}"
+					],
+					"path": [
+						"conditionsummary"
+					],
+					"query": [
+						{
+							"key": "subject",
+							"value": "cc-pat-pnoelle"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Medication Summary",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"resourceType\": \"QuestionnaireResponse\",\n  \"id\":\"cc-qr-pnoelle-pain\",\n  \"meta\": {\n    \"profile\": [\n      \"http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaireresponse|2.7\"\n    ],\n    \"tag\": [\n      {\n        \"code\": \"lformsVersion: 25.1.2\"\n      }\n    ]\n  },\n  \"status\": \"completed\",\n  \"subject\": \"Patient/cc-pat-pnoelle\"\n  \"authored\": \"2020-09-10T18:13:14.026Z\",\n  \"item\": [\n    {\n      \"linkId\": \"/75262-6\",\n      \"text\": \"In the past 7 days - How intense was your pain at its worst?\",\n      \"answer\": [\n        {\n          \"valueCoding\": {\n            \"code\": \"LA6752-5\",\n            \"display\": \"Mild\"\n          }\n        }\n      ]\n    },\n    {\n      \"linkId\": \"/75261-8\",\n      \"text\": \"In the past 7 days - How intense was your average pain?\",\n      \"answer\": [\n        {\n          \"valueCoding\": {\n            \"code\": \"LA6751-7\",\n            \"display\": \"Moderate\"\n          }\n        }\n      ]\n    },\n    {\n      \"linkId\": \"/75260-0\",\n      \"text\": \"What is your level of pain right now?\",\n      \"answer\": [\n        {\n          \"valueCoding\": {\n            \"code\": \"LA6752-5\",\n            \"display\": \"Mild\"\n          }\n        }\n      ]\n    },\n    {\n      \"linkId\": \"/77825-8\",\n      \"text\": \"PROMIS short form - pain intensity 3a - version 1.0 raw score\",\n      \"answer\": [\n        {\n          \"valueDecimal\": 7\n        }\n      ]\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Server}}/medicationsummary/?subject=cc-pat-pnoelle",
+					"host": [
+						"{{Server}}"
+					],
+					"path": [
+						"medicationsummary",
+						""
+					],
+					"query": [
+						{
+							"key": "subject",
+							"value": "cc-pat-pnoelle"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find latest observation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Server}}/find/latest/observation/?subject=cc-pat-pnoelle&code=85354-9",
+					"host": [
+						"{{Server}}"
+					],
+					"path": [
+						"find",
+						"latest",
+						"observation",
+						""
+					],
+					"query": [
+						{
+							"key": "subject",
+							"value": "cc-pat-pnoelle"
+						},
+						{
+							"key": "code",
+							"value": "85354-9"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Goal Summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Server}}/goalsummary/?subject=cc-pat-pnoelle",
+					"host": [
+						"{{Server}}"
+					],
+					"path": [
+						"goalsummary",
+						""
+					],
+					"query": [
+						{
+							"key": "subject",
+							"value": "cc-pat-pnoelle"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Goal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Server}}/goal?subject=cc-pat-pnoelle",
+					"host": [
+						"{{Server}}"
+					],
+					"path": [
+						"goal"
+					],
+					"query": [
+						{
+							"key": "subject",
+							"value": "cc-pat-pnoelle"
+						}
+					]
+				},
+				"description": "Note: Until 1.0.1 this may fail with a null pointer error."
+			},
+			"response": []
+		},
+		{
+			"name": "Careplans",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Server}}/careplan?subject=cc-pat-pnoelle",
+					"host": [
+						"{{Server}}"
+					],
+					"path": [
+						"careplan"
+					],
+					"query": [
+						{
+							"key": "subject",
+							"value": "cc-pat-pnoelle"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Patient Search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Server}}/patient/?name=noe",
+					"host": [
+						"{{Server}}"
+					],
+					"path": [
+						"patient",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "noe"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Patient",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"resourceType\": \"ValueSet\",\n  \"id\": \"16854\",\n  \"url\": \"https://vsac.nlm.nih.gov/valueset/2.16.840.1.113762.1.4.1222.159/expansion\",\n  \"identifier\": [\n    {\n      \"system\": \"urn:oid\",\n      \"value\": \"2.16.840.1.113762.1.4.1222.159\"\n    }\n  ],\n  \"version\": \"20200817\",\n  \"name\": \"Codes for Chronic kidney disease\",\n  \"status\": \"draft\",\n  \"experimental\": true,\n  \"date\": \"2020-08-18\",\n  \"publisher\": \"MCC Project team\",\n  \"description\": \"This is an example value set that includes all the codes for Chronic kidney disease from SNOMED and ICD-10\",\n  \"expansion\": {\n    \"extension\": [\n      {\n        \"url\": \"http://hl7.org/fhir/StructureDefinition/valueset-expansionSource\",\n        \"valueUri\": \"http://hl7.org/fhir/ValueSet/example-extensional\"\n      }\n    ],\n    \"identifier\": \"urn:uuid:42316ff8-2714-4680-9980-f37a6d1a71bc\",\n    \"timestamp\": \"2020-08-17T13:56:07Z\",\n    \"contains\": [\n      {\n        \"system\": \"http://snomed.info/sct\",\n        \"code\": \"709044004\",\n        \"display\": \"Chronic kidney disease (disorder)\"\n      }\n    ]\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Server}}/patient/cc-pat-pnoelle",
+					"host": [
+						"{{Server}}"
+					],
+					"path": [
+						"patient",
+						"cc-pat-pnoelle"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
