@@ -63,6 +63,11 @@ public class FHIRServerManager {
         srv.setName("MMC eCarePlan Test (Secure)");
         srv.setId("MCCeCarePlanTestSecure");
         addServer(srv);
+
+        if (singleton == null)
+        {
+            singleton = this;
+        }
     }
 
     public FHIRServer getServer(String id) {
