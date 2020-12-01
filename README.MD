@@ -36,14 +36,14 @@ Preliminary testings of the effect of the use of Native FHIR types on OpenAPI/Sw
 
 ## Environment Variables
 All environment variables are stored in the applications.properties file. 
-In the default configuration the profiles that are provided are: [dfefault], dev and prod. 
+In the default configuration the profiles that are provided are: [default], dev and prod. 
 The profile used may be overridden at runtime by either selecting a different profile 
 or by providing and entirely different definition for the properties file. See the 
 details on Spring boot.
 
  | Property Name | System Env. Variable eqv | Description | Dev | Prod |
  | -------------- | ---------------------- | ---------------- | --------- | ------ |
-| server.port | SERVER_PORT | The port on whihc tomcat runs | 8081 | Tomcat Def (8080) |
+| server.port | SERVER_PORT | The port on which tomcat runs | 8081 | Tomcat Def (8080) |
 | fhir.default.server.address | FHIR_DEFAULT_SERVER_ADDRESS | Default open fhir server| https://api.logicahealth.org/MCCeCarePlanTest/open | https://api.logicahealth.org/MCCeCarePlanTest/open |
 | fhir.secure.server.address | FHIR_SECURE_SERVER_ADDRESS |Default secure fhir server | https://api.logicahealth.org/MCCeCarePlanTest/data | https://api.logicahealth.org/MCCeCarePlanTest/data |
 
