@@ -70,7 +70,9 @@ details on Spring boot.
 ## Docker
 
 ### Building
+
 $ mvn clean install -Pprod
+
 $ docker build -t mcccareplan/mccapi .
 
 ### Pushing
