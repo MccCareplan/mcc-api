@@ -47,6 +47,17 @@ details on Spring boot.
 | fhir.default.server.address | FHIR_DEFAULT_SERVER_ADDRESS | Default open fhir server| https://api.logicahealth.org/MCCeCarePlanTest/open | https://api.logicahealth.org/MCCeCarePlanTest/open |
 | fhir.secure.server.address | FHIR_SECURE_SERVER_ADDRESS |Default secure fhir server | https://api.logicahealth.org/MCCeCarePlanTest/data | https://api.logicahealth.org/MCCeCarePlanTest/data |
 
+#### Logging related environment variables 
+ | Property Name | System Env. Variable eqv | Description | Dev | Prod |
+ | -------------- | ---------------------- | ---------------- | --------- | ------ |
+| hapi.logging.enabled | HAPI_LOGGING_ENABLED | Enable logging  | true | false | 
+| hapi.logging.request.summary | HAPI_LOGGING_REQUEST_SUMMARY | Log the request summary | true | true |
+| hapi.logging.request.body | HAPI_LOGGING_REQUEST_BODY | Log the request body | false | false |
+| hapi.logging.request.header | HAPI_LOGGING_REQUEST_HEADER | Log the request header | false | false |
+| hapi.logging.response.summary | HAPI_LOGGING_RESPONSE_SUMMARY | Log the response summary | true | true
+| hapi.logging.response.body | HAPI_LOGGING_RESPONSE_BODY | Log the response body | false | false |
+| hapi.logging.response.header | HAPI_LOGGING_RESPONSE_HEADER | Log the response header | false | false |
+
 ### Overriding via command line
 
  $java -jar target/mcc-api-1.0.2Y-SNAPSHOT.jar --fhir.secure.server.address='testvalue'

@@ -3,6 +3,7 @@ package com.cognitive.nih.niddk.mccapi.services;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.BearerTokenAuthInterceptor;
+import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 import com.cognitive.nih.niddk.mccapi.data.FHIRServer;
 import com.cognitive.nih.niddk.mccapi.managers.FHIRServerManager;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +22,20 @@ public class FHIRServices {
     }
 
     public FHIRServices() {
+
         stu4Context = FhirContext.forR4();
+
+
     }
 
     public FhirContext getR4Context() {
         return stu4Context;
     }
 
+
     public IGenericClient getClient(Map<String, String> headers) {
         IGenericClient client;
+        FHIRServerManager srvMgr = FHIRServerManager.getManager();
         FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
 
         if (headers.containsKey("mcc-fhir-server")) {
@@ -42,8 +48,11 @@ public class FHIRServices {
             }
         } else {
             log.warn("No Server provided - using default");
-            FHIRServer srv = FHIRServerManager.getManager().getDefaultFHIRServer();
+            FHIRServer srv = srvMgr.getDefaultFHIRServer();
             client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
+        }
+        if (srvMgr.isEnableFHIRLogging()) {
+            client.registerInterceptor(srvMgr.getLoggingInterceptor());
         }
         return client;
     }
