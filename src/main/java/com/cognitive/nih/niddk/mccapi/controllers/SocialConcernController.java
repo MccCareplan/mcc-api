@@ -6,32 +6,48 @@ import com.cognitive.nih.niddk.mccapi.data.ConditionSummary;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.SocialConcern;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
+import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.Patient;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
 @RestController
 @CrossOrigin(origins = "*")
 public class SocialConcernController {
+    private final QueryManager queryManager;
+
+    public SocialConcernController(QueryManager queryManager)
+    {
+        this.queryManager = queryManager;
+    }
+
     @GetMapping("/socialconcernsummary")
-    public ConditionLists getConditionSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers) {
+    public ConditionLists getConditionSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         ConditionLists out = new ConditionLists();
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
+        Map<String, String> values = new HashMap<>();
+        String callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns", values, webRequest);
 
-        Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
-                .and(Condition.CATEGORY.exactly().code("health-concern")).returnBundle(Bundle.class).execute();
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
-        ctx.setClient(client);
-        for (Bundle.BundleEntryComponent e : results.getEntry()) {
-            if (e.getResource().fhirType() == "Condition") {
-                Condition c = (Condition) e.getResource();
-                addCondtionToConditionList(out,c, ctx);
+        if (callUrl != null) {
+            Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+            //Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
+            //        .and(Condition.CATEGORY.exactly().code("health-concern")).returnBundle(Bundle.class).execute();
+            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
+            ctx.setClient(client);
+            for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                if (e.getResource().fhirType().compareTo("Condition")==0) {
+                    Condition c = (Condition) e.getResource();
+                    addCondtionToConditionList(out, c, ctx);
+                }
             }
         }
         out.categorizeConditions();
@@ -45,7 +61,7 @@ public class SocialConcernController {
     }
 
     @GetMapping("/socialconcerns")
-    public SocialConcern[] getCarePlans(@RequestParam(required = true, name = "subject") String subjectId, @RequestHeader Map<String, String> headers) {
+    public SocialConcern[] getCarePlans(@RequestParam(required = true, name = "subject") String subjectId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         ArrayList<SocialConcern> out = new ArrayList<>();
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
@@ -80,13 +96,20 @@ public class SocialConcernController {
 
         ConditionLists concerns = new ConditionLists();
 
-        Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
-                .and(Condition.CATEGORY.exactly().code("health-concern")).returnBundle(Bundle.class).execute();
+        Map<String, String> values = new HashMap<>();
+        String callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns", values, webRequest);
 
-        for (Bundle.BundleEntryComponent e : results.getEntry()) {
-            if (e.getResource().fhirType() == "Condition") {
-                Condition c = (Condition) e.getResource();
-                addCondtionToConditionList(concerns,c, ctx);
+        if (callUrl != null) {
+            Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+
+            ///Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
+            //    .and(Condition.CATEGORY.exactly().code("health-concern")).returnBundle(Bundle.class).execute();
+
+            for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                if (e.getResource().fhirType().compareTo("Condition")==0) {
+                    Condition c = (Condition) e.getResource();
+                    addCondtionToConditionList(concerns, c, ctx);
+                }
             }
         }
         concerns.categorizeConditions();

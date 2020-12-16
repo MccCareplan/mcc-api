@@ -1,5 +1,5 @@
 # Introduction
-This applicatis the backend to a Multiple Chronic Condition CarePlan Application set.
+This application is the backend to a Multiple Chronic Condition CarePlan Application set.
 
 It acts a the primary data anayslis layer and relies on one or more FHIR servers as the source of primary information.
 
@@ -13,7 +13,7 @@ UI: https://mcc-niddk-backend.wl.r.appspot.com/swagger-ui.html
 DOCS: https://mcc-niddk-backend.wl.r.appspot.com/api-docs
 
 # Security
-Currently this version of the service is using fixed open endpoints. In the very near future all client requests will carry security information will be used by this tier to access the FHIR server,
+Currently, this version of the service is using fixed open endpoints. In the very near future all client requests will carry security information will be used by this tier to access the FHIR server,
 
 # Issues
 ## Type mapping and FHIR
@@ -46,6 +46,7 @@ details on Spring boot.
 | server.port | SERVER_PORT | The port on which tomcat runs | 8081 | Tomcat Def (8080) |
 | fhir.default.server.address | FHIR_DEFAULT_SERVER_ADDRESS | Default open fhir server| https://api.logicahealth.org/MCCeCarePlanTest/open | https://api.logicahealth.org/MCCeCarePlanTest/open |
 | fhir.secure.server.address | FHIR_SECURE_SERVER_ADDRESS |Default secure fhir server | https://api.logicahealth.org/MCCeCarePlanTest/data | https://api.logicahealth.org/MCCeCarePlanTest/data |
+| logging.level.org.springframework | | | WARN | WARN |
 
 #### Logging related environment variables 
  | Property Name | System Env. Variable eqv | Description | Dev | Prod |
@@ -89,11 +90,44 @@ $ docker run -p 8080:8080 mcccareplan/mccapi
 
 $ docker run -d -p 8080:8080 mcccareplan/mccapi
 
-### Running with environement variables 
+### Running with environment variables 
 
 The follow is an example of passing a new default FHIR server address to the API and running detached.
 
 $ docker run -d -e FHIR_DEFAULT_SERVER_ADDRESS='http://myfhireServer' -p 8080:8080 mcccareplan/mccapi
+
+
+### Running with an FHIR Query Override file
+
+Path to set the override file to: /usr/local/mcc-api/fhirqueries.properties using the -v parameter
+
+$ docker run -v {Full Directory Path}:/usr/local/mcc-api -d -p 8080:8080 mcccareplan/mccapi
+
+#### Confirming the configuration on a detached image
+$ docker exec {image name} ls /usr/local/mcc-api
+fhirqueries.properties
+
+$ docker exec {image name} cat /usr/local/mcc-api/fhirqueries.properties
+
+
+#### Worked example
+
+$mkdir ~/mcc-api
+$cp src/test/over
+$docker run -v /Users/jerrygoodnough/mccapi:/usr/local/mcc-api -p 8081:8080 mcccareplan/mccapi
+
+c.c.nih.niddk.mccapi.MccApiApplication   : The following profiles are active: prod
+o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.35]
+o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 3319 ms
+c.c.n.n.m.managers.FHIRServerManager     : Default FHIR Server = https://api.logicahealth.org/MCCeCarePlanTest/open
+c.c.n.n.m.managers.FHIRServerManager     : Default FHIR Secure Server = https://api.logicahealth.org/MCCeCarePlanTest/data
+c.c.n.n.mccapi.managers.QueryManager     : Using a FHIR Query Override file:/usr/local/mcc-api/fhirqueries.properties
+o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+c.c.nih.niddk.mccapi.MccApiApplication   : Started MccApiApplication in 7.955 seconds (JVM running for 9.071)
+
 
 ### Confirming the image is running
 
