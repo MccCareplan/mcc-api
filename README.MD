@@ -35,7 +35,7 @@ Preliminary testings of the effect of the use of Native FHIR types on OpenAPI/Sw
 - Reference - Conflicting setter definitions for property "referenceElement"
 
 ##  Customizing FHIR Queries
-All primary FHIR queries are now loaded from the file fhirqueries.properties (Add Github link here).
+All primary FHIR queries are now loaded from the file fhirqueries.properties (https://github.com/MccCareplan/mcc-api/blob/master/src/main/resources/fhirqueries.properties).
 This file should be used as a reference to queries in use and the parameters accepted by these calls by default
 If a file called fhirqueries.properties is placed in /usr/local/mcc-api any queries found in there will take precedence over the normal configuration. 
 For implementations that are overriding these queries it is recommended that they examine any changes and additions in the main fhirqueries.properties file before upgrading to determine if any of their overrides need to be updates.
