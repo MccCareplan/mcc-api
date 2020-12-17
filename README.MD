@@ -34,6 +34,48 @@ Preliminary testings of the effect of the use of Native FHIR types on OpenAPI/Sw
 - Observation - Conflicting setter definitions for property "referenceElement"
 - Reference - Conflicting setter definitions for property "referenceElement"
 
+##  Customizing FHIR Queries
+All primary FHIR queries are now loaded from the file fhirqueries.properties (Add Github link here).
+This file should be used as a reference to queries in use and the parameters accepted by these calls by default
+If a file called fhirqueries.properties is placed in /usr/local/mcc-api any queries found in there will take precedence over the normal configuration. 
+For implementations that are overriding these queries it is recommended that they examine any changes and additions in the main fhirqueries.properties file before upgrading to determine if any of their overrides need to be updates.
+
+When overriding a specific query it is possible to disable it by set it to empty.
+
+For example the MedicationStatement query normally looks like:
+
+MedicationStatement.Query=/MedicationStatement?subject={subject}
+
+to disable it the following would be placed in the override file:
+
+MedicationStatement.Query=
+
+### Notes on the Override system
+The existing templates include the basic parameters passed to the rest endpoints in the API. 
+There controllers have been engineered to accept open parameter list tht can be used by the templates system to allow custom consumers to meet their particular needs.
+
+For example the medication statement query looks like:
+
+MedicationStatement.Query=/MedicationStatement?subject={subject}
+
+If the consumer wanted to restict the scope of of the query to pass in a date string the query might look like:
+
+MedicationStatement.Query=/MedicationStatement?subject={subject}&date={date}
+
+The call to medications summary might look like:
+
+{Server}/medicationsummary/?subject=1122&date=ge2018-10-1
+
+This should result in a FHIR query for MedicationStatements for patient 1122 that are after Oct 1st 2018. 
+The medication summary would then include all MedicationRequests and MedicationStatements after 10/1/2018. 
+In this example the MediciationRequest.Query could also be updated to take the date parameter if desired.  
+
+
+
+
+
+
+
 ## Environment Variables
 All environment variables are stored in the applications.properties file. 
 In the default configuration the profiles that are provided are: [default], dev and prod. 
