@@ -36,6 +36,7 @@ public class ReferenceResolver {
             if (out == null)
             {
                 try {
+                    //DIRECT-FHIR-REF
                     out = ctx.getClient().fetchResourceFromUrl(Practitioner.class, ref.getReference());
                     if (checkOutput(out, ref)) practitionerCache.put(key,out);
                 } catch (Exception e) {
@@ -50,6 +51,7 @@ public class ReferenceResolver {
         Patient out = null;
         if (Helper.isReferenceOfType(ref, "Patient")) {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(Patient.class, ref.getReference());
                 checkOutput(out,ref);
             } catch (Exception e) {
@@ -63,6 +65,7 @@ public class ReferenceResolver {
         RelatedPerson out = null;
         if (Helper.isReferenceOfType(ref, "RelatedPerson")) {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(RelatedPerson.class, ref.getReference());
                 if (checkOutput(out,ref))
                 {
@@ -80,6 +83,7 @@ public class ReferenceResolver {
         if (Helper.isReferenceOfType(ref, "MedicationRequest"))
         {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(MedicationRequest.class, ref.getReference());
                 checkOutput(out,ref);
             } catch (Exception e) {
@@ -94,6 +98,7 @@ public class ReferenceResolver {
         if (Helper.isReferenceOfType(ref, "DetectedIssue"))
         {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(DetectedIssue.class, ref.getReference());
                 checkOutput(out,ref);
             } catch (Exception e) {
@@ -108,6 +113,7 @@ public class ReferenceResolver {
         if (Helper.isReferenceOfType(ref, "Observation"))
         {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(Observation.class, ref.getReference());
                 checkOutput(out,ref);
             } catch (Exception e) {
@@ -123,6 +129,7 @@ public class ReferenceResolver {
         if (Helper.isReferenceOfType(ref, "PractitionerRole"))
         {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl( PractitionerRole.class, ref.getReference());
                 checkOutput(out,ref);
             } catch (Exception e) {
@@ -137,6 +144,7 @@ public class ReferenceResolver {
         if (Helper.isReferenceOfType(ref, "RiskAssessment"))
         {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(RiskAssessment.class, ref.getReference());
                 checkOutput(out,ref);
             } catch (Exception e) {
@@ -151,6 +159,7 @@ public class ReferenceResolver {
         if (Helper.isReferenceOfType(ref, "ServiceRequest"))
         {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(ServiceRequest.class, ref.getReference());
                 checkOutput(out,ref);
             } catch (Exception e) {
@@ -165,6 +174,7 @@ public class ReferenceResolver {
         if (Helper.isReferenceOfType(ref, "MedicationStatement"))
         {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(MedicationStatement.class, ref.getReference());
                 checkOutput(out,ref);
             } catch (Exception e) {
@@ -179,6 +189,7 @@ public class ReferenceResolver {
         if (Helper.isReferenceOfType(ref, "NutritionOrder"))
         {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(NutritionOrder.class, ref.getReference());
                 checkOutput(out,ref);
             } catch (Exception e) {
@@ -194,6 +205,7 @@ public class ReferenceResolver {
         if (Helper.isReferenceOfType(ref, "Condition"))
         {
             try {
+                //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(Condition.class, ref.getReference());
                 checkOutput(out,ref);
             } catch (Exception e) {
@@ -211,6 +223,7 @@ public class ReferenceResolver {
             out = medicationCache.getIfPresent(key);
             if (out == null) {
                 try {
+                    //DIRECT-FHIR-REF
                     out = ctx.getClient().fetchResourceFromUrl(Medication.class, ref.getReference());
                     if (checkOutput(out, ref)) medicationCache.put(key,out);
                 } catch (Exception e) {
@@ -229,6 +242,7 @@ public class ReferenceResolver {
             out = organizationCache.getIfPresent(key);
             if (out == null) {
                 try {
+                    //DIRECT-FHIR-REF
                     out = ctx.getClient().fetchResourceFromUrl(Organization.class, ref.getReference());
                     if (checkOutput(out, ref)) organizationCache.put(key,out);
                 } catch (Exception e) {
@@ -246,6 +260,7 @@ public class ReferenceResolver {
         if (out == null)
         {
         try {
+            //DIRECT-FHIR-REF
             out = ctx.getClient().fetchResourceFromUrl(Organization.class, ref);
             if (checkOutput(out,ref)) organizationCache.put(key,out);
         } catch (Exception e) {

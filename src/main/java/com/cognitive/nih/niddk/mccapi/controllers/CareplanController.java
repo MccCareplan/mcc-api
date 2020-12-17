@@ -5,40 +5,56 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccCarePlan;
 import com.cognitive.nih.niddk.mccapi.data.MccCondition;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
+import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.mappers.CareplanMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringSubstitutor;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CarePlan;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@Slf4j
 @CrossOrigin(origins = "*")
 public class CareplanController {
 
+    private final QueryManager queryManager;
+
+    public CareplanController(QueryManager queryManager) {
+        this.queryManager = queryManager;
+    }
 
     @GetMapping("/careplan")
-    public MccCarePlan[] getCarePlans(@RequestParam(required = true, name = "subject") String subjectId,  @RequestHeader Map<String, String> headers) {
+    public MccCarePlan[] getCarePlans(@RequestParam(required = true, name = "subject") String subjectId,  @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         ArrayList<MccCarePlan> out = new ArrayList<>();
+
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
+        Map<String,String> values = new HashMap<>();
+        String callUrl=queryManager.setupQuery("CarePlan.Query",values,webRequest);
 
-        Bundle results = client.search().forResource(CarePlan.class).where(CarePlan.SUBJECT.hasId(subjectId))
-                .returnBundle(Bundle.class).execute();
+        if (callUrl != null) {
+            Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
 
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
+            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
 
-        for (Bundle.BundleEntryComponent e : results.getEntry()) {
-            if (e.getResource().fhirType() == "CarePlan") {
-                CarePlan c = (CarePlan) e.getResource();
-                out.add(mapCarePlan(c, client, ctx));
+            for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                if (e.getResource().fhirType() == "CarePlan") {
+                    CarePlan c = (CarePlan) e.getResource();
+                    out.add(mapCarePlan(c, client, ctx));
+                }
             }
         }
 
@@ -48,16 +64,29 @@ public class CareplanController {
     }
 
     @GetMapping("/careplan/{id}")
-    public MccCarePlan getCareplan(@PathVariable(value = "id") String id,  @RequestHeader Map<String, String> headers) {
-        //Create a dummy patient for the mnoment
+    public MccCarePlan getCareplan(@PathVariable(value = "id") String id,  @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         MccCarePlan c;
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
 
-        CarePlan fc = client.read().resource(CarePlan.class).withId(id).execute();
-        String subjectId = fc.getSubject().getId();
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
-        c = mapCarePlan(fc, client, ctx);
+        //   "/CarePlan/{id}"
+        Map<String,String> values = new HashMap<>();
+        values.put("id",id);
+        String callUrl=queryManager.setupQuery("CarePlan.Lookup",values,webRequest);
+
+        if (callUrl != null) {
+            CarePlan fc = client.fetchResourceFromUrl(CarePlan.class, callUrl);
+            //CarePlan fc = client.read().resource(CarePlan.class).withId(id).execute();
+            String subjectId = fc.getSubject().getId();
+            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
+            c = mapCarePlan(fc, client, ctx);
+        }
+        else
+        {
+            //TODO: Return Unavailable carecplac
+            c = new MccCarePlan();
+            log.warn("Careplan "+id+" disabled");
+        }
         return c;
     }
 

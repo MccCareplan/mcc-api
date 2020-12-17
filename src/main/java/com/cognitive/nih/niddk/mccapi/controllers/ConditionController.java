@@ -6,15 +6,18 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccCondition;
 import com.cognitive.nih.niddk.mccapi.exception.ItemNotFoundException;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
+import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.CarePlan;
 import org.hl7.fhir.r4.model.Condition;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -22,28 +25,45 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class ConditionController {
 
-    private void addCondtionToConditionList(ConditionLists list, Condition c, Context ctx) {
+    private final QueryManager queryManager;
+
+    public ConditionController(QueryManager queryManager) {
+        this.queryManager = queryManager;
+    }
+
+    private void addConditionToConditionList(ConditionLists list, Condition c, Context ctx) {
         list.addCondition(c, ctx);
     }
 
     @GetMapping("/condition/{id}")
-    public MccCondition getCodition(@PathVariable(value = "id") String id, @RequestHeader Map<String, String> headers) {
+    public MccCondition getCondition(@PathVariable(value = "id") String id, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         MccCondition c;
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
-        Condition fc = client.read().resource(Condition.class).withId(id).execute();
-        if (fc == null) {
-            throw new ItemNotFoundException(id);
+        Map<String, String> values = new HashMap<>();
+        values.put("id",id);
+        String callUrl = queryManager.setupQuery("Condition.Lookup", values, webRequest);
+
+        if (callUrl != null) {
+
+            Condition fc = client.fetchResourceFromUrl(Condition.class, callUrl);
+
+            //Condition fc = client.read().resource(Condition.class).withId(id).execute();
+            if (fc == null) {
+                throw new ItemNotFoundException(id);
+            }
+            String subjectId = fc.getSubject().getId();
+            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
+            ctx.setClient(client);
+            c = mapCondition(fc, client, ctx);
+        } else {
+            c = new MccCondition();
         }
-        String subjectId = fc.getSubject().getId();
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client);
-        c = mapCondition(fc, client, ctx);
         return c;
     }
 
     @GetMapping("/conditionsummary")
-    public ConditionLists getConditionSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers) {
+    public ConditionLists getConditionSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         ConditionLists out = new ConditionLists();
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
@@ -51,32 +71,44 @@ public class ConditionController {
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
 
         log.info("Fetching condition summary");
+        Map<String, String> values = new HashMap<>();
         //First we get the problem list items
         Bundle results;
         try {
-            results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://terminology.hl7.org/CodeSystem/condition-category", "problem-list-item"))
-                    .returnBundle(Bundle.class).execute();
-            ctx.setClient(client);
-            for (Bundle.BundleEntryComponent e : results.getEntry()) {
-                if (e.getResource().fhirType() == "Condition") {
-                    Condition c = (Condition) e.getResource();
-                    addCondtionToConditionList(out, c, ctx);
+
+            String callUrl = queryManager.setupQuery("Condition.QueryProblemList", values, webRequest);
+
+            if (callUrl != null) {
+                results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+
+                //results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://terminology.hl7.org/CodeSystem/condition-category", "problem-list-item"))
+                //    .returnBundle(Bundle.class).execute();
+                ctx.setClient(client);
+                for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                    if (e.getResource().fhirType().compareTo("Condition")==0) {
+                        Condition c = (Condition) e.getResource();
+                        addConditionToConditionList(out, c, ctx);
+                    }
                 }
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             log.warn("Error fetching problem list items fetch condition summary");
         }
         //Now we try for Health concerns
         try {
-            results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://hl7.org/fhir/us/core/CodeSystem/condition-category", "health-concern"))
-                    .returnBundle(Bundle.class).execute();
-            ctx.setClient(client);
-            for (Bundle.BundleEntryComponent e : results.getEntry()) {
-                if (e.getResource().fhirType() == "Condition") {
-                    Condition c = (Condition) e.getResource();
-                    addCondtionToConditionList(out, c, ctx);
+            String callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns", values);
+
+            if (callUrl != null) {
+                results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+
+                //results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://hl7.org/fhir/us/core/CodeSystem/condition-category", "health-concern"))
+                //   .returnBundle(Bundle.class).execute();
+                ctx.setClient(client);
+                for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                    if (e.getResource().fhirType().compareTo("Condition")==0) {
+                        Condition c = (Condition) e.getResource();
+                        addConditionToConditionList(out, c, ctx);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -89,46 +121,53 @@ public class ConditionController {
     }
 
     @GetMapping("/condition")
-    public MccCondition[] getConditions(@RequestParam(required = true, name = "subject") String subjectId, @RequestHeader Map<String, String> headers) {
+    public MccCondition[] getConditions(@RequestParam(required = true, name = "subject") String subjectId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         ArrayList<MccCondition> out = new ArrayList<>();
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
 
         Bundle results;
+        Map<String, String> values = new HashMap<>();
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
 
         log.info("Fetching conditions");
 
         try {
-            results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://terminology.hl7.org/CodeSystem/condition-category", "problem-list-item"))
-                    .returnBundle(Bundle.class).execute();
-            ctx.setClient(client);
-            for (Bundle.BundleEntryComponent e : results.getEntry()) {
-                if (e.getResource().fhirType() == "Condition") {
-                    Condition c = (Condition) e.getResource();
-                    out.add(mapCondition(c, client, ctx));
+            String callUrl = queryManager.setupQuery("Condition.QueryProblemList", values, webRequest);
+
+            if (callUrl != null) {
+                results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+                //results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://terminology.hl7.org/CodeSystem/condition-category", "problem-list-item"))
+                //        .returnBundle(Bundle.class).execute();
+                ctx.setClient(client);
+                for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                    if (e.getResource().fhirType().compareTo("Condition") ==0) {
+                        Condition c = (Condition) e.getResource();
+                        out.add(mapCondition(c, client, ctx));
+                    }
                 }
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             log.warn("Error fetching problem list items while fetching conditions");
         }
 
         ///Now try for health concerns
         try {
-            results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://hl7.org/fhir/us/core/CodeSystem/condition-category", "health-concern"))
-                    .returnBundle(Bundle.class).execute();
-            ctx.setClient(client);
-            for (Bundle.BundleEntryComponent e : results.getEntry()) {
-                if (e.getResource().fhirType() == "Condition") {
-                    Condition c = (Condition) e.getResource();
-                    out.add(mapCondition(c, client, ctx));
+            String callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns", values);
+
+            if (callUrl != null) {
+                results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+                //       results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://hl7.org/fhir/us/core/CodeSystem/condition-category", "health-concern"))
+                //    .returnBundle(Bundle.class).execute();
+                ctx.setClient(client);
+                for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                    if (e.getResource().fhirType().compareTo("Condition")==0) {
+                        Condition c = (Condition) e.getResource();
+                        out.add(mapCondition(c, client, ctx));
+                    }
                 }
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             log.warn("Error fetching health concerns while fetching Conditions");
         }
 
