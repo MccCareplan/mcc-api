@@ -16,7 +16,7 @@ public class PractitionerMapper {
         out.setName(Helper.getBestName(in.getName()));
         out.setRelFhirId(Helper.getIdString(in.getIdElement()));
 
-        Address a = Helper.findBestAddress(in.getAddress(), "home");
+        Address a = Helper.findBestAddress(in.getAddress(), "work");
         if (a != null) {
             out.setAddress(Helper.addressToString(a));
         }
