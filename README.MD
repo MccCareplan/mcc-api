@@ -1,7 +1,7 @@
 # Introduction
 This application is the backend to a Multiple Chronic Condition CarePlan Application set.
 
-It acts a the primary data anayslis layer and relies on one or more FHIR servers as the source of primary information.
+It acts as the primary data analyses layer and relies on one or more FHIR servers as the source of primary information.
 
 # Public Deployments
 https://mcc-niddk-backend.wl.r.appspot.com/
