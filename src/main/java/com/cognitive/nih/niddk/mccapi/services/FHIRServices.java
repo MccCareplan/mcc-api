@@ -36,12 +36,12 @@ public class FHIRServices {
     public IGenericClient getClient(Map<String, String> headers) {
         IGenericClient client;
         FHIRServerManager srvMgr = FHIRServerManager.getManager();
-        FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
+        //FhirContext fhirContext = FHIRServices.getFhirServices().getR4Context();
 
         if (headers.containsKey("mcc-fhir-server")) {
             String server = headers.get("mcc-fhir-server");
             log.info("Server is " + server);
-            client = fhirContext.newRestfulGenericClient(server);
+            client = stu4Context.newRestfulGenericClient(server);
             if (headers.containsKey("mcc-token")) {
                 BearerTokenAuthInterceptor authInterceptor = new BearerTokenAuthInterceptor(headers.get("mcc-token"));
                 client.registerInterceptor(authInterceptor);
@@ -49,7 +49,7 @@ public class FHIRServices {
         } else {
             log.warn("No Server provided - using default");
             FHIRServer srv = srvMgr.getDefaultFHIRServer();
-            client = fhirContext.newRestfulGenericClient(srv.getBaseURL());
+            client = stu4Context.newRestfulGenericClient(srv.getBaseURL());
         }
         if (srvMgr.isEnableFHIRLogging()) {
             client.registerInterceptor(srvMgr.getLoggingInterceptor());
