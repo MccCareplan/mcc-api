@@ -2,9 +2,11 @@ package com.cognitive.nih.niddk.mccapi.data.primative;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @JsonInclude(JsonInclude.Include. NON_NULL)
-public @Data class MccTiming {
+public @Data class MccTiming implements Comparable {
 
     public static final String fhirType = "Timing";
 
@@ -12,6 +14,19 @@ public @Data class MccTiming {
     private MccCodeableConcept code;
     private Repeat repeat;
     private String readable;
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof MccTiming)
+        {
+            MccTiming in = (MccTiming) o;
+
+            //First we compare the events
+            //return readable.compareTo(in.readable);
+        }
+        log.warn("Comparison between MccTiming and "+o.getClass().getName()+" not yet supported");
+        return 0;
+    }
 
     public MccDateTime[] getEvent() {
         return event;

@@ -18,7 +18,7 @@ public class OrganizationMapper {
         out.setName(NameResolver.getName(in,ctx));
         out.setRelFhirId(Helper.getIdString(in.getIdElement()));
 
-        Address a = Helper.findBestAddress(in.getAddress(), "home");
+        Address a = Helper.findBestAddress(in.getAddress(), "work");
         if (a != null) {
             out.setAddress(Helper.addressToString(a));
         }
