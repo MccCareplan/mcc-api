@@ -179,6 +179,8 @@ $ curl --location --request GET 'http://localhost:8080/conditionsummary?subject=
 The latest docker images are found on docker hub at https://hub.docker.com/repository/docker/mcccareplan/mccapi
 
 #Change log
+## Release 1.0.7-SNAPSHOT
+- Fix careplan query in Medication request to use a simple lookup. 
 
 ## Release 1.0.6-SNAPSHOT
 - All observation related fhir query keys and templates have changed to have mode specific versions. Consult fhirqueries.properties for the 

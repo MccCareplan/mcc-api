@@ -32,22 +32,27 @@ public class MedicationController {
             String[] cps = careplanId.split(",");
             // Fetch the careplan and grab medications
             for (String cpId : cps) {
-                //DIRECT-FHIR-REF
-                CarePlan cp = client.fetchResourceFromUrl(CarePlan.class, cpId);
-                if (cp != null) {
-                    List<CarePlan.CarePlanActivityComponent> acp = cp.getActivity();
-                    for (CarePlan.CarePlanActivityComponent a : acp) {
-                        if (a.hasReference()) {
-                            Reference ref = a.getReference();
-                            if (Helper.isReferenceOfType(ref, "MedicationRequest")) {
-                                String key = ref.getReference();
-                                if (ref != null) {
-                                    if (carePlanMedicationsRequests.containsKey(key)) {
-                                        String val = carePlanMedicationsRequests.get(key);
-                                        carePlanMedicationsRequests.put(key, val + "," + cpId);
+                Map<String, String> values = new HashMap<>();
+                values.put("id", cpId);
+                String callUrl = queryManager.setupQuery("CarePlan.Lookup", values);
 
-                                    } else {
-                                        carePlanMedicationsRequests.put(key, cpId);
+                if (callUrl != null) {
+                    CarePlan cp = client.fetchResourceFromUrl(CarePlan.class, cpId);
+                    if (cp != null) {
+                        List<CarePlan.CarePlanActivityComponent> acp = cp.getActivity();
+                        for (CarePlan.CarePlanActivityComponent a : acp) {
+                            if (a.hasReference()) {
+                                Reference ref = a.getReference();
+                                if (Helper.isReferenceOfType(ref, "MedicationRequest")) {
+                                    String key = ref.getReference();
+                                    if (ref != null) {
+                                        if (carePlanMedicationsRequests.containsKey(key)) {
+                                            String val = carePlanMedicationsRequests.get(key);
+                                            carePlanMedicationsRequests.put(key, val + "," + cpId);
+
+                                        } else {
+                                            carePlanMedicationsRequests.put(key, cpId);
+                                        }
                                     }
                                 }
                             }
@@ -97,8 +102,8 @@ public class MedicationController {
         HashMap<String, String> carePlanMedicationsRequests = new HashMap<>();
         getClanPlanMedReqIds(careplanId, carePlanMedicationsRequests, client, ctx);
 
-        Map<String,String> values = new HashMap<>();
-        String callUrl=queryManager.setupQuery("MedicationRequest.Query",values,webRequest);
+        Map<String, String> values = new HashMap<>();
+        String callUrl = queryManager.setupQuery("MedicationRequest.Query", values, webRequest);
 
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
@@ -112,7 +117,7 @@ public class MedicationController {
             }
         }
 
-        callUrl=queryManager.setupQuery("MedicationStatement.Query",values,webRequest);
+        callUrl = queryManager.setupQuery("MedicationStatement.Query", values, webRequest);
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             //results = client.search().forResource(MedicationStatement.class).where(MedicationStatement.SUBJECT.hasId(subjectId))
@@ -139,8 +144,8 @@ public class MedicationController {
         HashMap<String, String> carePlanMedicationsRequests = new HashMap<>();
         getClanPlanMedReqIds(careplanId, carePlanMedicationsRequests, client, ctx);
 
-        Map<String,String> values = new HashMap<>();
-        String callUrl=queryManager.setupQuery("MedicationRequest.Query",values,webRequest);
+        Map<String, String> values = new HashMap<>();
+        String callUrl = queryManager.setupQuery("MedicationRequest.Query", values, webRequest);
 
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
@@ -155,7 +160,7 @@ public class MedicationController {
             }
         }
 
-        callUrl=queryManager.setupQuery("MedicationStatement.Query",values,webRequest);
+        callUrl = queryManager.setupQuery("MedicationStatement.Query", values, webRequest);
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             //results = client.search().forResource(MedicationStatement.class).where(MedicationStatement.SUBJECT.hasId(subjectId))
