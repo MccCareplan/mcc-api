@@ -74,6 +74,20 @@ public class QueryManager {
         return cc.getString(key);
     }
 
+    public boolean doesQueryExist(String key)
+    {
+        String q = cc.getString(key);
+        if ( q == null)
+        {
+            return false;
+        }
+        else if (q.isEmpty())
+        {
+            return false;
+        }
+        return true;
+    }
+
     public void getQueryParameters(Map<String, String> map, WebRequest request)
     {
         Map<String, String[]> pm = request.getParameterMap();
