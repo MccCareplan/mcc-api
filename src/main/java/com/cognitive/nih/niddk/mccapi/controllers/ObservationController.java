@@ -4,12 +4,14 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccObservation;
 import com.cognitive.nih.niddk.mccapi.data.MccValueSet;
+import com.cognitive.nih.niddk.mccapi.data.primative.GenericType;
 import com.cognitive.nih.niddk.mccapi.exception.ItemNotFoundException;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.managers.ValueSetManager;
 import com.cognitive.nih.niddk.mccapi.mappers.ObservationMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
+import com.cognitive.nih.niddk.mccapi.util.Helper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Observation;
@@ -38,14 +40,20 @@ public class ObservationController {
 
             for (String key : calls) {
                 String callUrl = queryManager.setupQuery(key, values, webRequest);
-                Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
-                //In general the we expect the return value to be in descending date order
+                try {
+                    Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+                    //In general the we expect the return value to be in descending date order
 
-                for (Bundle.BundleEntryComponent e : results.getEntry()) {
-                    if (e.getResource().fhirType().compareTo("Observation") == 0) {
-                        Observation o = (Observation) e.getResource();
-                        out.add(ObservationMapper.fhir2local(o, ctx));
+                    for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                        if (e.getResource().fhirType().compareTo("Observation") == 0) {
+                            Observation o = (Observation) e.getResource();
+                            out.add(ObservationMapper.fhir2local(o, ctx));
+                        }
                     }
+                }
+                catch(Exception e)
+                {
+
                 }
             }
             //Now we need possibly to sort the output
@@ -89,7 +97,7 @@ public class ObservationController {
         list = this.QueryObservations(baseQuery, mode, client, subjectId, "descending", webRequest, headers, values);
 
         if (list.size() == 0) {
-            throw new ItemNotFoundException(code);
+            return getEmptyObservation(code,baseQuery);
         }
 
         return list.get(0);
@@ -97,6 +105,37 @@ public class ObservationController {
 
     }
 
+    @GetMapping("/find/latest/observationbyvalueset")
+    public MccObservation getLatestObservationByValueSet(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "valueset") String valueset, @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+
+        ArrayList<MccObservation> list = new ArrayList<>();
+
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
+        String baseQuery = "Observation.QueryLatestValueSetExpanded";
+        MccValueSet valueSetObj = ValueSetManager.getValueSetManager().findValueSet(valueset);
+        if (valueSetObj != null) {
+
+            Map<String, String> values = new HashMap<>();
+            values.put("codes", valueSetObj.asQueryString());
+            values.put("count", Integer.toString(1));
+
+
+            list = this.QueryObservations(baseQuery, mode, client, subjectId, "descending", webRequest, headers, values);
+
+        } else {
+            log.warn("Search for non-existent values set: "+valueset);
+        }
+
+
+        if (list.size() == 0) {
+            return getEmptyObservation(valueset,baseQuery);
+        }
+
+        return list.get(0);
+
+
+    }
     @GetMapping("/observations")
     public MccObservation[] getObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code, @RequestParam(name = "count", defaultValue = "100") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
 
@@ -139,8 +178,8 @@ public class ObservationController {
             out = this.QueryObservations(baseQuery, mode, client, subjectId, sortOrder, webRequest, headers, values);
 
         } else {
-            throw new ItemNotFoundException("No such valaue set: " + valueset);
 
+            log.warn("Search for non-existent values set: "+valueset);
         }
 
         if (out.size()>maxItems)
@@ -187,6 +226,16 @@ public class ObservationController {
                 out.add(key);
             }
         }
+        return out;
+    }
+
+    MccObservation getEmptyObservation(String codes, String context)
+    {
+        MccObservation out = new MccObservation();
+
+        out.setValue(GenericType.fromString("No Data"));
+        out.setStatus("notfound");
+        out.setFHIRId("");
         return out;
     }
 }
