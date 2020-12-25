@@ -40,7 +40,7 @@ public class GoalLists {
         activeKeys.put("proposed",active);
         activeKeys.put("planned",active);
         activeKeys.put("accepted",active);
-        activeKeys.put("on-hold",active);
+        activeKeys.put("on-hold",inactive);
         activeKeys.put("completed",inactive);
         activeKeys.put("cancelled",inactive);
         activeKeys.put("rejected",active);
