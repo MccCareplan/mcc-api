@@ -1,6 +1,9 @@
 package com.cognitive.nih.niddk.mccapi.util;
 
 import com.cognitive.nih.niddk.mccapi.data.Context;
+import com.cognitive.nih.niddk.mccapi.data.MccCarePlan;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccCoding;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
@@ -865,5 +868,32 @@ public class Helper {
         } else {
             return unitsOfTime.get(code);
         }
+    }
+
+    public static MccCodeableConcept createCodeableConcept(String text, String tokens)
+    {
+        MccCodeableConcept out = new MccCodeableConcept();
+        String[] toks = tokens.split(",");
+        MccCoding[] codes = new MccCoding[toks.length];
+        int index =0;
+        out.setText(text);
+        for (String tok: toks)
+        {
+            MccCoding cd = new MccCoding();
+            String[] parts = tok.split("|");
+            if (parts.length== 1)
+            {
+                cd.setCode(parts[0]);
+            }
+            else if (parts.length>2)
+            {
+                cd.setSystem(parts[0]);
+                cd.setCode((parts[1]));
+            }
+            codes[index]=cd;
+            index++;
+        }
+        out.setCoding(codes);
+        return out;
     }
 }
