@@ -181,6 +181,17 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 #Change log
 ## Release 1.0.7-SNAPSHOT
 - Fix careplan query in Medication request to use a simple lookup. 
+- Added /find/latest/obdservationbyvalueset operation. 
+- onhold goals at now considerred inactive and there targets will not be on the active target list.
+- Targeted observation queries not longer throw a 404, but rather return empty observations (status "notfound")
+- Added Exception Guards on calling Observations of the FHIR Server.
+- Various Mapping fixes 
+- Make a best effort at providing a Display value for CodeableConcept
+- New fhirquery keys
+  -   Observation.QueryLatestValueSetExpanded.code
+  -   Observation.QueryLatestValueSetExpanded.component
+  -   Observation.QueryLatestValueSetExpanded.combo
+  -   Observation.QueryLatestValueSetExpanded.panel
 
 ## Release 1.0.6-SNAPSHOT
 - All observation related fhir query keys and templates have changed to have mode specific versions. Consult fhirqueries.properties for the 
