@@ -23,4 +23,13 @@ public @Data class GenericType {
     private MccTiming timingValue;
     private MccInstant instantValue;
     private MccIdentifer identiferValue;
+
+
+    public static GenericType fromString(String in)
+    {
+        GenericType out = new GenericType();
+        out.setStringValue(in);
+        out.setValueType("String");
+        return out;
+    }
 }
