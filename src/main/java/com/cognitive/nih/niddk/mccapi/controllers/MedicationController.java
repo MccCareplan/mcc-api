@@ -37,7 +37,8 @@ public class MedicationController {
                 String callUrl = queryManager.setupQuery("CarePlan.Lookup", values);
 
                 if (callUrl != null) {
-                    CarePlan cp = client.fetchResourceFromUrl(CarePlan.class, cpId);
+                    //Lookup Careplan
+                    CarePlan cp = client.fetchResourceFromUrl(CarePlan.class, callUrl);
                     if (cp != null) {
                         List<CarePlan.CarePlanActivityComponent> acp = cp.getActivity();
                         for (CarePlan.CarePlanActivityComponent a : acp) {
