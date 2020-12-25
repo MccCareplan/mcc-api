@@ -13,14 +13,19 @@ public class CodeableConceptMapper {
     public static MccCodeableConcept fhir2local(CodeableConcept in, Context ctx)
     {
         MccCodeableConcept out = new MccCodeableConcept();
-        out.setText(in.getText());
+        String text = in.getText();
         MccCoding[] codes = new MccCoding[in.getCoding().size()];
         int i=0;
         for (Coding c: in.getCoding())
         {
             codes[i]=CodingMapper.fhir2local(c, ctx);
+            if (text == null)
+            {
+                text = c.getDisplay();
+            }
             i++;
         }
+        out.setText(text);
         out.setCoding(codes);
         return out;
     }
