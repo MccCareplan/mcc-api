@@ -181,6 +181,8 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 #Change log
 
 ## Release 1.0.6-SNAPSHOT
+- Added new support for finding the "best" and "supported" careplans. New calls at /find/best/careplan/?Subject=xxxx & /find/supported/careplans/?subject=xxxx
+- New type added MccCarePlanSummary
 - All observation related fhir query keys and templates have changed to have mode specific versions. Consult fhirqueries.properties for the 
   new keys and templates.
 - All observation related queries now support a mode parameter which controls the specific observation code used for the

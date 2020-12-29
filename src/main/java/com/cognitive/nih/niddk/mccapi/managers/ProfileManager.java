@@ -46,4 +46,27 @@ public class ProfileManager {
         }
         return out.toString();
     }
+
+    public List<String> getProfilesForConceptAsList(CodeableConcept concept)
+    {
+        //Look for more than one coding.
+        ArrayList<String> out = new ArrayList<>();
+
+        List<Coding> cds = concept.getCoding();
+        for (Coding cd: cds) {
+            ArrayList<String> match = ValueSetManager.getValueSetManager().findCodesValuesSets(cd.getSystem(), cd.getCode());
+
+            if (match != null) {
+
+                for (String vs : match) {
+                    if (profileMap.containsKey(vs)) {
+                        out.add(profileMap.get(vs));
+                    }
+                }
+                //We have a match so we stop looking
+                break;
+            }
+        }
+        return out;
+    }
 }

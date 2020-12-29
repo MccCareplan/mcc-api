@@ -4,26 +4,23 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccCarePlan;
 import com.cognitive.nih.niddk.mccapi.data.MccCondition;
+import com.cognitive.nih.niddk.mccapi.data.MccCarePlanSummary;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
+import com.cognitive.nih.niddk.mccapi.managers.ProfileManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.mappers.CareplanMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.text.StringSubstitutor;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CarePlan;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Reference;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @Slf4j
@@ -35,6 +32,158 @@ public class CareplanController {
     public CareplanController(QueryManager queryManager) {
         this.queryManager = queryManager;
     }
+
+    /**
+     * Return a list of care plans that are active and that address recognizated MCC Conditions
+     * @param subjectId
+     * @param headers
+     * @param webRequest
+     * @return
+     */
+    @GetMapping("/find/supported/careplans")
+    public MccCarePlanSummary[] getSupportedCarePlans(@RequestParam(required = true, name = "subject") String subjectId,  @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+        ArrayList<MccCarePlanSummary> out = new ArrayList<>();
+
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
+        Map<String,String> values = new HashMap<>();
+        String callUrl=queryManager.setupQuery("CarePlan.Query",values,webRequest);
+
+        if (callUrl != null) {
+            Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+
+            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
+            ctx.setClient(client);
+
+            for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                if (e.getResource().fhirType() == "CarePlan") {
+                    CarePlan c = (CarePlan) e.getResource();
+                    if (c.getStatus().toCode().compareTo("active")==0 && c.getIntent().toCode().compareTo("plan") ==0 ) {
+                        Set<String> profiles = carePlanRecognizedFor(c, ctx);
+                        if (profiles.size()>0) {
+                            out.add(CareplanMapper.fhir2Summary(c, profiles, ctx));
+                        }
+                    }
+                }
+            }
+        }
+
+        MccCarePlanSummary[] outA = new MccCarePlanSummary[out.size()];
+        outA = out.toArray(outA);
+        return outA;
+    }
+
+    /**
+     * Return a list of care plans that are active and that address recognized MCC Conditions, sorted
+     * @param subjectId
+     * @poram matchScheme    order, profiles, created, lastModified
+     * @param headers
+     * @param webRequest
+     * @return
+     */
+    @GetMapping("/find/best/careplan")
+    public MccCarePlanSummary[] getBest(@RequestParam(required = true, name = "subject") String subjectId,  @RequestParam(name = "matchScheme", defaultValue = "profiles") String matchScheme, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+        ArrayList<MccCarePlanSummary> out = new ArrayList<>();
+
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
+        Map<String,String> values = new HashMap<>();
+        String callUrl=queryManager.setupQuery("CarePlan.Query",values,webRequest);
+
+        if (callUrl != null) {
+            Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+
+            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
+            ctx.setClient(client);
+
+            for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                if (e.getResource().fhirType() == "CarePlan") {
+                    CarePlan c = (CarePlan) e.getResource();
+                    if (c.getStatus().toCode().compareTo("active")==0 && c.getIntent().toCode().compareTo("plan") ==0 ) {
+                        Set<String> addresses = carePlanRecognizedFor(c, ctx);
+                        if (addresses.size()>0) {
+                            out.add(CareplanMapper.fhir2Summary(c, addresses,ctx));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (out.size()>1)
+        {
+            MccCarePlanSummary first = out.get(0);
+            //Ok We have more then one result with need to use a scheme to sort thm
+            switch (matchScheme)
+            {
+                case "created":
+                {
+                    out.sort(first.CompareByCreate().reversed());
+                    break;
+                }
+                case "lastModified":
+                {
+                    out.sort(first.CompareByLastUpdate().reversed());
+                    break;
+                }
+                case "profiles":
+                {
+                    out.sort(first.CompareByProfiles().reversed().thenComparing(first.CompareByLastUpdate()));
+
+                    break;
+                }
+                case "order":
+                default:
+                {
+                    break;
+                }
+            }
+        }
+        MccCarePlanSummary[] outA = new MccCarePlanSummary[out.size()];
+        outA = out.toArray(outA);
+        return outA;
+    }
+
+    private Set<String> carePlanRecognizedFor(CarePlan plan, Context ctx)
+    {
+        HashSet<String> out = new HashSet<>();
+        List<Reference> addresses = plan.getAddresses();
+        if (addresses != null && addresses.size() > 0 )
+        {
+            for (Reference ref: addresses)
+            {
+                if (ref.hasReference())
+                {
+                    try {
+                        Condition condition = ctx.getClient().fetchResourceFromUrl(Condition.class, ref.getReference());
+                          List<String> profiles = getConditionProfiles(condition);
+                        if (profiles != null)
+                        {
+                            for (String p:profiles)
+                            {
+                                out.add(p);
+                            }
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        log.warn("Problem resolving condition references: "+ref.getReference(),e);
+                    }
+                }
+            }
+        }
+        return out;
+    }
+
+    protected List<String> getConditionProfiles(Condition condition)
+    {
+        List<String> out=null;
+        if (condition.hasCode())
+        {
+            out = ProfileManager.getProfileManager().getProfilesForConceptAsList(condition.getCode());
+        }
+        return out;
+    }
+
 
     @GetMapping("/careplan")
     public MccCarePlan[] getCarePlans(@RequestParam(required = true, name = "subject") String subjectId,  @RequestHeader Map<String, String> headers, WebRequest webRequest) {
