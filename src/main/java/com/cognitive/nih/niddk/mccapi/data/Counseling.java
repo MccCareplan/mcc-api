@@ -7,7 +7,7 @@ import lombok.Data;
 
 @JsonInclude(JsonInclude.Include. NON_NULL)
 @Data
-public class Education {
+public class Counseling {
 
 
     private MccCodeableConcept topic;

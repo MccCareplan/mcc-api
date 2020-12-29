@@ -1,19 +1,15 @@
 package com.cognitive.nih.niddk.mccapi.mappers;
 
-import com.cognitive.nih.niddk.mccapi.data.Context;
-import com.cognitive.nih.niddk.mccapi.data.Education;
-
-import com.cognitive.nih.niddk.mccapi.data.EducationSummary;
+import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
-import org.hl7.fhir.r4.model.Goal;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ServiceRequest;
 import org.hl7.fhir.r4.model.Type;
 
-public class EducationMapper {
+public class CounselingMapper {
 
-    public static Education fhir2local(Procedure in, Context ctx) {
-        Education out = new Education();
+    public static Counseling fhir2local(Procedure in, Context ctx) {
+        Counseling out = new Counseling();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         out.setType("Procedure");
@@ -24,8 +20,8 @@ public class EducationMapper {
         return out;
     }
 
-    public static EducationSummary fhir2summary(Procedure in, Context ctx) {
-        EducationSummary out = new EducationSummary();
+    public static CounselingSummary fhir2summary(Procedure in, Context ctx) {
+        CounselingSummary out = new CounselingSummary();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         out.setType("Procedure");
@@ -38,13 +34,13 @@ public class EducationMapper {
     }
 
 
-    public static Education fhir2local(ServiceRequest in, Context ctx) {
-        Education out = new Education();
+    public static Counseling fhir2local(ServiceRequest in, Context ctx) {
+        Counseling out = new Counseling();
         return out;
     }
 
-    public static EducationSummary fhir2summary(ServiceRequest in, Context ctx) {
-        EducationSummary out = new EducationSummary();
+    public static CounselingSummary fhir2summary(ServiceRequest in, Context ctx) {
+        CounselingSummary out = new CounselingSummary();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         out.setType("ServiceRequest");

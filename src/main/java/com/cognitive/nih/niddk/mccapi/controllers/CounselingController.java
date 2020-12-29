@@ -2,15 +2,16 @@ package com.cognitive.nih.niddk.mccapi.controllers;
 
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
-import com.cognitive.nih.niddk.mccapi.data.*;
+import com.cognitive.nih.niddk.mccapi.data.Context;
+import com.cognitive.nih.niddk.mccapi.data.CounselingSummary;
+import com.cognitive.nih.niddk.mccapi.data.EducationSummary;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
+import com.cognitive.nih.niddk.mccapi.mappers.CounselingMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.EducationMapper;
-import com.cognitive.nih.niddk.mccapi.mappers.GoalMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Goal;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ServiceRequest;
 import org.springframework.web.bind.annotation.*;
@@ -24,23 +25,23 @@ import java.util.Map;
 @RestController
 @CrossOrigin(origins = "*")
 
-public class EducationController {
+public class CounselingController {
     private final QueryManager queryManager;
 
-    public EducationController(QueryManager queryManager) {
+    public CounselingController(QueryManager queryManager) {
         this.queryManager = queryManager;
 
     }
 
-    @GetMapping("/educationsummary")
-    public EducationSummary[] getEducationSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
-        ArrayList<EducationSummary> out = new ArrayList<>();
+    @GetMapping("/summary/counsulings")
+    public CounselingSummary[] getCounselingSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+        ArrayList<CounselingSummary> out = new ArrayList<>();
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
         Map<String,String> values = new HashMap<>();
 
-        String callUrl=queryManager.setupQuery("Education.Procedure.Query",values,webRequest);
+        String callUrl=queryManager.setupQuery("Counseling.Procedure.Query",values,webRequest);
 
 
         //Possible Sources
@@ -58,13 +59,13 @@ public class EducationController {
                     Procedure p = (Procedure) e.getResource();
                     //TODO: Add filter by status  active, completed
                     //TODO: Filter by intent
-                   EducationSummary es = EducationMapper.fhir2summary(p, ctx);
-                    out.add(es);
+                    CounselingSummary cs = CounselingMapper.fhir2summary(p, ctx);
+                    out.add(cs);
                 }
             }
         }
 
-        callUrl=queryManager.setupQuery("Education.ServiceRequest.Query",values,webRequest);
+        callUrl=queryManager.setupQuery("Counseling.ServiceRequest.Query",values,webRequest);
 
 
         //Possible Sources
@@ -82,13 +83,13 @@ public class EducationController {
                     ServiceRequest p = (ServiceRequest) e.getResource();
                     //TODO: Add filter by status  active, completed
                     //TODO: Filter by intent
-                    EducationSummary es = EducationMapper.fhir2summary(p, ctx);
-                    out.add(es);
+                    CounselingSummary cs = CounselingMapper.fhir2summary(p, ctx);
+                    out.add(cs);
                 }
             }
         }
 
-        EducationSummary[] outA = new EducationSummary[out.size()];
+        CounselingSummary[] outA = new CounselingSummary[out.size()];
         outA = out.toArray(outA);
         return outA;
     }
