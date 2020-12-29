@@ -1,5 +1,6 @@
 package com.cognitive.nih.niddk.mccapi.data.primative;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -102,11 +103,12 @@ class MccPeriod implements Comparable {
 
         }
     }
-
+    @JsonIgnore
     public boolean isOpen() {
         return isOpenStart() || isOpenEnd();
     }
 
+    @JsonIgnore
     public boolean isOpenEnd() {
         if (end == null)
             return true;
@@ -115,7 +117,7 @@ class MccPeriod implements Comparable {
 
         return false;
     }
-
+    @JsonIgnore
     public boolean isOpenStart() {
         if (start == null)
             return true;
