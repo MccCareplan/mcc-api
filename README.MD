@@ -180,6 +180,16 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 #Change log
 
+## Release 1.0.7-SNAPSHOT
+- Added new endpoints for Education & Counseling /summary/education and /summary/counseling
+- Added /summary/goals, /summary/medications, /summary/condtions
+- Deprecate  /goalsumarry, /medicationsumary, /condintionsummary
+- New fhirquery keys
+  - Education.Procedure.Query
+  - Education.ServiceRequest.Query
+  - Counseling.Procedure.Query
+  - Counseling.ServiceRequest.Query
+
 ## Release 1.0.6-SNAPSHOT
 - Added new support for finding the "best" and "supported" careplans. New calls at /find/best/careplan/?Subject=xxxx & /find/supported/careplans/?subject=xxxx
 - New type added MccCarePlanSummary
