@@ -731,6 +731,23 @@ public class Helper {
         return out;
     }
 
+    public static String periodToString(Period p)
+    {
+        StringBuilder out = new StringBuilder();
+        if (p.hasStart() || p.hasEnd()) {
+            if (p.hasStart()) {
+                out.append(Helper.dateToString(p.getStart()));
+                out.append(" ");
+            }
+            out.append("-");
+            if (p.hasEnd()) {
+                out.append(" ");
+                out.append(Helper.dateToString(p.getEnd()));
+            }
+        }
+        return out.toString();
+    }
+
     public static String translateRepeat(@NonNull Timing.TimingRepeatComponent repeat) {
         StringBuilder out = new StringBuilder();
 
