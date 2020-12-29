@@ -2,10 +2,13 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccCarePlan;
+import com.cognitive.nih.niddk.mccapi.data.MccCarePlanSummary;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.CarePlan;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Patient;
+
+import java.util.Set;
 
 public class CareplanMapper {
     private static String RACE_KEY = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race";
@@ -26,8 +29,10 @@ public class CareplanMapper {
             out.setId("FHIR("+out.getId()+")");
         }
         out.setDateResourceLastUpdated(Helper.dateToString(in.getMeta().getLastUpdated()));
-        out.setPeriodStarts(Helper.dateToString(in.getPeriod().getStart()));
-        out.setPeriodEnds(Helper.dateToString(in.getPeriod().getEnd()));
+        if (in.hasPeriod()) {
+            out.setPeriodStarts(Helper.dateToString(in.getPeriod().getStart()));
+            out.setPeriodEnds(Helper.dateToString(in.getPeriod().getEnd()));
+        }
 
         String categories = Helper.getConceptsAsDisplayString(in.getCategory());
         if (categories == null || categories.isBlank())
@@ -43,6 +48,25 @@ public class CareplanMapper {
         // CareTeam
         // Activity
 
+        return out;
+    }
+
+    public static MccCarePlanSummary fhir2Summary(CarePlan in, Set<String> profiles, Context ctx)
+    {
+        MccCarePlanSummary out = new MccCarePlanSummary();
+        out.setProfiles(profiles);
+        out.setFHIRId(in.getIdElement().getIdPart());
+        if (in.hasCreated()) {
+            out.setCreated(in.getCreated());
+        }
+        if (in.hasMeta() && in.getMeta().hasLastUpdated())
+        {
+            out.setLastUpdated(in.getMeta().getLastUpdated());
+        }
+        if (in.hasPeriod())
+        {
+            out.setPeriod(GenericTypeMapper.fhir2local(in.getPeriod(),ctx));
+        }
         return out;
     }
 
