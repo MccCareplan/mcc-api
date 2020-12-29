@@ -128,8 +128,27 @@ public class MedicationController {
         return out;
     }
 
+    @GetMapping("/summary/medications")
+    public MedicationSummaryList getMedicationSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest)
+    {
+        return commonMedicationSummary(subjectId,careplanId,headers,webRequest);
+    }
+
+    /**
+     * @Depercated Please use /summary/medications
+     * @param subjectId
+     * @param careplanId
+     * @param headers
+     * @param webRequest
+     * @return
+     */
     @GetMapping("/medicationsummary")
-    public MedicationSummaryList getMedicationSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+    public MedicationSummaryList getMedicationSummaryOld(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest)
+    {
+        return commonMedicationSummary(subjectId,careplanId,headers,webRequest);
+    }
+
+   private MedicationSummaryList commonMedicationSummary(String subjectId, String careplanId, Map<String, String> headers, WebRequest webRequest) {
         MedicationSummaryList out = new MedicationSummaryList();
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
