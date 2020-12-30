@@ -10,7 +10,7 @@ public class CodingMapper {
         //TODO: Consider a cache
         MccCoding out = new MccCoding();
         out.setCode(in.getCode());
-        out.setDisplay(in.getCode());
+        out.setDisplay(in.getDisplay());
         out.setSystem(in.getSystem());
         out.setVersion(in.getVersion());
         return out;
