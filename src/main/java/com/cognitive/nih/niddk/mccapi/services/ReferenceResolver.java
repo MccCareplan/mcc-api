@@ -47,6 +47,46 @@ public class ReferenceResolver {
         return out;
     }
 
+    public static CareTeam findCareTeam(Reference ref, Context ctx) {
+        CareTeam out = null;
+        if (Helper.isReferenceOfType(ref, "CareTeam")) {
+                try {
+                    //DIRECT-FHIR-REF
+                    out = ctx.getClient().fetchResourceFromUrl(CareTeam.class, ref.getReference());
+                 } catch (Exception e) {
+                    logReferenceException(ref, e);
+                }
+        }
+        return out;
+    }
+
+    public static Device findDevice(Reference ref, Context ctx) {
+        Device out = null;
+        if (Helper.isReferenceOfType(ref, "Device")) {
+            try {
+                //DIRECT-FHIR-REF
+                out = ctx.getClient().fetchResourceFromUrl(Device.class, ref.getReference());
+            } catch (Exception e) {
+                logReferenceException(ref, e);
+            }
+        }
+        return out;
+    }
+
+    public static HealthcareService findHealthcareService(Reference ref, Context ctx) {
+        HealthcareService out = null;
+        if (Helper.isReferenceOfType(ref, "HealthcareService")) {
+            try {
+                //DIRECT-FHIR-REF
+                out = ctx.getClient().fetchResourceFromUrl(HealthcareService.class, ref.getReference());
+            } catch (Exception e) {
+                logReferenceException(ref, e);
+            }
+        }
+        return out;
+    }
+
+
     public static Patient findPatient(Reference ref, Context ctx) {
         Patient out = null;
         if (Helper.isReferenceOfType(ref, "Patient")) {
