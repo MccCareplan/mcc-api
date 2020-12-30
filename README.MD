@@ -181,14 +181,26 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 #Change log
 
 ## Release 1.0.7-SNAPSHOT
-- Added new endpoints for Education & Counseling /summary/education and /summary/counseling
+- Added new endpoint for Referrals at /summary/referrals - Prelimiary referral support implemented.
+- Added new endpoints for Education & Counseling /summary/educations and /summary/counselings 
 - Added /summary/goals, /summary/medications, /summary/condtions
-- Deprecate  /goalsumarry, /medicationsumary, /condintionsummary
+- Deprecated  /goalsumarry, /medicationsumary, /condintionsummary
+- Extended reference handling and name resolution for additional type
 - New fhirquery keys
   - Education.Procedure.Query
   - Education.ServiceRequest.Query
   - Counseling.Procedure.Query
   - Counseling.ServiceRequest.Query
+  - Referral.ServiceRequest.Query
+- Extended Type support to include MccId
+- GenericType valueTypes normalized to match Hapi library FHIR Types 
+  - String is now string
+  - Date is now date
+  - DateTime is now dateTime
+  - Time is now time
+  - Boolean is now boolean
+  - Integer is now integer
+  - Instant is now instant
 
 ## Release 1.0.6-SNAPSHOT
 - Added new support for finding the "best" and "supported" careplans. New calls at /find/best/careplan/?Subject=xxxx & /find/supported/careplans/?subject=xxxx
