@@ -58,7 +58,7 @@ public class CounselingMapper {
         }
         else if (in.hasOccurrenceTiming())
         {
-            out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceDateTimeType(),ctx));
+            out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceTiming(),ctx));
             out.setDisplayDate(Helper.translateTiming(in.getOccurrenceTiming()));
         }
         return out;
