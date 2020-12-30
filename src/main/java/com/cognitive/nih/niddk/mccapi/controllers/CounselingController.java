@@ -33,7 +33,7 @@ public class CounselingController {
 
     }
 
-    @GetMapping("/summary/counsulings")
+    @GetMapping("/summary/counselings")
     public CounselingSummary[] getCounselingSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         ArrayList<CounselingSummary> out = new ArrayList<>();
 
