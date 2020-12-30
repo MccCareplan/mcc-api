@@ -19,5 +19,6 @@ public class ReferralSummary {
     private String referrer;
     private String receiver;
     private String status;
+    private MccCodeableConcept performerType;
 
 }
