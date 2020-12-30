@@ -10,6 +10,7 @@ public @Data class GenericType {
     private String stringValue;
     private int integerValue;
     private boolean booleanValue;
+    private MccId idValue;
     private MccCodeableConcept codeableConceptValue;
     private MccQuantity quantityValue;
     private MccRange rangeValue;

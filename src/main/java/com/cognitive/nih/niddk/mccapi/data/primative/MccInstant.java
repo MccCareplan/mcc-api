@@ -12,7 +12,7 @@ import java.util.Date;
 @Slf4j
 public @Data
 class MccInstant implements Comparable {
-    public static final String fhirType = "Instant";
+    public static final String fhirType = "instant";
 
     private String value;
     private InstantType $instant;

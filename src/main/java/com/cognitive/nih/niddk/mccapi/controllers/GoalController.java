@@ -30,8 +30,34 @@ public class GoalController {
         this.queryManager = queryManager;
     }
 
-    @GetMapping("/goalsummary")
+
+    /**
+     *
+     * @param subjectId
+     * @param careplanId
+     * @param headers
+     * @param webRequest
+     * @return
+     */
+    @GetMapping("/summary/goals")
     public GoalLists getGoalSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+        return commonGoalSummary(subjectId,careplanId,headers,webRequest);
+    }
+
+    /**
+     * @Deprecated please use /summary/gooal
+     * @param subjectId
+     * @param careplanId
+     * @param headers
+     * @param webRequest
+     * @return
+     */
+    @GetMapping("/goalsummary")
+    public GoalLists getGoalSummaryOld(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+        return commonGoalSummary(subjectId,careplanId,headers,webRequest);
+    }
+    private GoalLists commonGoalSummary( String subjectId, String careplanId,Map<String, String> headers, WebRequest webRequest)
+    {
         GoalLists out = new GoalLists();
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();

@@ -62,9 +62,34 @@ public class ConditionController {
         return c;
     }
 
+    /**
+     * @Deprecated Please use /summary/conditions
+     * @param subjectId
+     * @param careplanId
+     * @param headers
+     * @param webRequest
+     * @return
+     */
     @GetMapping("/conditionsummary")
+    public ConditionLists getConditionSummaryOld(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+        return commonConditionSummary(subjectId,careplanId, headers, webRequest);
+    }
+
+    /**
+     *
+     * @param subjectId
+     * @param careplanId
+     * @param headers
+     * @param webRequest
+     * @return
+     */
+    @GetMapping("/summary/conditions")
     public ConditionLists getConditionSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
-        ConditionLists out = new ConditionLists();
+        return commonConditionSummary(subjectId,careplanId, headers, webRequest);
+    }
+
+    private ConditionLists commonConditionSummary(String subjectId, String careplanId,Map<String, String> headers, WebRequest webRequest) {
+            ConditionLists out = new ConditionLists();
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);

@@ -6,6 +6,6 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include. NON_NULL)
 public @Data
 class MccTime {
-    public static final String fhirType = "Time";
+    public static final String fhirType = "time";
     private String value;
 }

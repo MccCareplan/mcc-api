@@ -8,7 +8,7 @@ import java.util.Date;
 public @Data
 class MccDate implements Comparable
 {
-    public static final String fhirType = "Date";
+    public static final String fhirType = "date";
     private Date rawDate;
     private String date;
 

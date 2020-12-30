@@ -75,7 +75,33 @@ public class NameResolver {
             return "RiskAssessment, " + r.getIdElement().toString();
         }
     }
+    public static String getName(@NonNull Device in, Context ctx)
+    {
+        String out = "Unknown Device";
+        if (in.hasDeviceName())
+        {
+            out = in.getDeviceNameFirstRep().getName();
+        }
+        return out;
+    }
 
+
+
+    public static String getName(@NonNull CareTeam in, Context ctx) {
+        String out = "Unresolvable CareTeam";
+        if (in.hasName()) {
+           out = in.getName();
+        }
+        return out;
+    }
+
+    public static String getName(@NonNull HealthcareService in, Context ctx) {
+        String out = "Unresolvable HealthCare Service";
+        if (in.hasName()) {
+            out = in.getName();
+        }
+        return out;
+    }
     public static String getName(@NonNull MedicationStatement in, Context ctx) {
         String out = "Unresolvable Medication Statement";
         if (in.hasMedication()) {
@@ -88,7 +114,6 @@ public class NameResolver {
         }
         return out;
     }
-
     public static String getReferenceName(Reference ref, Context ctx) {
 
         if (ref.hasDisplay()) {
@@ -145,6 +170,29 @@ public class NameResolver {
                 }
                 case "ServiceRequest": {
                     ServiceRequest x = ReferenceResolver.findServiceRequest(ref, ctx);
+                    out = x != null ? getName(x, ctx) : "Missing " + type;
+                    break;
+                }
+                case "HealthcareService":
+                {
+                    HealthcareService x = ReferenceResolver.findHealthcareService(ref,ctx);
+                    out = x != null ? getName(x, ctx) : "Missing " + type;
+                    break;
+                }
+                case "Device":
+                {
+                    Device x = ReferenceResolver.findDevice(ref,ctx);
+                    out = x != null ? getName(x, ctx) : "Missing " + type;
+                    break;
+                }
+                case "RelatedPerson":
+                {
+                    RelatedPerson x = ReferenceResolver.findRelatedPerson(ref,ctx);
+                    out = x != null ? getName(x, ctx) : "Missing " + type;
+                    break;
+                }
+                case "CareTeam": {
+                    CareTeam x = ReferenceResolver.findCareTeam(ref, ctx);
                     out = x != null ? getName(x, ctx) : "Missing " + type;
                     break;
                 }
