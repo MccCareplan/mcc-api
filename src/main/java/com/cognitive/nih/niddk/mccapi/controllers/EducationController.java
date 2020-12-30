@@ -26,6 +26,7 @@ import java.util.Map;
 
 public class EducationController {
     private final QueryManager queryManager;
+    private final boolean SERVICE_REQUEST_ENABLED = false;
 
     public EducationController(QueryManager queryManager) {
         this.queryManager = queryManager;
@@ -71,7 +72,7 @@ public class EducationController {
         ///    Procedures - Education category = 409073007, Counseling 409063005
         //     ServiceRequests - Same
 
-        if (callUrl != null) {
+        if (callUrl != null && SERVICE_REQUEST_ENABLED) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
