@@ -41,6 +41,8 @@ public class GenericTypeMapper {
     private static final int DURATION = 15;
     private static final int INSTANT = 16;
     private static final int IDENTIFIER = 17;
+    private static final int ID = 18;
+
 
 
     private static final Logger logger = LoggerFactory.getLogger(GenericTypeMapper.class);
@@ -51,22 +53,23 @@ public class GenericTypeMapper {
 
         activeKeys.put(MccRange.fhirType, RANGE);
         activeKeys.put(MccQuantity.fhirType, QUANTITY);
-        activeKeys.put("Integer", INTEGER);
+        activeKeys.put("integer", INTEGER);
         activeKeys.put(MccCodeableConcept.fhirType, CODEABLE_CONCEPT);
-        activeKeys.put("String", STRING);
-        activeKeys.put("Boolean", BOOLEAN);
+        activeKeys.put("string", STRING);
+        activeKeys.put("boolean", BOOLEAN);
         activeKeys.put(MccRatio.fhirType, RATIO);
         activeKeys.put(MccReference.fhirType, REFERENCE);
         activeKeys.put(MccPeriod.fhirType, PERIOD);
         activeKeys.put(MccDate.fhirType, DATE);
-        activeKeys.put("Time", TIME);
+        activeKeys.put(MccTime.fhirType, TIME);
         activeKeys.put(MccDateTime.fhirType, DATETIME);
         activeKeys.put("SampledData", SAMPLED_DATA);
-        activeKeys.put("SimpleQuantity", SIMPLE_QUANTITY);
+        activeKeys.put(MccSimpleQuantity.fhirType, SIMPLE_QUANTITY);
         activeKeys.put(MccDuration.fhirType, DURATION);
         activeKeys.put(MccTiming.fhirType, TIMING);
         activeKeys.put(MccInstant.fhirType, INSTANT);
         activeKeys.put(MccIdentifer.fhirType, IDENTIFIER);
+        activeKeys.put(MccId.fhirType, IDENTIFIER);
     }
 
     public static GenericType fhir2local(Type in, Context ctx) {
@@ -120,6 +123,10 @@ public class GenericTypeMapper {
                     out.setDateTimeValue(fhir2local(in.castToDateTime(in), ctx));
                     break;
                 }
+                case ID: {
+                    out.setIdValue(fhir2local(in.castToId(in),ctx));
+                    break;
+                }
                 case SAMPLED_DATA: {
                     out.setSampledDataValue(fhir2local(in.castToSampledData(in), ctx));
                     break;
@@ -163,6 +170,12 @@ public class GenericTypeMapper {
         return out;
     }
 
+    public static MccId fhir2local(IdType in, Context ctx) {
+        MccId out = new MccId();
+        out.setValue(in.getValue());
+        return out;
+    }
+
     public static MccDate fhir2local(Date in, Context ctx) {
         MccDate out = new MccDate();
         out.setRawDate(in);
@@ -198,12 +211,14 @@ public class GenericTypeMapper {
 
     public static MccTime fhir2local(TimeType in, Context ctx) {
         MccTime out = new MccTime();
+
         out.setValue(in.getValue());
         return out;
     }
 
     public static MccPeriod fhir2local(Period in, Context ctx) {
         MccPeriod out = new MccPeriod();
+        in.fhirType();
         Period p = in.castToPeriod(in);
         out.setStart(fhir2local(p.getStart(), ctx));
         out.setEnd(fhir2local(p.getEnd(), ctx));
@@ -307,7 +322,7 @@ public class GenericTypeMapper {
     }
 
     public static MccTiming fhir2local(Timing in, Context ctx) {
-        MccTiming out = new MccTiming();
+          MccTiming out = new MccTiming();
         if (in.hasEvent()) {
             out.setEvent(fhir2local(in.getEvent(), ctx));
         }
