@@ -7,7 +7,7 @@ import org.hl7.fhir.r4.model.*;
 
 import java.util.Date;
 @JsonInclude(JsonInclude.Include. NON_NULL)
-public class FuzzyDate {
+public class FuzzyDate implements Comparable<FuzzyDate>{
 
 
     private Type t;
@@ -32,6 +32,186 @@ public class FuzzyDate {
 
     }
 
+    @Override
+    public int compareTo(FuzzyDate o) {
+        switch (type)
+        {
+            case Date:
+            case Age:
+            {
+                switch (o.type)
+                {
+                    case Date:
+                    case Age:
+                    {
+                        return start.compareTo(o.start);
+                    }
+                    case Period:
+                    {
+                        return compareDateToPeriod(o);
+                    }
+                    case Range:
+                    case Text:
+                    case Unknown:
+                    case Null:
+                    default:
+                    {
+                        return 1;
+                    }
+                }
+            }
+            case Period:
+            case Range:
+            {
+                switch (o.type)
+                {
+                    case Period:
+                    {
+                        return comparePeriodToPeriod(o);
+                    }
+                    case Date:
+                    case Age:
+                    {
+                        return comparePeriodToDate(o);
+                    }
+                    case Range:
+                    case Text:
+                    case Unknown:
+                    case Null:
+                    {
+                        return 1;
+                    }
+                    default:
+                    {
+                        return 0;
+                    }
+                }
+            }
+            case Text:
+            case Unknown:
+            case Null:
+            {
+                switch (o.type)
+                {
+                    case Text:
+                    case Null:
+                    case Unknown:
+                    {
+                        return 0;
+                    }
+                    default: {
+                        return -1;
+                    }
+                }
+            }
+
+        }
+        return 0;
+    }
+
+    int compareDateToPeriod(FuzzyDate o)
+    {
+        //There is an end
+        if (o.end != null)
+        {
+            if (o.start != null)
+            {
+                int r = start.compareTo(o.start);
+                if (!(r>0)) {
+                    return r;
+                }
+            }
+            return start.compareTo(o.end);
+        }
+        if (o.start == null)
+        {
+            //Open Range
+            return -1;
+        }
+        return o.start.compareTo(start);
+    }
+
+    int comparePeriodToDate(FuzzyDate o)
+    {
+        if (end != null)
+        {
+            int r = o.start.compareTo(end);
+            if ( r < 0 )
+            {
+                if (start == null)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return start.compareTo(o.start);
+                }
+            }
+            else
+            {
+                return r;
+            }
+        }
+        if (o.start != null)
+        {
+            int r = start.compareTo(o.start);
+            if (r>0)
+            {
+                if (end == null)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return end.compareTo(o.start);
+                }
+            }
+            else
+            {
+                return r;
+            }
+        }
+        //Open Range
+        return 1;
+    }
+
+    int comparePeriodToPeriod(FuzzyDate o)
+    {
+        if (start!=null && o.start!=null) {
+            int out = start.compareTo(o.start);
+            if (out == 0) {
+                //Ok the the starts are equal base it on the ends
+                if (end!= null && o.end!= null)
+                {
+                    return end.compareTo(o.end);
+                }
+                return end == null? 1:-1;
+            }
+            return out;
+        }
+        if (start == null) {
+            //We have an open start
+            if (o.start != null)
+                return -1;
+            //Now we have to look at ends
+            if (end!=null && o.end==null) {
+                return 1;
+            }
+            return -1;
+        }
+        //The other side has an open start
+        if (o.end != null)
+        {
+            if (end != null)
+            {
+                return end.compareTo(o.end);
+            }
+            // We have no end so make the comparison vs start;
+            return start.compareTo(o.end);
+        }
+        return 0;
+    }
+
     public FuzzyDate createFromType(Type t, Context ctx)
     {
         return new FuzzyDate(t,ctx);
@@ -44,7 +224,7 @@ public class FuzzyDate {
             else if (c == Age.class) return DateType.Age;
             else if (c == Period.class) return DateType.Period;
             else if (c == Range.class) return DateType.Range;
-            else if (c == Quantity.class) return DateType.Age;  //Assume a quanity is an age here
+            else if (c == Quantity.class) return DateType.Age;  //Assume a quantity is an age here
             else if (c == StringType.class) return DateType.Text;
             else return DateType.Unknown;
         }
@@ -52,7 +232,7 @@ public class FuzzyDate {
     }
 
     public static String buildString(Type t, Context ctx) {
-        //TODO: Deal with abstarcting sorting for start and end
+        //TODO: Deal with abstracting sorting for start and end
         //      By convention all uninterpretable dates (e.g. String) sort first
 
         String out = null;
@@ -154,7 +334,12 @@ public class FuzzyDate {
         a = t.castToQuantity(t);
         String disp = a.getDisplay();
         text = String.format("At age %s", disp);
-        //TODO:  Use current context if p
+        //TODO:  Use current context if patient
+        // Grab the DOB
+        // Quantity applied to DOB
+        // Save a start
+        a.getUnit();
+        ctx.getDob();
     }
 
     private void handleAsPeriod() {
@@ -173,11 +358,13 @@ public class FuzzyDate {
     }
 
     private void handleAsRange() {
+        //Do we need to handle this like age?
         Range r = new Range();
         r = t.castToRange(t);
         Quantity start = r.getLow();
         Quantity end = r.getHigh();
         text = String.format("Between %s and %s", start.getDisplay(), end.getDisplay());
+        //TODO: Set Start and End
     }
 
     private void handleAsText() {
