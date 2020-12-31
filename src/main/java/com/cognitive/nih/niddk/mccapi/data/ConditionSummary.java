@@ -5,10 +5,7 @@ import com.cognitive.nih.niddk.mccapi.util.FHIRCodeSets;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.CodeableConcept;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class ConditionSummary {
     private MccCodeableConcept code;
@@ -17,6 +14,8 @@ public class ConditionSummary {
     private HashSet<CodeableConcept> categories;
     private ArrayList<ConditionHistory> history;
     private String profileId;
+
+
 
     public ConditionSummary() {
         history = new ArrayList<>();
@@ -41,8 +40,22 @@ public class ConditionSummary {
     }
 
     public void addToHistory(ConditionHistory h) {
-        //TODO:   Sort as we add
         history.add(h);
+        Collections.sort(history);
+        //Sort as required
+        mergeInCategories(h.getCategoriesList());
+
+    }
+    //Add to the history and
+    public void addToHistoryUpdateIfRequired(ConditionHistory h) {
+        history.add(h);
+        if (history.size()>0) {
+            //Sort as required
+            Collections.sort(history);
+            //Grab the last entry and make it'd code the current one
+            ConditionHistory f = history.get(history.size()-1);
+            code = f.getCode();
+        }
         mergeInCategories(h.getCategoriesList());
     }
 
