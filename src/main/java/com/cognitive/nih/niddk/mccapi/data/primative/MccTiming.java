@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.validation.constraints.NotBlank;
+
 @Slf4j
 @JsonInclude(JsonInclude.Include. NON_NULL)
 public @Data class MccTiming implements Comparable {
@@ -13,6 +15,7 @@ public @Data class MccTiming implements Comparable {
     private MccDateTime[] event;
     private MccCodeableConcept code;
     private Repeat repeat;
+    @NotBlank
     private String readable;
 
     @Override

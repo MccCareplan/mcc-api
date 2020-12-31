@@ -12,7 +12,6 @@ import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Goal;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -74,7 +73,7 @@ public class GoalController {
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Goal")==0){
                     Goal g = (Goal) e.getResource();
-                    GoalSummary gs = GoalMapper.summaryfhir2local(g, ctx);
+                    GoalSummary gs = GoalMapper.fhir2summary(g, ctx);
                     out.addSummary(gs);
                 }
             }

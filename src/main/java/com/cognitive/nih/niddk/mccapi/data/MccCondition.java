@@ -7,11 +7,16 @@ import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 @JsonInclude(JsonInclude.Include. NON_NULL)
 public @Data
 class MccCondition {
+    @NotBlank
     private String FHIRId;
+    @NotBlank
     private MccCodeableConcept clinicalStatus;
+    @NotBlank
     private MccCodeableConcept verifiationStatus;
     private MccCodeableConcept[] categories;
     private MccCodeableConcept severity;

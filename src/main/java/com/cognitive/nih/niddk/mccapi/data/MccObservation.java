@@ -5,13 +5,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.validation.constraints.NotBlank;
+
 @Slf4j
 @JsonInclude(JsonInclude.Include. NON_NULL)
 public @Data
 class MccObservation {
-
+    @NotBlank
     private String FHIRId;
+    @NotBlank
     private MccCodeableConcept code;
+    @NotBlank
     private String status;
     private MccReference[] basedOn;
     private Effective effective;

@@ -64,7 +64,7 @@ public class GoalMapper {
         return out;
     }
 
-    public static GoalSummary summaryfhir2local(Goal in, Context ctx)
+    public static GoalSummary fhir2summary(Goal in, Context ctx)
     {
         GoalSummary out = new GoalSummary();
         out.setFHIRId(in.getIdElement().getIdPart());

@@ -7,16 +7,22 @@ import com.cognitive.nih.niddk.mccapi.matcher.CodeableConceptMatcher;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Condition;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 public class ConditionLists {
+    @NotBlank
     private ArrayList<ConditionSummary> activeConditions;
+    @NotBlank
     private ArrayList<ConditionSummary> inactiveConditions;
+    @NotBlank
     private ArrayList<ConditionSummary> activeConcerns;
+    @NotBlank
     private ArrayList<ConditionSummary> inactiveConcerns;
+    @NotBlank
     private ArrayList<ConditionSummary> conditions;
 
     private static final int ACTIVE_LIST = 0;

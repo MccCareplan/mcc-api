@@ -5,16 +5,18 @@ import com.cognitive.nih.niddk.mccapi.util.Helper;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hl7.fhir.r4.model.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 @JsonInclude(JsonInclude.Include. NON_NULL)
 public class FuzzyDate implements Comparable<FuzzyDate>{
 
-
+    @NotBlank
     private Type t;
     private String text;
     private Date start;
     private Date end;
     private boolean hardSort;
+    @NotBlank
     private DateType type;
 
 

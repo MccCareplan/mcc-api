@@ -5,6 +5,8 @@ import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * Thsio class is a common holder the the recording of a medications - It is used by medication summary request to marry
  * MedicationRequests and MedicationStatements
@@ -12,12 +14,15 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include. NON_NULL)
 @Data
 public class MccMedicationRecord {
+    @NotBlank
     private String type;  //MedicationStatement or MedicationRequest
+    @NotBlank
     private String fhirId;
     private Boolean inConflict;
     private String[] conflictsWith;
 
     //FHIR
+    @NotBlank
     private String status;
     private MccCodeableConcept[] statusReasons;
     private MccCodeableConcept[] categories;

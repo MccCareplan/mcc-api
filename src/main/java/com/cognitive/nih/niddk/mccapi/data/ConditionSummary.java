@@ -5,13 +5,16 @@ import com.cognitive.nih.niddk.mccapi.util.FHIRCodeSets;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import org.hl7.fhir.r4.model.CodeableConcept;
 
+import javax.validation.constraints.NotBlank;
 import java.util.*;
 
 public class ConditionSummary {
+    @NotBlank
     private MccCodeableConcept code;
 
 
     private HashSet<CodeableConcept> categories;
+    @NotBlank
     private ArrayList<ConditionHistory> history;
     private String profileId;
 

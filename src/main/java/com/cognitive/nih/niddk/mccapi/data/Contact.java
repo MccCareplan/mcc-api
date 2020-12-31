@@ -3,6 +3,8 @@ package com.cognitive.nih.niddk.mccapi.data;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 @JsonInclude(JsonInclude.Include. NON_NULL)
 @Data
 public class Contact {
@@ -17,8 +19,11 @@ public class Contact {
     public static String ROLE_INSURANCE = "Insurance";
     public static String ROLE_EMERGENCY = "Emergency Contact";
 
+    @NotBlank
     private String type;
+    @NotBlank
     private String role;
+    @NotBlank
     private String name;
     private String phone;
     private String email;
