@@ -30,6 +30,17 @@ public class ConditionSummary {
         this.code = code;
     }
 
+    public void finalizeHistory()
+    {
+        if (history.size()>0) {
+            //Sort as required
+            Collections.sort(history);
+            //Grab the last entry and make it'd code the current one
+            ConditionHistory f = history.get(history.size()-1);
+            code = f.getCode();
+        }
+
+    }
     public ConditionHistory[] getHistory() {
         ConditionHistory[] out = new ConditionHistory[history.size()];
         return history.toArray(out);
@@ -41,21 +52,6 @@ public class ConditionSummary {
 
     public void addToHistory(ConditionHistory h) {
         history.add(h);
-        Collections.sort(history);
-        //Sort as required
-        mergeInCategories(h.getCategoriesList());
-
-    }
-    //Add to the history and
-    public void addToHistoryUpdateIfRequired(ConditionHistory h) {
-        history.add(h);
-        if (history.size()>0) {
-            //Sort as required
-            Collections.sort(history);
-            //Grab the last entry and make it'd code the current one
-            ConditionHistory f = history.get(history.size()-1);
-            code = f.getCode();
-        }
         mergeInCategories(h.getCategoriesList());
     }
 
