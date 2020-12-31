@@ -12,17 +12,11 @@ import com.cognitive.nih.niddk.mccapi.mappers.ReferralMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.Helper;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Procedure;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.ServiceRequest;
+import org.hl7.fhir.r4.model.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -30,6 +24,17 @@ import java.util.Map;
 
 public class ReferralController {
     private final QueryManager queryManager;
+    private static final HashSet<String> supportedCategories = new HashSet<>();
+
+    static {
+        //
+        // List of categories: 440379008,3457005,409073007,409063005
+        supportedCategories.add("440379008"); // “Referral to”
+        supportedCategories.add("3457005"); // “Patient Referral"
+        supportedCategories.add("409073007"); // “Education"
+        supportedCategories.add("409063005"); // “Counseling”
+
+    }
 
     public ReferralController(QueryManager queryManager) {
         this.queryManager = queryManager;
@@ -57,16 +62,22 @@ public class ReferralController {
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
             ctx.setClient(client);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
-                if (e.getResource().fhirType().compareTo("ServiceRequest")==0){
+                if (e.getResource().fhirType().compareTo("ServiceRequest")==0) {
                     ServiceRequest p = (ServiceRequest) e.getResource();
                     //TODO: Add filter by status  active, completed
 
-                    if (p.hasRequester()) {
-                        //TODO: Filter by intent
-                        if (p.hasPerformer() ) {
-                            if (isPerformerProvider(p.getPerformer())) {
-                                ReferralSummary cs = ReferralMapper.fhir2summary(p, ctx);
-                                out.add(cs);
+                    //Filter out lab, surgery
+                    if (p.hasCategory()) {
+                        List<CodeableConcept> categories = p.getCategory();
+
+                        //Add PerformerType
+                        if (p.hasRequester()) {
+                            //TODO: Filter by intent
+                            if (p.hasPerformer()) {
+                                if (isPerformerProvider(p.getPerformer())) {
+                                    ReferralSummary cs = ReferralMapper.fhir2summary(p, ctx);
+                                    out.add(cs);
+                                }
                             }
                         }
                     }
@@ -77,6 +88,24 @@ public class ReferralController {
         ReferralSummary[] outA = new ReferralSummary[out.size()];
         outA = out.toArray(outA);
         return outA;
+    }
+    private boolean isCategorySupported(List<CodeableConcept> categories)
+    {
+        boolean out = false;
+        Search:
+        for (CodeableConcept concept: categories)
+        {
+            List<Coding> codes = concept.getCoding();
+            for (Coding code: codes)
+            {
+                if (supportedCategories.contains(code.getCode()))
+                {
+                    out = true;
+                    break Search;
+                }
+            }
+        }
+        return out;
     }
 
     private boolean isPerformerProvider(List<Reference> performers)
@@ -90,6 +119,7 @@ public class ReferralController {
             switch(type)
             {
                 case "Patient":
+                case "Device":
                 case "RelatedPerson":
                 {
                     ok = false;

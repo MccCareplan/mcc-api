@@ -180,6 +180,12 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 #Change log
 
+## Release 1.0.8-SNAPSHOT
+- Added Condition Consolidation. 
+- Preliminary Fuzzy Date Comparison (Missing Age and Range for now)
+- Finalize and Sort Condition History.
+- Fixed errors with the building Condition History
+
 ## Release 1.0.7-SNAPSHOT
 - Added new endpoint for Referrals at /summary/referrals - Prelimiary referral support implemented.
 - Added new endpoints for Education & Counseling /summary/educations and /summary/counselings 

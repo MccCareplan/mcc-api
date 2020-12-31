@@ -6,9 +6,10 @@ import com.cognitive.nih.niddk.mccapi.util.Helper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hl7.fhir.r4.model.CodeableConcept;
 
+import java.util.Comparator;
 import java.util.List;
 
-public class ConditionHistory {
+public class ConditionHistory implements Comparable<ConditionHistory> {
     private MccCodeableConcept code;
     private String onset;
     private String abatement;
@@ -19,6 +20,39 @@ public class ConditionHistory {
 
     private FuzzyDate onsetDate;
     private FuzzyDate abatementDate;
+
+    @Override
+    public int compareTo(ConditionHistory o) {
+        if (onsetDate != null && o.onsetDate != null)
+        {
+            int r = onsetDate.compareTo(o.onsetDate);
+
+            if (r == 0)
+            {
+                if (abatementDate != null && o.abatementDate != null)
+                {
+                    return abatementDate.compareTo(o.abatementDate);
+                }
+                if (abatementDate == null)
+                {
+                    return 1;
+                }
+                return -1;
+            }
+            return r;
+
+        }
+        if (onsetDate != null)
+        {
+            //The onset of the first is not known - sort it first
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+
+    }
 
     public String getOnset() {
         return onset;

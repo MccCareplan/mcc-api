@@ -55,8 +55,14 @@ public class ConditionMapper {
         out.setFHIRid(in.getIdElement().getIdPart());
         out.setClinicalStatus(in.getClinicalStatus().getCodingFirstRep().getCode());
         out.setVerificationStatus(in.getVerificationStatus().getCodingFirstRep().getCode());
-        out.setAbatement(FuzzyDate.buildString(in.getAbatement(),ctx));
-        out.setOnset(FuzzyDate.buildString(in.getOnset(),ctx));
+        if (in.hasAbatement()) {
+            out.setAbatement(FuzzyDate.buildString(in.getAbatement(), ctx));
+            out.setAbatementDate(new FuzzyDate(in.getAbatement()));
+        }
+        if (in.hasOnset()) {
+            out.setOnset(FuzzyDate.buildString(in.getOnset(), ctx));
+            out.setOnsetDate(new FuzzyDate(in.getOnset()));
+        }
         out.setCategoriesList(in.getCategory());
         out.setCode(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
         return out;

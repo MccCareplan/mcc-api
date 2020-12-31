@@ -20,6 +20,11 @@ public class ReferralMapper {
         out.setStatus(in.getStatus().toCode());
         out.setPurpose(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
 
+        if (in.hasPerformerType())
+        {
+
+        }
+
         //TODO:  Deal with occurance
         if (in.hasOccurrenceDateTimeType())
         {
@@ -45,6 +50,12 @@ public class ReferralMapper {
         out.setStatus(in.getStatus().toCode());
 
         out.setPurpose(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
+
+        if (in.hasPerformerType())
+        {
+            out.setPerformerType(CodeableConceptMapper.fhir2local(in.getPerformerType(),ctx));
+        }
+
 
         if (in.hasOccurrenceDateTimeType())
         {
