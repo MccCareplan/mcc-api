@@ -13,15 +13,39 @@ public class CodeableConceptMapper {
     public static MccCodeableConcept fhir2local(CodeableConcept in, Context ctx)
     {
         MccCodeableConcept out = new MccCodeableConcept();
-        out.setText(in.getText());
         MccCoding[] codes = new MccCoding[in.getCoding().size()];
+        String text = null;
+
+        if (in.hasText()) {
+            text = in.getText();
+        }
         int i=0;
         for (Coding c: in.getCoding())
         {
             codes[i]=CodingMapper.fhir2local(c, ctx);
+            if (text == null)
+            {
+                if (c.hasDisplay())
+                {
+                    text = c.getDisplay();
+                }
+            }
             i++;
         }
+        if (text == null)
+        {
+            Coding firstCode = in.getCodingFirstRep();
+            if (firstCode != null)
+            {
+                text = "Undescribed code "+firstCode.getCode();
+            }
+            else
+            {
+                text = "Concept with no Code";
+            }
+        }
         out.setCoding(codes);
+        out.setText(text);
         return out;
     }
 
