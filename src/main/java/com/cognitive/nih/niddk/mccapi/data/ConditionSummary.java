@@ -32,7 +32,7 @@ public class ConditionSummary {
 
     public void finalizeHistory()
     {
-        if (history.size()>0) {
+        if (history.size()>1) {
             //Sort as required
             Collections.sort(history);
             //Grab the last entry and make it'd code the current one
