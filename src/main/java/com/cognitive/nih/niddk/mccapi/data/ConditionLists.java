@@ -9,6 +9,7 @@ import org.hl7.fhir.r4.model.Condition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class ConditionLists {
@@ -134,30 +135,63 @@ public class ConditionLists {
     public void addCondition(Condition c, Context ctx)
     {
         // We need to logic for groups by profile/common translations - This is esp. true of staged conditions
-        // As a general rue we want group all condition that have the same base concept into the common concept.
+        // As a general rule we want group all condition that have the same base concept into the common concept.
         // The most current representative of the concept should be the displayed concept
+        List<String> profiles = ProfileManager.getProfileManager().getProfilesForConceptAsList(c.getCode());
 
-        
-        ConditionSummary summary = findConditionIfAlreadySeen(c);
-        if (summary == null)
+        if (profiles.isEmpty()) {
+            ConditionSummary summary = findConditionIfAlreadySeen(c);
+
+            if (summary == null) {
+                summary = new ConditionSummary();
+                summary.setCode(CodeableConceptMapper.fhir2local(c.getCode(), ctx));
+                //summary.setProfileId(ProfileManager.getProfileManager().getProfilesForConcept(c.getCode()));
+                conditions.add(summary);
+            }
+            ConditionHistory history = ConditionMapper.fhir2History(c, ctx);
+            summary.addToHistory(history);
+        }
+        else
         {
-            summary = new ConditionSummary();
-            summary.setCode(CodeableConceptMapper.fhir2local(c.getCode(), ctx));
-            summary.setProfileId(ProfileManager.getProfileManager().getProfilesForConcept(c.getCode()));
-            conditions.add(summary);
+            //This code is part of a profile
+            String profile = profiles.get(0);
+            ConditionSummary summary = findConditionProfileIfAlreadySeen(profile);
+
+            if (summary == null) {
+                summary = new ConditionSummary();
+                summary.setCode(CodeableConceptMapper.fhir2local(c.getCode(), ctx));
+                summary.setProfileId(profile);
+                conditions.add(summary);
+            }
+
+            ConditionHistory history = ConditionMapper.fhir2History(c, ctx);
+            summary.addToHistory(history);
+
+
         }
 
-        ConditionHistory history = ConditionMapper.fhir2History(c, ctx);
-        summary.addToHistory(history);
     }
 
     public ConditionSummary findConditionIfAlreadySeen(Condition c)
     {
         //Find the code of the condition
         CodeableConcept cc = c.getCode();
+
         for (ConditionSummary csum: conditions)
         {
             if (CodeableConceptMatcher.matches(csum.getCode(),cc))
+            {
+                return csum;
+            }
+        }
+        return null;
+    }
+
+    public ConditionSummary findConditionProfileIfAlreadySeen(String matchProfile)
+    {
+        for (ConditionSummary csum: conditions)
+        {
+            if (csum.getProfileId() != null && csum.getProfileId().compareTo(matchProfile)==0)
             {
                 return csum;
             }
@@ -170,6 +204,9 @@ public class ConditionLists {
 
         for (ConditionSummary c: this.conditions)
         {
+            //Finalize the History
+            c.finalizeHistory();
+
             StringBuilder buf = new StringBuilder();
             buf.append(c.getClinicalStatus());
             buf.append(":");
