@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import org.hl7.fhir.r4.model.CarePlan;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
@@ -12,8 +13,10 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class MccCarePlanSummary {
+    @NotBlank
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private String FHIRId;
+    @NotBlank
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private Set<String> profiles;
     private Date created;

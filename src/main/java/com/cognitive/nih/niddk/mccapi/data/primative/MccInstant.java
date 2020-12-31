@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.InstantType;
 
+import javax.validation.constraints.NotBlank;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,7 +14,7 @@ import java.util.Date;
 public @Data
 class MccInstant implements Comparable {
     public static final String fhirType = "instant";
-
+    @NotBlank
     private String value;
     private InstantType $instant;
 

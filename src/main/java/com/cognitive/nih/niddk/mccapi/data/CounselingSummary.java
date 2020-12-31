@@ -5,16 +5,21 @@ import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 @JsonInclude(JsonInclude.Include. NON_NULL)
 @Data
 public class CounselingSummary {
-
+    @NotBlank
     private MccCodeableConcept topic;
+    @NotBlank
     private String type;
+    @NotBlank
     private String FHIRId;
     private String displayDate;
     private GenericType date;
     private MccCodeableConcept outcome;
+    @NotBlank
     private String status;
 
     //Type  - Procedure  - Service Request (E

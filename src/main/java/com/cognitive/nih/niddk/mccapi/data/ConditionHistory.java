@@ -6,15 +6,20 @@ import com.cognitive.nih.niddk.mccapi.util.Helper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hl7.fhir.r4.model.CodeableConcept;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Comparator;
 import java.util.List;
 
 public class ConditionHistory implements Comparable<ConditionHistory> {
+    @NotBlank
     private MccCodeableConcept code;
     private String onset;
     private String abatement;
+    @NotBlank
     private String FHIRid;
+    @NotBlank
     private String clinicalStatus;
+    @NotBlank
     private String verificationStatus;
     private List<CodeableConcept> categories;
 

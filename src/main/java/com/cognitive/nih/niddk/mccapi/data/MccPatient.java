@@ -2,9 +2,13 @@ package com.cognitive.nih.niddk.mccapi.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotBlank;
+
 @JsonInclude(JsonInclude.Include. NON_NULL)
 public class MccPatient {
+    @NotBlank
     private String FHIRId;
+    @NotBlank
     private String Name;
     private String DateOfBirth;
     private String Gender;

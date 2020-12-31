@@ -6,14 +6,19 @@ import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 @JsonInclude(JsonInclude.Include. NON_NULL)
 public @Data
 class MccGoal {
+    @NotBlank
     private String id;
+    @NotBlank
     private String FHIRId;
 
     private String statusDate;
     private String statusReason;
+    @NotBlank
     private String lifecycleStatus;
     private String categorySummary;
     private MccReference expressedBy; //Reference

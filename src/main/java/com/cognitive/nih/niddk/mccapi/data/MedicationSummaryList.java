@@ -5,13 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.MedicationRequest;
 import org.hl7.fhir.r4.model.MedicationStatement;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 @Slf4j
 public class MedicationSummaryList {
-
+    @NotBlank
     private ArrayList<MedicationSummary> activeMedications;
+    @NotBlank
     private ArrayList<MedicationSummary> inactiveMedications;
     private HashMap<String, MedicationSummary> actMedConflictMap;
 
