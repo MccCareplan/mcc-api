@@ -23,7 +23,7 @@ public class ConditionHistory implements Comparable<ConditionHistory> {
 
     @Override
     public int compareTo(ConditionHistory o) {
-        if (onsetDate != null & o.onsetDate != null)
+        if (onsetDate != null && o.onsetDate != null)
         {
             int r = onsetDate.compareTo(o.onsetDate);
 
