@@ -9,8 +9,10 @@ https://mcc-niddk-backend.wl.r.appspot.com/
 deployed using:  $gcloud app deploy
 
 # Open API
-UI: https://mcc-niddk-backend.wl.r.appspot.com/swagger-ui.html
+UI: https://mcc-niddk-backend.wl.r.appspot.com/swagger-ui/index.html?configUrl=/api-docs/swagger-config
 DOCS: https://mcc-niddk-backend.wl.r.appspot.com/api-docs
+Local Dev UI: http:/localhost:8081//swagger-ui/index.html?configUrl=/api-docs/swagger-config
+Local Dev DOCS: http:/localhost:8081/api-docs
 
 # Security
 Currently, this version of the service is using fixed open endpoints. In the very near future all client requests will carry security information will be used by this tier to access the FHIR server,
