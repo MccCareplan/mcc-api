@@ -27,27 +27,74 @@ public class MedicationController {
         this.queryManager = queryManager;
     }
 
+    private MedicationSummaryList commonMedicationSummary(String subjectId, String careplanId, Map<String, String> headers, WebRequest webRequest) {
+        MedicationSummaryList out = new MedicationSummaryList();
+
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
+        ctx.setClient(client);
+        HashMap<String, String> carePlanMedicationsRequests = new HashMap<>();
+        getClanPlanMedReqIds(careplanId, carePlanMedicationsRequests, client, ctx);
+
+        Map<String, String> values = new HashMap<>();
+        String callUrl = queryManager.setupQuery("MedicationRequest.Query", values, webRequest);
+
+        if (callUrl != null) {
+            Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+
+            //Bundle results = client.search().forResource(MedicationRequest.class).where(MedicationRequest.SUBJECT.hasId(subjectId))
+            //   .returnBundle(Bundle.class).execute();
+            for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                if (e.getResource().fhirType().compareTo("MedicationRequest") == 0) {
+                    MedicationRequest mr = (MedicationRequest) e.getResource();
+                    out.addMedicationRequest(mr, carePlanMedicationsRequests, ctx);
+                }
+            }
+        }
+
+        callUrl = queryManager.setupQuery("MedicationStatement.Query", values, webRequest);
+        if (callUrl != null) {
+            Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+            //results = client.search().forResource(MedicationStatement.class).where(MedicationStatement.SUBJECT.hasId(subjectId))
+            //        .returnBundle(Bundle.class).execute();
+
+            for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                if (e.getResource().fhirType().compareTo("MedicationStatement") == 0) {
+                    MedicationStatement ms = (MedicationStatement) e.getResource();
+                    out.addMedicationStatement(ms, ctx);
+                }
+            }
+        }
+        return out;
+    }
+
     private void getClanPlanMedReqIds(String careplanId, HashMap<String, String> carePlanMedicationsRequests, IGenericClient client, Context ctx) {
         if (careplanId != null) {
             String[] cps = careplanId.split(",");
+            Map<String, String> values = new HashMap<>();
+
             // Fetch the careplan and grab medications
             for (String cpId : cps) {
-                //DIRECT-FHIR-REF
-                CarePlan cp = client.fetchResourceFromUrl(CarePlan.class, cpId);
-                if (cp != null) {
-                    List<CarePlan.CarePlanActivityComponent> acp = cp.getActivity();
-                    for (CarePlan.CarePlanActivityComponent a : acp) {
-                        if (a.hasReference()) {
-                            Reference ref = a.getReference();
-                            if (Helper.isReferenceOfType(ref, "MedicationRequest")) {
-                                String key = ref.getReference();
-                                if (ref != null) {
-                                    if (carePlanMedicationsRequests.containsKey(key)) {
-                                        String val = carePlanMedicationsRequests.get(key);
-                                        carePlanMedicationsRequests.put(key, val + "," + cpId);
+                values.put("id", cpId);
+                String callUrl = queryManager.setupQuery("CarePlan.Lookup", values);
+                if (callUrl != null) {
+                    CarePlan cp = client.fetchResourceFromUrl(CarePlan.class, callUrl);
+                    if (cp != null) {
+                        List<CarePlan.CarePlanActivityComponent> acp = cp.getActivity();
+                        for (CarePlan.CarePlanActivityComponent a : acp) {
+                            if (a.hasReference()) {
+                                Reference ref = a.getReference();
+                                if (Helper.isReferenceOfType(ref, "MedicationRequest")) {
+                                    String key = ref.getReference();
+                                    if (ref != null) {
+                                        if (carePlanMedicationsRequests.containsKey(key)) {
+                                            String val = carePlanMedicationsRequests.get(key);
+                                            carePlanMedicationsRequests.put(key, val + "," + cpId);
 
-                                    } else {
-                                        carePlanMedicationsRequests.put(key, cpId);
+                                        } else {
+                                            carePlanMedicationsRequests.put(key, cpId);
+                                        }
                                     }
                                 }
                             }
@@ -97,8 +144,8 @@ public class MedicationController {
         HashMap<String, String> carePlanMedicationsRequests = new HashMap<>();
         getClanPlanMedReqIds(careplanId, carePlanMedicationsRequests, client, ctx);
 
-        Map<String,String> values = new HashMap<>();
-        String callUrl=queryManager.setupQuery("MedicationRequest.Query",values,webRequest);
+        Map<String, String> values = new HashMap<>();
+        String callUrl = queryManager.setupQuery("MedicationRequest.Query", values, webRequest);
 
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
@@ -112,7 +159,7 @@ public class MedicationController {
             }
         }
 
-        callUrl=queryManager.setupQuery("MedicationStatement.Query",values,webRequest);
+        callUrl = queryManager.setupQuery("MedicationStatement.Query", values, webRequest);
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             //results = client.search().forResource(MedicationStatement.class).where(MedicationStatement.SUBJECT.hasId(subjectId))
@@ -129,64 +176,20 @@ public class MedicationController {
     }
 
     @GetMapping("/summary/medications")
-    public MedicationSummaryList getMedicationSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest)
-    {
-        return commonMedicationSummary(subjectId,careplanId,headers,webRequest);
+    public MedicationSummaryList getMedicationSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+        return commonMedicationSummary(subjectId, careplanId, headers, webRequest);
     }
 
     /**
-     * @Depercated Please use /summary/medications
      * @param subjectId
      * @param careplanId
      * @param headers
      * @param webRequest
      * @return
+     * @Depercated Please use /summary/medications
      */
     @GetMapping("/medicationsummary")
-    public MedicationSummaryList getMedicationSummaryOld(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest)
-    {
-        return commonMedicationSummary(subjectId,careplanId,headers,webRequest);
-    }
-
-   private MedicationSummaryList commonMedicationSummary(String subjectId, String careplanId, Map<String, String> headers, WebRequest webRequest) {
-        MedicationSummaryList out = new MedicationSummaryList();
-
-        FHIRServices fhirSrv = FHIRServices.getFhirServices();
-        IGenericClient client = fhirSrv.getClient(headers);
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client);
-        HashMap<String, String> carePlanMedicationsRequests = new HashMap<>();
-        getClanPlanMedReqIds(careplanId, carePlanMedicationsRequests, client, ctx);
-
-        Map<String,String> values = new HashMap<>();
-        String callUrl=queryManager.setupQuery("MedicationRequest.Query",values,webRequest);
-
-        if (callUrl != null) {
-            Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
-
-            //Bundle results = client.search().forResource(MedicationRequest.class).where(MedicationRequest.SUBJECT.hasId(subjectId))
-            //   .returnBundle(Bundle.class).execute();
-            for (Bundle.BundleEntryComponent e : results.getEntry()) {
-                if (e.getResource().fhirType().compareTo("MedicationRequest") == 0) {
-                    MedicationRequest mr = (MedicationRequest) e.getResource();
-                    out.addMedicationRequest(mr, carePlanMedicationsRequests, ctx);
-                }
-            }
-        }
-
-        callUrl=queryManager.setupQuery("MedicationStatement.Query",values,webRequest);
-        if (callUrl != null) {
-            Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
-            //results = client.search().forResource(MedicationStatement.class).where(MedicationStatement.SUBJECT.hasId(subjectId))
-            //        .returnBundle(Bundle.class).execute();
-
-            for (Bundle.BundleEntryComponent e : results.getEntry()) {
-                if (e.getResource().fhirType().compareTo("MedicationStatement") == 0) {
-                    MedicationStatement ms = (MedicationStatement) e.getResource();
-                    out.addMedicationStatement(ms, ctx);
-                }
-            }
-        }
-        return out;
+    public MedicationSummaryList getMedicationSummaryOld(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+        return commonMedicationSummary(subjectId, careplanId, headers, webRequest);
     }
 }
