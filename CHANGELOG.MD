@@ -1,4 +1,9 @@
 
+
+## Release 1.0.10-SNAPSHOT
+- Fix careplan lookup during medication summary
+- Extend the education query to include the code 311401005
+
 ## Release 1.0.9-SNAPSHOT
 - Provide text for all codeable concepts
 - Update basic types to annotate when fields are required
