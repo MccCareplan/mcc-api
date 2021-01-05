@@ -6,6 +6,7 @@ import com.cognitive.nih.niddk.mccapi.data.primative.MccCoding;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CodeableConceptMapper {
@@ -59,5 +60,35 @@ public class CodeableConceptMapper {
             i++;
         }
         return o;
+    }
+
+    public static MccCodeableConcept conceptFromCode(String code, String text)
+    {
+        MccCodeableConcept out = new MccCodeableConcept();
+        out.setText(text);
+        MccCoding[] codes = new MccCoding[1];
+        MccCoding coding = new MccCoding();
+        if (code.contains("|"))
+        {
+            //We have a system
+            String[] parts = code.split("|");
+            if (parts.length>1)
+            {
+                coding.setSystem(parts[0]);
+                coding.setCode(parts[1]);
+            }
+            else
+            {
+                coding.setCode(code);
+            }
+        }
+        else
+        {
+            coding.setCode(code);
+        }
+        coding.setDisplay(text);
+        codes[0]=coding;
+        out.setCoding(codes);
+        return out;
     }
 }

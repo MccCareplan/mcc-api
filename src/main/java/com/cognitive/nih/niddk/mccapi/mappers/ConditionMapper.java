@@ -5,7 +5,7 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.primative.FuzzyDate;
 import com.cognitive.nih.niddk.mccapi.data.MccCondition;
 import com.cognitive.nih.niddk.mccapi.managers.ProfileManager;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.Condition;
 
 public class ConditionMapper {
@@ -28,7 +28,7 @@ public class ConditionMapper {
                 out.setOnset(FuzzyDate.buildString(in.getOnset(), ctx));
             }
             if (in.hasNote()) {
-                out.setNote(Helper.annotationsToString(in.getNote(),ctx));
+                out.setNote(FHIRHelper.annotationsToString(in.getNote(),ctx));
             }
             if (in.hasAsserter()) {
                 out.setAsserter(GenericTypeMapper.fhir2local(in.getAsserter(), ctx));

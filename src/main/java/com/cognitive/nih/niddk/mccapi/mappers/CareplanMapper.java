@@ -3,7 +3,7 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccCarePlan;
 import com.cognitive.nih.niddk.mccapi.data.MccCarePlanSummary;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.CarePlan;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.Patient;
@@ -21,20 +21,20 @@ public class CareplanMapper {
         out.setId(in.hasIdentifier() ? in.getIdentifierFirstRep().getValue() : "Unknown");
         out.setTitle(in.getTitle());
         out.setDescription(in.getDescription());
-        out.setNotes(Helper.annotationsToString(in.getNote(),ctx));
+        out.setNotes(FHIRHelper.annotationsToString(in.getNote(),ctx));
         out.setStatus(in.getStatus().getDisplay());
         out.setIntent(in.getIntent().getDisplay());
         if (out.getId() == null)
         {
             out.setId("FHIR("+out.getId()+")");
         }
-        out.setDateResourceLastUpdated(Helper.dateToString(in.getMeta().getLastUpdated()));
+        out.setDateResourceLastUpdated(FHIRHelper.dateToString(in.getMeta().getLastUpdated()));
         if (in.hasPeriod()) {
-            out.setPeriodStarts(Helper.dateToString(in.getPeriod().getStart()));
-            out.setPeriodEnds(Helper.dateToString(in.getPeriod().getEnd()));
+            out.setPeriodStarts(FHIRHelper.dateToString(in.getPeriod().getStart()));
+            out.setPeriodEnds(FHIRHelper.dateToString(in.getPeriod().getEnd()));
         }
 
-        String categories = Helper.getConceptsAsDisplayString(in.getCategory());
+        String categories = FHIRHelper.getConceptsAsDisplayString(in.getCategory());
         if (categories == null || categories.isBlank())
         {
             categories = "Not provided";

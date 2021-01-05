@@ -3,14 +3,12 @@ package com.cognitive.nih.niddk.mccapi.controllers;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import com.cognitive.nih.niddk.mccapi.data.Context;
-import com.cognitive.nih.niddk.mccapi.data.CounselingSummary;
 import com.cognitive.nih.niddk.mccapi.data.ReferralSummary;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
-import com.cognitive.nih.niddk.mccapi.mappers.CounselingMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.ReferralMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.web.bind.annotation.*;
@@ -115,7 +113,7 @@ public class ReferralController {
         search:
         for(Reference ref: performers)
         {
-            String type = Helper.getReferenceType(ref);
+            String type = FHIRHelper.getReferenceType(ref);
             switch(type)
             {
                 case "Patient":

@@ -25,6 +25,7 @@ public class Contact {
     private String role;
     @NotBlank
     private String name;
+    private boolean hasImage = false;
     private String phone;
     private String email;
     private String address;

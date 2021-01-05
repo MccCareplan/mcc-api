@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Helper {
+public class FHIRHelper {
     private static final String dateFormat = "MM/dd/yyyy";
     private static final SimpleDateFormat fmtDate = new SimpleDateFormat(dateFormat);
     private static final String dateTimeFormat = "MM/dd/yyyy hh:mm";
@@ -134,7 +134,7 @@ public class Helper {
         StringBuilder out = new StringBuilder();
         boolean bAddLine = false;
         if (a.hasTime()) {
-            out.append(Helper.dateTimeToString(a.getTime()));
+            out.append(FHIRHelper.dateTimeToString(a.getTime()));
             out.append(" ");
         }
         if (a.hasAuthor()) {
@@ -411,10 +411,10 @@ public class Helper {
         List<ContactPoint> contacts = cpBySystem.get(type);
         if (contacts != null) {
             if (contacts.size() > 0) {
-                if (Helper.hasRank(contacts)) {
-                    best = Helper.getHighestPriority(contacts);
+                if (FHIRHelper.hasRank(contacts)) {
+                    best = FHIRHelper.getHighestPriority(contacts);
                 } else {
-                    Map<String, List<ContactPoint>> contactsByUse = Helper.organizeContactTypesByUse(contacts);
+                    Map<String, List<ContactPoint>> contactsByUse = FHIRHelper.organizeContactTypesByUse(contacts);
                     for (String use : uses) {
                         if (contactsByUse.containsKey(use)) {
                             best = contactsByUse.get(use).get(0);
@@ -736,13 +736,13 @@ public class Helper {
         StringBuilder out = new StringBuilder();
         if (p.hasStart() || p.hasEnd()) {
             if (p.hasStart()) {
-                out.append(Helper.dateToString(p.getStart()));
+                out.append(FHIRHelper.dateToString(p.getStart()));
                 out.append(" ");
             }
             out.append("-");
             if (p.hasEnd()) {
                 out.append(" ");
-                out.append(Helper.dateToString(p.getEnd()));
+                out.append(FHIRHelper.dateToString(p.getEnd()));
             }
         }
         return out.toString();
@@ -823,7 +823,7 @@ public class Helper {
             StringBuilder timesBuf = new StringBuilder();
             for (TimeType t: times)
             {
-                Helper.addStringToBufferWithSep(timesBuf,t.getValue(),",");
+                FHIRHelper.addStringToBufferWithSep(timesBuf,t.getValue(),",");
             }
             out.append(timesBuf.toString());
         }
@@ -835,7 +835,7 @@ public class Helper {
             List<Enumeration<Timing.DayOfWeek>> days = repeat.getDayOfWeek();
             for(Enumeration<Timing.DayOfWeek> day: days)
             {
-                Helper.addStringToBufferWithSep(daysBuf,StringUtils.capitalize(day.getCode()),",");
+                FHIRHelper.addStringToBufferWithSep(daysBuf,StringUtils.capitalize(day.getCode()),",");
             }
             out.append(daysBuf.toString())
 ;        }
@@ -882,5 +882,35 @@ public class Helper {
         } else {
             return unitsOfTime.get(code);
         }
+    }
+
+    public static CodeableConcept conceptFromCode(String code, String text)
+    {
+        CodeableConcept out = new CodeableConcept();
+        out.setText(text);
+        ArrayList<Coding> codes = new ArrayList<>();
+        Coding coding = new Coding();
+        if (code.contains("|"))
+        {
+            //We have a system
+            String[] parts = code.split("|");
+            if (parts.length>1)
+            {
+                coding.setSystem(parts[0]);
+                coding.setCode(parts[1]);
+            }
+            else
+            {
+                coding.setCode(code);
+            }
+        }
+        else
+        {
+            coding.setCode(code);
+        }
+        coding.setDisplay(text);
+        codes.add(coding);
+        out.setCoding(codes);
+        return out;
     }
 }

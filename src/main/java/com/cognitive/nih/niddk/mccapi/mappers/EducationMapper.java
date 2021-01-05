@@ -4,8 +4,7 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.Education;
 
 import com.cognitive.nih.niddk.mccapi.data.EducationSummary;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
-import org.hl7.fhir.r4.model.Goal;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ServiceRequest;
 import org.hl7.fhir.r4.model.Type;
@@ -53,17 +52,17 @@ public class EducationMapper {
         if (in.hasOccurrenceDateTimeType())
         {
             out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceDateTimeType(),ctx));
-            out.setDisplayDate(Helper.dateTimeToString(in.getOccurrenceDateTimeType().getValue()));
+            out.setDisplayDate(FHIRHelper.dateTimeToString(in.getOccurrenceDateTimeType().getValue()));
         }
         else if (in.hasOccurrencePeriod())
         {
             out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceDateTimeType(),ctx));
-            out.setDisplayDate(Helper.periodToString(in.getOccurrencePeriod()));
+            out.setDisplayDate(FHIRHelper.periodToString(in.getOccurrencePeriod()));
         }
         else if (in.hasOccurrenceTiming())
         {
             out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceTiming(),ctx));
-            out.setDisplayDate(Helper.translateTiming(in.getOccurrenceTiming()));
+            out.setDisplayDate(FHIRHelper.translateTiming(in.getOccurrenceTiming()));
         }
         return out;
     }

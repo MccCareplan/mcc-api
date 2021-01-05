@@ -6,7 +6,7 @@ import com.cognitive.nih.niddk.mccapi.data.MedicationSummary;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.services.ReferenceResolver;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
 
@@ -55,7 +55,7 @@ public class MedicationMapper {
             out.setDosages(GenericTypeMapper.fhir2local_dosageList(in.getDosageInstruction(), ctx));
         }
         if (in.hasNote()) {
-            out.setNote(Helper.annotationsToString(in.getNote(),ctx));
+            out.setNote(FHIRHelper.annotationsToString(in.getNote(),ctx));
         }
         if (in.hasPriority()) {
             out.setPriority(in.getPriority().getDisplay());
@@ -111,7 +111,7 @@ public class MedicationMapper {
         }
 
         if (in.hasNote()) {
-            out.setNote(Helper.annotationsToString(in.getNote(),ctx));
+            out.setNote(FHIRHelper.annotationsToString(in.getNote(),ctx));
         }
         if (in.hasReasonReference()) {
             out.setReasonReferences(ReferenceMapper.fhir2local(in.getReasonReference(), ctx));
@@ -127,7 +127,7 @@ public class MedicationMapper {
         out.setStatus(in.getStatus().toCode());
 
         if (in.hasCategory()) {
-            out.setCategories(Helper.getConceptsAsDisplayString(in.getCategory()));
+            out.setCategories(FHIRHelper.getConceptsAsDisplayString(in.getCategory()));
         }
         if (in.hasMedication()) {
             if (in.hasMedicationCodeableConcept()) {
@@ -154,7 +154,7 @@ public class MedicationMapper {
         ///Handle Reasons
         StringBuilder reasons = new StringBuilder();
         if (in.hasReasonCode()) {
-            reasons.append(Helper.getConceptsAsDisplayString(in.getReasonCode()));
+            reasons.append(FHIRHelper.getConceptsAsDisplayString(in.getReasonCode()));
         }
         if (in.hasReasonReference()) {
             List<Reference> reasonRefs = in.getReasonReference();
@@ -177,7 +177,7 @@ public class MedicationMapper {
                 if (d.hasText()) {
                     inst.append(d.getText());
                 } else {
-                    inst.append(Helper.dosageToString(d));
+                    inst.append(FHIRHelper.dosageToString(d));
                 }
             }
             if (inst.length() > 0) {
@@ -207,7 +207,7 @@ public class MedicationMapper {
         out.setStatus(in.getStatus().toCode());
 
         if (in.hasCategory()) {
-            out.setCategories(Helper.getConceptDisplayString(in.getCategory()));
+            out.setCategories(FHIRHelper.getConceptDisplayString(in.getCategory()));
         }
         if (in.hasMedication()) {
             if (in.hasMedicationCodeableConcept()) {
@@ -234,7 +234,7 @@ public class MedicationMapper {
         ///Handle Reasons
         StringBuilder reasons = new StringBuilder();
         if (in.hasReasonCode()) {
-            reasons.append(Helper.getConceptsAsDisplayString(in.getReasonCode()));
+            reasons.append(FHIRHelper.getConceptsAsDisplayString(in.getReasonCode()));
         }
         if (in.hasReasonReference()) {
             handleReasonReference(in.getReasonReference(), reasons, ctx);
@@ -255,7 +255,7 @@ public class MedicationMapper {
                 if (d.hasText()) {
                     inst.append(d.getText());
                 } else {
-                    inst.append(Helper.dosageToString(d));
+                    inst.append(FHIRHelper.dosageToString(d));
                 }
             }
             if (inst.length() > 0) {
@@ -281,26 +281,26 @@ public class MedicationMapper {
     public static void handleReasonReference(List<Reference> reasonRefs, StringBuilder reasons, Context ctx) {
         for (Reference r : reasonRefs) {
             if (r.hasDisplay()) {
-                Helper.addStringToBufferWithSep(reasons, r.getDisplay(), ", ");
+                FHIRHelper.addStringToBufferWithSep(reasons, r.getDisplay(), ", ");
             } else if (r.hasReference()) {
                 // Resolve the reference Condition or Observations
-                String ref = Helper.getReferenceType(r);
+                String ref = FHIRHelper.getReferenceType(r);
                 if (ref.compareTo("Condition") == 0) {
                     Condition c = ReferenceResolver.findCondition(r, ctx);
                     if (c.hasCode()) {
                         if (c.getCode().hasText()) {
-                            Helper.addStringToBufferWithSep(reasons, c.getCode().getText(), ", ");
+                            FHIRHelper.addStringToBufferWithSep(reasons, c.getCode().getText(), ", ");
                         } else {
-                            Helper.addStringToBufferWithSep(reasons, c.getCode().getCodingFirstRep().getDisplay(), ", ");
+                            FHIRHelper.addStringToBufferWithSep(reasons, c.getCode().getCodingFirstRep().getDisplay(), ", ");
                         }
                     }
                 } else if (ref.compareTo("Observation") == 0) {
                     Observation o = ReferenceResolver.findObservation(r, ctx);
                     if (o.hasCode()) {
                         if (o.getCode().hasText()) {
-                            Helper.addStringToBufferWithSep(reasons, o.getCode().getText(), ", ");
+                            FHIRHelper.addStringToBufferWithSep(reasons, o.getCode().getText(), ", ");
                         } else {
-                            Helper.addStringToBufferWithSep(reasons, o.getCode().getCodingFirstRep().getDisplay(), ", ");
+                            FHIRHelper.addStringToBufferWithSep(reasons, o.getCode().getCodingFirstRep().getDisplay(), ", ");
                         }
                     }
 

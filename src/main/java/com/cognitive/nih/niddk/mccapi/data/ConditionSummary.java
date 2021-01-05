@@ -2,7 +2,7 @@ package com.cognitive.nih.niddk.mccapi.data;
 
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
 import com.cognitive.nih.niddk.mccapi.util.FHIRCodeSets;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.CodeableConcept;
 
 import javax.validation.constraints.NotBlank;
@@ -96,7 +96,7 @@ public class ConditionSummary {
         CodeableConcept[] concepts = new CodeableConcept[categories.size()];
         concepts = categories.toArray(concepts);
 
-        return Helper.getConceptCodes(concepts, FHIRCodeSets.US_CORE_CONDITION_CATEGORY_SET);
+        return FHIRHelper.getConceptCodes(concepts, FHIRCodeSets.US_CORE_CONDITION_CATEGORY_SET);
     }
 
     public String getProfileId() {

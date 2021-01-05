@@ -12,11 +12,11 @@ import javax.validation.constraints.NotBlank;
 public @Data
 class MccObservation {
     @NotBlank
-    private String FHIRId;
+    private String FHIRId="notfound";
     @NotBlank
     private MccCodeableConcept code;
     @NotBlank
-    private String status;
+    private String status="notfound";
     private MccReference[] basedOn;
     private Effective effective;
     private GenericType value;

@@ -9,10 +9,9 @@ import com.cognitive.nih.niddk.mccapi.mappers.CareTeamMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.PatientMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.PractitionerMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -61,7 +60,7 @@ public class ContactController {
             List<Reference> gp = fp.getGeneralPractitioner();
             for (Reference ref : gp) {
                 String type = ref.getType();
-                if (Helper.isReferenceOfType(ref, "Practitioner")) {
+                if (FHIRHelper.isReferenceOfType(ref, "Practitioner")) {
                     //DIRECT-FHIR-REF
                     Practitioner p = client.fetchResourceFromUrl(Practitioner.class, ref.getReference());
                     Contact pc = PractitionerMapper.fhir2Contact(p, ctx);
@@ -92,7 +91,7 @@ public class ContactController {
 
                         //TODO: In the future maybe remove duplicate when more then one team is present
                         for (Reference ref : teams) {
-                            if (Helper.isReferenceOfType(ref, "CareTeam")) {
+                            if (FHIRHelper.isReferenceOfType(ref, "CareTeam")) {
                                 CareTeam t = client.fetchResourceFromUrl(CareTeam.class, ref.getReference());
                                 if (t != null) {
                                     out.addAll(CareTeamMapper.fhir2Contacts(t, ctx));

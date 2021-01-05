@@ -2,12 +2,11 @@ package com.cognitive.nih.niddk.mccapi.data;
 
 import com.cognitive.nih.niddk.mccapi.data.primative.FuzzyDate;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hl7.fhir.r4.model.CodeableConcept;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Comparator;
 import java.util.List;
 
 public class ConditionHistory implements Comparable<ConditionHistory> {
@@ -132,7 +131,7 @@ public class ConditionHistory implements Comparable<ConditionHistory> {
     */
     public String getCategories()
     {
-        return Helper.getConceptsAsDisplayString(categories);
+        return FHIRHelper.getConceptsAsDisplayString(categories);
     }
 
     @JsonIgnore
