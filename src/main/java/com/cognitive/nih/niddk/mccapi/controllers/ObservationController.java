@@ -4,12 +4,16 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccObservation;
 import com.cognitive.nih.niddk.mccapi.data.MccValueSet;
+import com.cognitive.nih.niddk.mccapi.data.primative.GenericType;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
 import com.cognitive.nih.niddk.mccapi.exception.ItemNotFoundException;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.managers.ValueSetManager;
+import com.cognitive.nih.niddk.mccapi.mappers.CodeableConceptMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.ObservationMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
+import com.cognitive.nih.niddk.mccapi.util.MccHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Observation;
@@ -89,7 +93,8 @@ public class ObservationController {
         list = this.QueryObservations(baseQuery, mode, client, subjectId, "descending", webRequest, headers, values);
 
         if (list.size() == 0) {
-            throw new ItemNotFoundException(code);
+            //throw new ItemNotFoundException(code);
+            return notFound(code);
         }
 
         return list.get(0);
@@ -187,6 +192,18 @@ public class ObservationController {
                 out.add(key);
             }
         }
+        return out;
+    }
+
+    private MccObservation notFound(String code)
+    {
+        MccObservation out = new MccObservation();
+        out.setFHIRId("notfound");
+        out.setStatus("notfound");
+        MccCodeableConcept cc = MccHelper.conceptFromCode(code,null);
+        out.setCode(cc);
+        GenericType value = MccHelper.genericFromString("No Data Available");
+        out.setValue(value);
         return out;
     }
 }
