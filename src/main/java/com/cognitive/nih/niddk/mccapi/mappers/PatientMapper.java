@@ -7,6 +7,8 @@ import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class PatientMapper {
@@ -124,7 +126,10 @@ public class PatientMapper {
             out.setAddress(FHIRHelper.addressToString(a));
         }
         //in.getContact();   //What to d this this in the future
-
+        if (in.hasPhoto())
+        {
+            out.setHasImage(true);
+        }
         //Deal with contact points
         List<ContactPoint> contactPoints = FHIRHelper.filterToCurrentContactPoints(in.getTelecom());
         Map<String, List<ContactPoint>> cpBySystem = FHIRHelper.organizeContactTypesBySystem(contactPoints);
@@ -147,6 +152,13 @@ public class PatientMapper {
     public static MccPatient fhir2local(Patient in, Context ctx) {
         MccPatient out = new MccPatient();
         out.setDateOfBirth(FHIRHelper.dateToString(in.getBirthDate()));
+        if (in.hasBirthDate())
+        {
+            LocalDate birth = in.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            int years = java.time.Period.between(birth, LocalDate.now()).getYears();
+            out.setAge(Integer.toString(years));
+        }
+
         out.setGender(in.getGender().getDisplay());
         out.setName(FHIRHelper.getBestName(in.getName()));
         out.setFHIRId(in.getIdElement().getIdPart());
