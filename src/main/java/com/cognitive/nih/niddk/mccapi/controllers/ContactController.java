@@ -31,6 +31,14 @@ public class ContactController {
         this.queryManager = queryManager;
     }
 
+    @GetMapping(value = "/image/contact/{id}", produces = "image/jpeg")
+    public Byte[] getImage(@PathVariable(value="id") String id,  @RequestHeader Map<String, String> headers, WebRequest webRequest)
+    {
+        //Grab the reference
+        //Make sure it is jpeg
+        //Decode the image
+        return null;
+    }
 
     @GetMapping("/contact")
     public Contact[] getContacts(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String carePlanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
