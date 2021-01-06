@@ -2,9 +2,11 @@ package com.cognitive.nih.niddk.mccapi.services;
 
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
+import com.cognitive.nih.niddk.mccapi.util.JavaHelper;
 import lombok.NonNull;
 import org.hl7.fhir.r4.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -114,6 +116,8 @@ public class NameResolver {
         }
         return out;
     }
+
+
     public static String getReferenceName(Reference ref, Context ctx) {
 
         if (ref.hasDisplay()) {
@@ -209,8 +213,18 @@ public class NameResolver {
     public static String getReferenceNames(List<Reference> refs, Context ctx) {
         StringBuilder out = new StringBuilder();
         for (Reference ref : refs) {
-            FHIRHelper.addStringToBufferWithSep(out, getReferenceName(ref, ctx), ",");
+            JavaHelper.addStringToBufferWithSep(out, getReferenceName(ref, ctx), ",");
         }
         return out.toString();
+    }
+
+    public static String[] getReferenceNamesAsArray(List<Reference> refs, Context ctx) {
+        ArrayList<String> out = new ArrayList<>();
+
+        for (Reference ref : refs) {
+            out.add(getReferenceName(ref, ctx));
+        }
+        String[] outA = new String[out.size()];
+        return out.toArray(outA);
     }
 }
