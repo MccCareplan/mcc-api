@@ -22,6 +22,9 @@ public class EducationSummary {
     private MccCodeableConcept outcome;
     @NotBlank
     private String status;
+    private String performer;
+    private String reasons;
+
 
     //Type  - Procedure  - Service Request (E
     //FHIRId

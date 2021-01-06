@@ -21,5 +21,7 @@ public class Counseling {
     private MccCodeableConcept outcome;
     @NotBlank
     private String status;
-
+    private String[] performer;
+    private MccCodeableConcept[] reasonsCodes;
+    private String[] reasons;
 }

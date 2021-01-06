@@ -21,5 +21,7 @@ public class Education {
     private MccCodeableConcept outcome;
     @NotBlank
     private String status;
-
+    private String[] performers;
+    private MccCodeableConcept[] reasonsCodes;
+    private String[] reasons;
 }
