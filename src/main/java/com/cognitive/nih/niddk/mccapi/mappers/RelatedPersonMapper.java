@@ -22,7 +22,10 @@ public class RelatedPersonMapper {
             out.setAddress(FHIRHelper.addressToString(a));
         }
         //in.getContact();   //What to d this this in the future
-
+        if (in.hasPhoto())
+        {
+            out.setHasImage(true);
+        }
         //Deal with contact points
         List<ContactPoint> contactPoints = FHIRHelper.filterToCurrentContactPoints(in.getTelecom());
         Map<String, List<ContactPoint>> cpBySystem = FHIRHelper.organizeContactTypesBySystem(contactPoints);

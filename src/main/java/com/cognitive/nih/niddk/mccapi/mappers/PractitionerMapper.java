@@ -4,6 +4,7 @@ import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.services.ReferenceResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
+import com.cognitive.nih.niddk.mccapi.util.JavaHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
 
@@ -21,7 +22,10 @@ public class PractitionerMapper {
             out.setAddress(FHIRHelper.addressToString(a));
         }
         //in.getContact();   //What to d this this in the future
-
+        if (in.hasPhoto())
+        {
+            out.setHasImage(true);
+        }
         //Deal with contact points
         List<ContactPoint> contactPoints = FHIRHelper.filterToCurrentContactPoints(in.getTelecom());
         Map<String, List<ContactPoint>> cpBySystem = FHIRHelper.organizeContactTypesBySystem(contactPoints);
@@ -53,14 +57,14 @@ public class PractitionerMapper {
                         Reference ref = pr.getOrganization();
                         if (ref.hasDisplay())
                         {
-                            FHIRHelper.addStringToBufferWithSep(orgs,ref.getDisplay(),", ");
+                            JavaHelper.addStringToBufferWithSep(orgs,ref.getDisplay(),", ");
                         }
                         else
                         {
                             Organization o = ReferenceResolver.findOrganization(ref,ctx);
                             if (o != null)
                             {
-                                FHIRHelper.addStringToBufferWithSep(orgs,o.getName(),", ");
+                                JavaHelper.addStringToBufferWithSep(orgs,o.getName(),", ");
                             }
                         }
                     }
