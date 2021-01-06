@@ -307,17 +307,17 @@ public class FHIRHelper {
             if (dosage.hasTiming())
             {
                 Timing t = dosage.getTiming();
-                addStringToBufferWithSep(out,translateTiming(t) ," ");;
+                JavaHelper.addStringToBufferWithSep(out,translateTiming(t) ," ");;
             }
             if (dosage.hasAsNeeded())
             {
                 if (dosage.hasAsNeededCodeableConcept())
                 {
-                    addStringToBufferWithSep(out,dosage.getAsNeededCodeableConcept().getText() ," ");
+                    JavaHelper.addStringToBufferWithSep(out,dosage.getAsNeededCodeableConcept().getText() ," ");
                 }
                 else
                 {
-                    addStringToBufferWithSep(out,"As needed"," ");
+                    JavaHelper.addStringToBufferWithSep(out,"As needed"," ");
                 }
             }
         }
@@ -682,16 +682,6 @@ public class FHIRHelper {
         return ide.getResourceType()+"/"+ide.getIdPart();
     }
 
-    public static StringBuilder addStringToBufferWithSep(StringBuilder buf, String str,String sep)
-    {
-        if (buf.length()>0)
-        {
-            buf.append(sep);
-        }
-        buf.append(str);
-
-        return buf;
-    }
 
     public static Map<String, List<ContactPoint>> organizeContactTypesBySystem(List<ContactPoint> points) {
         HashMap<String, List<ContactPoint>> out = new HashMap<>();
@@ -823,7 +813,7 @@ public class FHIRHelper {
             StringBuilder timesBuf = new StringBuilder();
             for (TimeType t: times)
             {
-                FHIRHelper.addStringToBufferWithSep(timesBuf,t.getValue(),",");
+                JavaHelper.addStringToBufferWithSep(timesBuf,t.getValue(),",");
             }
             out.append(timesBuf.toString());
         }
@@ -835,7 +825,7 @@ public class FHIRHelper {
             List<Enumeration<Timing.DayOfWeek>> days = repeat.getDayOfWeek();
             for(Enumeration<Timing.DayOfWeek> day: days)
             {
-                FHIRHelper.addStringToBufferWithSep(daysBuf,StringUtils.capitalize(day.getCode()),",");
+                JavaHelper.addStringToBufferWithSep(daysBuf,StringUtils.capitalize(day.getCode()),",");
             }
             out.append(daysBuf.toString())
 ;        }

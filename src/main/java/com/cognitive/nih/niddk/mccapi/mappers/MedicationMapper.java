@@ -7,6 +7,7 @@ import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.services.ReferenceResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
+import com.cognitive.nih.niddk.mccapi.util.JavaHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
 
@@ -281,7 +282,7 @@ public class MedicationMapper {
     public static void handleReasonReference(List<Reference> reasonRefs, StringBuilder reasons, Context ctx) {
         for (Reference r : reasonRefs) {
             if (r.hasDisplay()) {
-                FHIRHelper.addStringToBufferWithSep(reasons, r.getDisplay(), ", ");
+                JavaHelper.addStringToBufferWithSep(reasons, r.getDisplay(), ", ");
             } else if (r.hasReference()) {
                 // Resolve the reference Condition or Observations
                 String ref = FHIRHelper.getReferenceType(r);
@@ -289,18 +290,18 @@ public class MedicationMapper {
                     Condition c = ReferenceResolver.findCondition(r, ctx);
                     if (c.hasCode()) {
                         if (c.getCode().hasText()) {
-                            FHIRHelper.addStringToBufferWithSep(reasons, c.getCode().getText(), ", ");
+                            JavaHelper.addStringToBufferWithSep(reasons, c.getCode().getText(), ", ");
                         } else {
-                            FHIRHelper.addStringToBufferWithSep(reasons, c.getCode().getCodingFirstRep().getDisplay(), ", ");
+                            JavaHelper.addStringToBufferWithSep(reasons, c.getCode().getCodingFirstRep().getDisplay(), ", ");
                         }
                     }
                 } else if (ref.compareTo("Observation") == 0) {
                     Observation o = ReferenceResolver.findObservation(r, ctx);
                     if (o.hasCode()) {
                         if (o.getCode().hasText()) {
-                            FHIRHelper.addStringToBufferWithSep(reasons, o.getCode().getText(), ", ");
+                            JavaHelper.addStringToBufferWithSep(reasons, o.getCode().getText(), ", ");
                         } else {
-                            FHIRHelper.addStringToBufferWithSep(reasons, o.getCode().getCodingFirstRep().getDisplay(), ", ");
+                            JavaHelper.addStringToBufferWithSep(reasons, o.getCode().getCodingFirstRep().getDisplay(), ", ");
                         }
                     }
 
