@@ -3,11 +3,12 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import org.hl7.fhir.r4.model.Procedure;
+import org.hl7.fhir.r4.model.Type;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PerformerMapper {
+public class ProcedureMapper {
 
 
     public static String performerToString(List<Procedure.ProcedurePerformerComponent> performers, Context ctx) {
@@ -38,4 +39,6 @@ public class PerformerMapper {
         String[] outA = new String[perfs.size()];
         return perfs.toArray(outA);
     }
+
+
 }

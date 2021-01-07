@@ -205,6 +205,7 @@ public class FHIRHelper {
         return false;
     }
 
+
     public static String dateTimeToString(Date d) {
         if (d == null) {
             return null;
@@ -872,6 +873,61 @@ public class FHIRHelper {
         } else {
             return unitsOfTime.get(code);
         }
+    }
+
+    public static String typeToDateString(Type t)
+    {
+        String out = "";
+        switch(t.fhirType())
+        {
+            case FHIRTypes.stringType:
+            {
+                out = t.castToString(t).getValue();
+                break;
+            }
+            case FHIRTypes.dateType:
+            {
+                out = FHIRHelper.dateToString(t.castToDate(t).getValue());
+                break;
+            }
+            case FHIRTypes.dateTimeType:
+            {
+                out =FHIRHelper.dateTimeToString(t.castToDateTime(t).getValue());
+                break;
+            }
+            case FHIRTypes.PeriodType:
+            {
+                out = FHIRHelper.periodToString(t.castToPeriod(t));
+                break;
+            }
+            case FHIRTypes.RangeType:
+            {
+                Range r = new Range();
+                r = t.castToRange(t);
+                Quantity start = r.getLow();
+                Quantity end = r.getHigh();
+                out = String.format("Between %s and %s", start.getDisplay(), end.getDisplay());
+            }
+            case FHIRTypes.AgeType:
+            {
+                Quantity a = new Quantity();
+                a = t.castToQuantity(t);
+                String disp = a.getDisplay();
+                out = String.format("At age %s", disp);
+                break;
+            }
+            case FHIRTypes.TimingType:
+            {
+                out = translateTiming(t.castToTiming(t));
+                break;
+            }
+            default:
+            {
+                break;
+            }
+
+        }
+        return out;
     }
 
     public static CodeableConcept conceptFromCode(String code, String text)

@@ -1,13 +1,12 @@
 package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.*;
+import com.cognitive.nih.niddk.mccapi.data.primative.FuzzyDate;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ServiceRequest;
 import org.hl7.fhir.r4.model.Type;
-
-import java.util.ArrayList;
 
 public class CounselingMapper {
 
@@ -20,10 +19,15 @@ public class CounselingMapper {
             out.setOutcome(CodeableConceptMapper.fhir2local(in.getOutcome(), ctx));
         }
         out.setTopic(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
-
+        if (in.hasPerformed())
+        {
+            out.setDisplayDate(FHIRHelper.typeToDateString(in.getPerformed()));
+            FuzzyDate perfOn =new FuzzyDate(in.getPerformed(), ctx);
+            out.setDate(perfOn);
+        }
         if (in.hasPerformer())
         {
-            out.setPerformer(PerformerMapper.performerToStringArray(in.getPerformer(),ctx));
+            out.setPerformer(ProcedureMapper.performerToStringArray(in.getPerformer(),ctx));
         }
         if (in.hasReasonCode() )
         {
@@ -45,9 +49,15 @@ public class CounselingMapper {
             out.setOutcome(CodeableConceptMapper.fhir2local(in.getOutcome(), ctx));
         }
         out.setTopic(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
+        if (in.hasPerformed())
+        {
+            out.setDisplayDate(FHIRHelper.typeToDateString(in.getPerformed()));
+            FuzzyDate perfOn =new FuzzyDate(in.getPerformed(), ctx);
+            out.setDate(perfOn);
+        }
         if (in.hasPerformer())
         {
-            out.setPerformer(PerformerMapper.performerToString(in.getPerformer(),ctx));
+            out.setPerformer(ProcedureMapper.performerToString(in.getPerformer(),ctx));
         }
 
         if (in.hasReasonCode() || in.hasReasonReference())
@@ -85,22 +95,13 @@ public class CounselingMapper {
         out.setStatus(in.getStatus().toCode());
         out.setType("ServiceRequest");
         out.setTopic(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
-        //TODO:  Deal with occurance
-        if (in.hasOccurrenceDateTimeType())
+        if (in.hasOccurrence())
         {
-            out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceDateTimeType(),ctx));
-            out.setDisplayDate(FHIRHelper.dateTimeToString(in.getOccurrenceDateTimeType().getValue()));
+            out.setDisplayDate(FHIRHelper.typeToDateString(in.getOccurrence()));
+            FuzzyDate perfOn =new FuzzyDate(in.getOccurrence(), ctx);
+            out.setDate(perfOn);
         }
-        else if (in.hasOccurrencePeriod())
-        {
-            out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceDateTimeType(),ctx));
-            out.setDisplayDate(FHIRHelper.periodToString(in.getOccurrencePeriod()));
-        }
-        else if (in.hasOccurrenceTiming())
-        {
-            out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceTiming(),ctx));
-            out.setDisplayDate(FHIRHelper.translateTiming(in.getOccurrenceTiming()));
-        }
+
         return out;
     }
 }
