@@ -10,6 +10,9 @@ public class MccPatient {
     private String FHIRId;
     @NotBlank
     private String Name;
+
+
+    private String Age="Unknown";
     private String DateOfBirth;
     private String Gender;
     private String Race;
@@ -71,5 +74,14 @@ public class MccPatient {
     public void setId(String id) {
         Id = id;
     }
+
+    public String getAge() {
+        return Age;
+    }
+
+    public void setAge(String age) {
+        Age = age;
+    }
+
 }
 

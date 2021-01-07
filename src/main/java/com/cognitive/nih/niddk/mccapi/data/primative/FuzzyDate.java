@@ -1,7 +1,7 @@
 package com.cognitive.nih.niddk.mccapi.data.primative;
 
 import com.cognitive.nih.niddk.mccapi.data.Context;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hl7.fhir.r4.model.*;
 
@@ -245,7 +245,7 @@ public class FuzzyDate implements Comparable<FuzzyDate>{
 
                 DateTimeType d = new DateTimeType();
                 d = t.castToDateTime(t);
-                out = Helper.dateToString(d.getValue());
+                out = FHIRHelper.dateToString(d.getValue());
 
             } else if (c == Age.class) {
                 Quantity a = new Quantity();
@@ -259,11 +259,11 @@ public class FuzzyDate implements Comparable<FuzzyDate>{
                 Date end = p.getEnd();
                 //From s, s to e, To e
                 if (start == null) {
-                    out = String.format("From %s", Helper.dateToString(start));
+                    out = String.format("From %s", FHIRHelper.dateToString(start));
                 } else if (end == null) {
-                    out = String.format("From %s to %s", Helper.dateToString(start), Helper.dateToString(end));
+                    out = String.format("From %s to %s", FHIRHelper.dateToString(start), FHIRHelper.dateToString(end));
                 } else {
-                    out = String.format("To %s", Helper.dateToString(end));
+                    out = String.format("To %s", FHIRHelper.dateToString(end));
                 }
             } else if (c == Range.class) {
                 Range r = new Range();
@@ -328,7 +328,7 @@ public class FuzzyDate implements Comparable<FuzzyDate>{
         start = d.getValue();
         end = start;
         hardSort = true;
-        text = Helper.dateToString(start);
+        text = FHIRHelper.dateToString(start);
     }
 
     private void handleAsAge(Context ctx) {
@@ -351,11 +351,11 @@ public class FuzzyDate implements Comparable<FuzzyDate>{
         Date end = p.getEnd();
         //From s, s to e, To e
         if (start == null) {
-            text = String.format("From %s", Helper.dateToString(start));
+            text = String.format("From %s", FHIRHelper.dateToString(start));
         } else if (end == null) {
-            text = String.format("From %s to %s", Helper.dateToString(start), Helper.dateToString(end));
+            text = String.format("From %s to %s", FHIRHelper.dateToString(start), FHIRHelper.dateToString(end));
         } else {
-            text = String.format("To %s", Helper.dateToString(end));
+            text = String.format("To %s", FHIRHelper.dateToString(end));
         }
     }
 

@@ -2,7 +2,7 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.ContactPoint;
 import org.hl7.fhir.r4.model.RelatedPerson;
@@ -14,23 +14,26 @@ public class RelatedPersonMapper {
 
     public static Contact fhir2Contact(RelatedPerson in, Context ctx) {
         Contact out = new Contact();
-        out.setName(Helper.getBestName(in.getName()));
-        out.setRelFhirId(Helper.getIdString(in.getIdElement()));
+        out.setName(FHIRHelper.getBestName(in.getName()));
+        out.setRelFhirId(FHIRHelper.getIdString(in.getIdElement()));
 
-        Address a = Helper.findBestAddress(in.getAddress(), "home");
+        Address a = FHIRHelper.findBestAddress(in.getAddress(), "home");
         if (a != null) {
-            out.setAddress(Helper.addressToString(a));
+            out.setAddress(FHIRHelper.addressToString(a));
         }
         //in.getContact();   //What to d this this in the future
-
+        if (in.hasPhoto())
+        {
+            out.setHasImage(true);
+        }
         //Deal with contact points
-        List<ContactPoint> contactPoints = Helper.filterToCurrentContactPoints(in.getTelecom());
-        Map<String, List<ContactPoint>> cpBySystem = Helper.organizeContactTypesBySystem(contactPoints);
-        ContactPoint bestPhone = Helper.findBestContactByType(cpBySystem, "phone", "work|mobile|home");
+        List<ContactPoint> contactPoints = FHIRHelper.filterToCurrentContactPoints(in.getTelecom());
+        Map<String, List<ContactPoint>> cpBySystem = FHIRHelper.organizeContactTypesBySystem(contactPoints);
+        ContactPoint bestPhone = FHIRHelper.findBestContactByType(cpBySystem, "phone", "work|mobile|home");
         if (bestPhone != null) {
             out.setPhone(bestPhone.getValue());
         }
-        ContactPoint bestEmail = Helper.findBestContactByType(cpBySystem, "email", "work|mobile");
+        ContactPoint bestEmail = FHIRHelper.findBestContactByType(cpBySystem, "email", "work|mobile");
         if (bestEmail != null) {
             out.setEmail(bestEmail.getValue());
         }

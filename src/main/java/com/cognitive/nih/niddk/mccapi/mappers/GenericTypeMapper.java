@@ -2,7 +2,7 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.data.primative.*;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,7 +166,7 @@ public class GenericTypeMapper {
     public static MccDate fhir2local(DateType in, Context ctx) {
         MccDate out = new MccDate();
         out.setRawDate(in.getValue());
-        out.setDate(Helper.dateToString(in.getValue()));
+        out.setDate(FHIRHelper.dateToString(in.getValue()));
         return out;
     }
 
@@ -179,7 +179,7 @@ public class GenericTypeMapper {
     public static MccDate fhir2local(Date in, Context ctx) {
         MccDate out = new MccDate();
         out.setRawDate(in);
-        out.setDate(Helper.dateToString(in));
+        out.setDate(FHIRHelper.dateToString(in));
         return out;
     }
     public static MccIdentifer[] fhir2local_identifierArray(List<Identifier> in, Context ctx) {
@@ -205,7 +205,7 @@ public class GenericTypeMapper {
     public static MccDateTime fhir2local(DateTimeType in, Context ctx) {
         MccDateTime out = new MccDateTime();
         out.setRawDate(in.getValue());
-        out.setDate(Helper.dateTimeToString(in.getValue()));
+        out.setDate(FHIRHelper.dateTimeToString(in.getValue()));
         return out;
     }
 
@@ -393,10 +393,10 @@ public class GenericTypeMapper {
                     i++;
                 }
             }
-            mccRepeat.setReadable(Helper.translateRepeat(repeat));
+            mccRepeat.setReadable(FHIRHelper.translateRepeat(repeat));
             mccRepeat.setOffset(repeat.getOffset());
         }
-        out.setReadable(Helper.translateTiming(in));
+        out.setReadable(FHIRHelper.translateTiming(in));
         return out;
 
     }

@@ -25,11 +25,12 @@ public class Contact {
     private String role;
     @NotBlank
     private String name;
+    private boolean hasImage = false;
     private String phone;
     private String email;
     private String address;
     private String organizationName; //The the of the Name of the organization the person is associated with.
-    private String relFhirId;   //FHIR Id for full resoures
+    private String relFhirId;   //FHIR Id for full resources
     private String teamId;    //Care Team Id if the member come from a care team
     private String teamName;   //Name of the care team (if any)
 

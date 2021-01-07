@@ -1,24 +1,26 @@
 package com.cognitive.nih.niddk.mccapi.services;
 
 import com.cognitive.nih.niddk.mccapi.data.Context;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
+import com.cognitive.nih.niddk.mccapi.util.JavaHelper;
 import lombok.NonNull;
 import org.hl7.fhir.r4.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class NameResolver {
     public static String getName(@NonNull Condition c, Context ctx) {
-        return Helper.getConceptDisplayString(c.getCode());
+        return FHIRHelper.getConceptDisplayString(c.getCode());
     }
 
     public static String getName(@NonNull Practitioner p, Context ctx) {
-        return Helper.getBestName(p.getName());
+        return FHIRHelper.getBestName(p.getName());
     }
 
     public static String getName(@NonNull Patient p, Context ctx) {
-        return Helper.getBestName(p.getName());
+        return FHIRHelper.getBestName(p.getName());
     }
 
     public static String getName(@NonNull Medication x, Context ctx) {
@@ -30,7 +32,7 @@ public class NameResolver {
     }
 
     public static String getName(@NonNull RelatedPerson o, Context ctx) {
-        return Helper.getBestName(o.getName());
+        return FHIRHelper.getBestName(o.getName());
     }
 
     public static String getName(@NonNull PractitionerRole o, Context ctx) {
@@ -50,7 +52,7 @@ public class NameResolver {
         out.append(s.getIntent().getDisplay());
         if (s.hasCode()) {
             out.append(" for ");
-            out.append(Helper.getConceptDisplayString(s.getCode()));
+            out.append(FHIRHelper.getConceptDisplayString(s.getCode()));
         } else {
             out.append(" ");
             if (s.hasIdentifier()) {
@@ -64,7 +66,7 @@ public class NameResolver {
 
     public static String getName(@NonNull RiskAssessment r, Context ctx) {
         if (r.hasCode()) {
-            return Helper.getConceptDisplayString(r.getCode());
+            return FHIRHelper.getConceptDisplayString(r.getCode());
         }
         if (r.hasCondition()) {
             return getReferenceName(r.getCondition(), ctx);
@@ -114,13 +116,15 @@ public class NameResolver {
         }
         return out;
     }
+
+
     public static String getReferenceName(Reference ref, Context ctx) {
 
         if (ref.hasDisplay()) {
             return ref.getDisplay();
         }
         String out = null;
-        String type = Helper.getReferenceType(ref);
+        String type = FHIRHelper.getReferenceType(ref);
         if (type != null) {
             switch (type) {
                 case "Condition": {
@@ -209,8 +213,18 @@ public class NameResolver {
     public static String getReferenceNames(List<Reference> refs, Context ctx) {
         StringBuilder out = new StringBuilder();
         for (Reference ref : refs) {
-            Helper.addStringToBufferWithSep(out, getReferenceName(ref, ctx), ",");
+            JavaHelper.addStringToBufferWithSep(out, getReferenceName(ref, ctx), ",");
         }
         return out.toString();
+    }
+
+    public static String[] getReferenceNamesAsArray(List<Reference> refs, Context ctx) {
+        ArrayList<String> out = new ArrayList<>();
+
+        for (Reference ref : refs) {
+            out.add(getReferenceName(ref, ctx));
+        }
+        String[] outA = new String[out.size()];
+        return out.toArray(outA);
     }
 }

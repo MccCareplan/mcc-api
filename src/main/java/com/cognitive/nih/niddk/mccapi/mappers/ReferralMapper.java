@@ -2,13 +2,9 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
-import org.hl7.fhir.r4.model.Procedure;
-import org.hl7.fhir.r4.model.Reference;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.ServiceRequest;
 import org.hl7.fhir.r4.model.Type;
-
-import java.util.List;
 
 public class ReferralMapper {
 
@@ -20,26 +16,28 @@ public class ReferralMapper {
         out.setStatus(in.getStatus().toCode());
         out.setPurpose(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
 
+
         if (in.hasPerformerType())
         {
-
+            out.setPerformerType(CodeableConceptMapper.fhir2local(in.getPerformerType(),ctx));
         }
+
 
         //TODO:  Deal with occurance
         if (in.hasOccurrenceDateTimeType())
         {
             out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceDateTimeType(),ctx));
-            out.setDisplayDate(Helper.dateTimeToString(in.getOccurrenceDateTimeType().getValue()));
+            out.setDisplayDate(FHIRHelper.dateTimeToString(in.getOccurrenceDateTimeType().getValue()));
         }
         else if (in.hasOccurrencePeriod())
         {
             out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceDateTimeType(),ctx));
-            out.setDisplayDate(Helper.periodToString(in.getOccurrencePeriod()));
+            out.setDisplayDate(FHIRHelper.periodToString(in.getOccurrencePeriod()));
         }
         else if (in.hasOccurrenceTiming())
         {
             out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceDateTimeType(),ctx));
-            out.setDisplayDate(Helper.translateTiming(in.getOccurrenceTiming()));
+            out.setDisplayDate(FHIRHelper.translateTiming(in.getOccurrenceTiming()));
         }
         return out;
     }
@@ -60,17 +58,17 @@ public class ReferralMapper {
         if (in.hasOccurrenceDateTimeType())
         {
             out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceDateTimeType(),ctx));
-            out.setDisplayDate(Helper.dateTimeToString(in.getOccurrenceDateTimeType().getValue()));
+            out.setDisplayDate(FHIRHelper.dateTimeToString(in.getOccurrenceDateTimeType().getValue()));
         }
         else if (in.hasOccurrencePeriod())
         {
             out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceDateTimeType(),ctx));
-            out.setDisplayDate(Helper.periodToString(in.getOccurrencePeriod()));
+            out.setDisplayDate(FHIRHelper.periodToString(in.getOccurrencePeriod()));
         }
         else if (in.hasOccurrenceTiming())
         {
             out.setDate(GenericTypeMapper.fhir2local((Type) in.getOccurrenceTiming(),ctx));
-            out.setDisplayDate(Helper.translateTiming(in.getOccurrenceTiming()));
+            out.setDisplayDate(FHIRHelper.translateTiming(in.getOccurrenceTiming()));
         }
 
         if (in.hasPerformer())

@@ -1,4 +1,12 @@
 
+## Release 1.0.11-SNAPSHOT
+- Updated /find/latest/observation to return empty observation when not found, status = "notfound"
+- Add hasImage to contact
+- Renamed util.Helper to FHIRHelper, added MccHelper
+- Added Age to Patient
+- Added Performer to Education and Counselling
+- Added Reason to Education and Counselling
+- Refactored and extended internal helpers.
 
 ## Release 1.0.10-SNAPSHOT
 - Fix careplan lookup during medication summary

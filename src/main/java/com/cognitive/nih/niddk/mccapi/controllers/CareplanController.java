@@ -11,7 +11,7 @@ import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.mappers.CareplanMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CarePlan;
@@ -254,7 +254,7 @@ public class CareplanController {
          String ref = reference.getReference();
          Condition add = client.read().resource(Condition.class).withUrl(ref).execute();
          if (index>0) addSum.append(", ");
-         addSum.append(Helper.getConceptDisplayString(add.getCode()));
+         addSum.append(FHIRHelper.getConceptDisplayString(add.getCode()));
          mccAddrs[index] = ConditionMapper.fhir2local(add, ctx);
          index++;
         }

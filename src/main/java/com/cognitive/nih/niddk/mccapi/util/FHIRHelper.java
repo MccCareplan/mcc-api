@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Helper {
+public class FHIRHelper {
     private static final String dateFormat = "MM/dd/yyyy";
     private static final SimpleDateFormat fmtDate = new SimpleDateFormat(dateFormat);
     private static final String dateTimeFormat = "MM/dd/yyyy hh:mm";
@@ -134,7 +134,7 @@ public class Helper {
         StringBuilder out = new StringBuilder();
         boolean bAddLine = false;
         if (a.hasTime()) {
-            out.append(Helper.dateTimeToString(a.getTime()));
+            out.append(FHIRHelper.dateTimeToString(a.getTime()));
             out.append(" ");
         }
         if (a.hasAuthor()) {
@@ -204,6 +204,7 @@ public class Helper {
         }
         return false;
     }
+
 
     public static String dateTimeToString(Date d) {
         if (d == null) {
@@ -307,17 +308,17 @@ public class Helper {
             if (dosage.hasTiming())
             {
                 Timing t = dosage.getTiming();
-                addStringToBufferWithSep(out,translateTiming(t) ," ");;
+                JavaHelper.addStringToBufferWithSep(out,translateTiming(t) ," ");;
             }
             if (dosage.hasAsNeeded())
             {
                 if (dosage.hasAsNeededCodeableConcept())
                 {
-                    addStringToBufferWithSep(out,dosage.getAsNeededCodeableConcept().getText() ," ");
+                    JavaHelper.addStringToBufferWithSep(out,dosage.getAsNeededCodeableConcept().getText() ," ");
                 }
                 else
                 {
-                    addStringToBufferWithSep(out,"As needed"," ");
+                    JavaHelper.addStringToBufferWithSep(out,"As needed"," ");
                 }
             }
         }
@@ -411,10 +412,10 @@ public class Helper {
         List<ContactPoint> contacts = cpBySystem.get(type);
         if (contacts != null) {
             if (contacts.size() > 0) {
-                if (Helper.hasRank(contacts)) {
-                    best = Helper.getHighestPriority(contacts);
+                if (FHIRHelper.hasRank(contacts)) {
+                    best = FHIRHelper.getHighestPriority(contacts);
                 } else {
-                    Map<String, List<ContactPoint>> contactsByUse = Helper.organizeContactTypesByUse(contacts);
+                    Map<String, List<ContactPoint>> contactsByUse = FHIRHelper.organizeContactTypesByUse(contacts);
                     for (String use : uses) {
                         if (contactsByUse.containsKey(use)) {
                             best = contactsByUse.get(use).get(0);
@@ -682,16 +683,6 @@ public class Helper {
         return ide.getResourceType()+"/"+ide.getIdPart();
     }
 
-    public static StringBuilder addStringToBufferWithSep(StringBuilder buf, String str,String sep)
-    {
-        if (buf.length()>0)
-        {
-            buf.append(sep);
-        }
-        buf.append(str);
-
-        return buf;
-    }
 
     public static Map<String, List<ContactPoint>> organizeContactTypesBySystem(List<ContactPoint> points) {
         HashMap<String, List<ContactPoint>> out = new HashMap<>();
@@ -736,13 +727,13 @@ public class Helper {
         StringBuilder out = new StringBuilder();
         if (p.hasStart() || p.hasEnd()) {
             if (p.hasStart()) {
-                out.append(Helper.dateToString(p.getStart()));
+                out.append(FHIRHelper.dateToString(p.getStart()));
                 out.append(" ");
             }
             out.append("-");
             if (p.hasEnd()) {
                 out.append(" ");
-                out.append(Helper.dateToString(p.getEnd()));
+                out.append(FHIRHelper.dateToString(p.getEnd()));
             }
         }
         return out.toString();
@@ -823,7 +814,7 @@ public class Helper {
             StringBuilder timesBuf = new StringBuilder();
             for (TimeType t: times)
             {
-                Helper.addStringToBufferWithSep(timesBuf,t.getValue(),",");
+                JavaHelper.addStringToBufferWithSep(timesBuf,t.getValue(),",");
             }
             out.append(timesBuf.toString());
         }
@@ -835,7 +826,7 @@ public class Helper {
             List<Enumeration<Timing.DayOfWeek>> days = repeat.getDayOfWeek();
             for(Enumeration<Timing.DayOfWeek> day: days)
             {
-                Helper.addStringToBufferWithSep(daysBuf,StringUtils.capitalize(day.getCode()),",");
+                JavaHelper.addStringToBufferWithSep(daysBuf,StringUtils.capitalize(day.getCode()),",");
             }
             out.append(daysBuf.toString())
 ;        }
@@ -882,5 +873,90 @@ public class Helper {
         } else {
             return unitsOfTime.get(code);
         }
+    }
+
+    public static String typeToDateString(Type t)
+    {
+        String out = "";
+        switch(t.fhirType())
+        {
+            case FHIRTypes.stringType:
+            {
+                out = t.castToString(t).getValue();
+                break;
+            }
+            case FHIRTypes.dateType:
+            {
+                out = FHIRHelper.dateToString(t.castToDate(t).getValue());
+                break;
+            }
+            case FHIRTypes.dateTimeType:
+            {
+                out =FHIRHelper.dateTimeToString(t.castToDateTime(t).getValue());
+                break;
+            }
+            case FHIRTypes.PeriodType:
+            {
+                out = FHIRHelper.periodToString(t.castToPeriod(t));
+                break;
+            }
+            case FHIRTypes.RangeType:
+            {
+                Range r = new Range();
+                r = t.castToRange(t);
+                Quantity start = r.getLow();
+                Quantity end = r.getHigh();
+                out = String.format("Between %s and %s", start.getDisplay(), end.getDisplay());
+            }
+            case FHIRTypes.AgeType:
+            {
+                Quantity a = new Quantity();
+                a = t.castToQuantity(t);
+                String disp = a.getDisplay();
+                out = String.format("At age %s", disp);
+                break;
+            }
+            case FHIRTypes.TimingType:
+            {
+                out = translateTiming(t.castToTiming(t));
+                break;
+            }
+            default:
+            {
+                break;
+            }
+
+        }
+        return out;
+    }
+
+    public static CodeableConcept conceptFromCode(String code, String text)
+    {
+        CodeableConcept out = new CodeableConcept();
+        out.setText(text);
+        ArrayList<Coding> codes = new ArrayList<>();
+        Coding coding = new Coding();
+        if (code.contains("|"))
+        {
+            //We have a system
+            String[] parts = code.split("|");
+            if (parts.length>1)
+            {
+                coding.setSystem(parts[0]);
+                coding.setCode(parts[1]);
+            }
+            else
+            {
+                coding.setCode(code);
+            }
+        }
+        else
+        {
+            coding.setCode(code);
+        }
+        coding.setDisplay(text);
+        codes.add(coding);
+        out.setCoding(codes);
+        return out;
     }
 }

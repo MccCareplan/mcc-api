@@ -4,7 +4,7 @@ import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.services.ReferenceResolver;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.*;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class CareTeamMapper {
         Date now = new Date();
         if (in.hasPeriod())
         {
-            if (!Helper.isInPeriod(in.getPeriod(),now))
+            if (!FHIRHelper.isInPeriod(in.getPeriod(),now))
             {
                 //Early Exit
                 return out;
@@ -33,7 +33,7 @@ public class CareTeamMapper {
             {
                 if (p.hasPeriod())
                 {
-                    if (!Helper.isInPeriod(p.getPeriod(),now))
+                    if (!FHIRHelper.isInPeriod(p.getPeriod(),now))
                     {
                         //Skip if the member is not in the active period
                         continue;
@@ -84,7 +84,7 @@ public class CareTeamMapper {
         String role = "Unknown Role";
         if (in.hasRole())
         {
-            role = Helper.getConceptsAsDisplayString(in.getRole());
+            role = FHIRHelper.getConceptsAsDisplayString(in.getRole());
         }
         if (in.hasMember())
         {
@@ -99,7 +99,7 @@ public class CareTeamMapper {
             }
             else
             {
-                String type = Helper.getReferenceType(m);
+                String type = FHIRHelper.getReferenceType(m);
                 if (type.compareTo("Practitioner") == 0)
                 {
                     Practitioner p = ReferenceResolver.findPractitioner(m,ctx);

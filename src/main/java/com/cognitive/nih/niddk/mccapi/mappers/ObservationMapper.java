@@ -4,13 +4,13 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccObservation;
 import com.cognitive.nih.niddk.mccapi.data.ObservationComponent;
 import com.cognitive.nih.niddk.mccapi.data.ReferenceRange;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Quantity;
 
 import java.util.List;
 
-public class ObservationMapper {
+public class   ObservationMapper {
 
     public static MccObservation fhir2local(Observation in, Context ctx) {
         MccObservation out = new MccObservation();
@@ -49,7 +49,7 @@ public class ObservationMapper {
         }
         if (in.hasNote())
         {
-            out.setNote(Helper.annotationsToString(in.getNote(),ctx));
+            out.setNote(FHIRHelper.annotationsToString(in.getNote(),ctx));
 
         }
         if (in.hasReferenceRange()) {

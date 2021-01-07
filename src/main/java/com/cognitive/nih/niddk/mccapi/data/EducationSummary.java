@@ -1,5 +1,6 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import com.cognitive.nih.niddk.mccapi.data.primative.FuzzyDate;
 import com.cognitive.nih.niddk.mccapi.data.primative.GenericType;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccDate;
@@ -18,10 +19,13 @@ public class EducationSummary {
     @NotBlank
     private String FHIRId;
     private String displayDate;
-    private GenericType date;
+    private FuzzyDate date;
     private MccCodeableConcept outcome;
     @NotBlank
     private String status;
+    private String performer;
+    private String reasons;
+
 
     //Type  - Procedure  - Service Request (E
     //FHIRId

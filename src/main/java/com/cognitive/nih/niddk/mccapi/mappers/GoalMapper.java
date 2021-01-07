@@ -3,7 +3,7 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Goal;
 import org.hl7.fhir.r4.model.Type;
@@ -23,7 +23,7 @@ public class GoalMapper {
             out.setAddresses(ReferenceMapper.fhir2local(in.getAddresses(), ctx));
         }
         out.setCategories(CodeableConceptMapper.fhir2local(in.getCategory(),ctx));
-        out.setCategorySummary(Helper.getConceptsAsDisplayString(in.getOutcomeCode()));
+        out.setCategorySummary(FHIRHelper.getConceptsAsDisplayString(in.getOutcomeCode()));
         if (in.hasExpressedBy()) {
             out.setExpressedBy(ReferenceMapper.fhir2local(in.getExpressedBy(), ctx));
         }
@@ -31,9 +31,9 @@ public class GoalMapper {
         out.setPriority(CodeableConceptMapper.fhir2local(in.getPriority(),ctx));
         out.setCategories(CodeableConceptMapper.fhir2local(in.getCategory(),ctx));
 
-        out.setStatusDate(Helper.dateTimeToString(in.getStatusDate()));
+        out.setStatusDate(FHIRHelper.dateTimeToString(in.getStatusDate()));
         out.setStatusReason(in.getStatusReason());
-        out.setNotes(Helper.annotationsToStringList(in.getNote(),ctx));
+        out.setNotes(FHIRHelper.annotationsToStringList(in.getNote(),ctx));
 
 
         if (in.hasStartCodeableConcept())
@@ -44,7 +44,7 @@ public class GoalMapper {
         else
         {
             out.setUseStartConcept(false);
-            out.setStartDateText(Helper.dateToString(in.getStartDateType().getValue()));
+            out.setStartDateText(FHIRHelper.dateToString(in.getStartDateType().getValue()));
             out.setStartDate(GenericTypeMapper.fhir2local(in.getStartDateType(),ctx));
         }
 
@@ -70,14 +70,14 @@ public class GoalMapper {
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setDescription(in.getDescription().getText());
         out.setLifecycleStatus(in.getLifecycleStatus().toCode());
-        Coding pcd = Helper.getCodingForSystem(in.getPriority(),"http://terminology.hl7.org/CodeSystem/goal-priority");
+        Coding pcd = FHIRHelper.getCodingForSystem(in.getPriority(),"http://terminology.hl7.org/CodeSystem/goal-priority");
         out.setPriority(pcd==null?"Undefined":pcd.getCode());
         List<Goal.GoalTargetComponent> targets = in.getTarget();
         MccReference ref = ReferenceMapper.fhir2local(in.getExpressedBy(),ctx);
         out.setExpressedByType(ref.getType());
         out.setAchievementStatus(CodeableConceptMapper.fhir2local(in.getAchievementStatus(),ctx));
         if (in.hasAchievementStatus()) {
-            out.setAchievementText(Helper.getConceptDisplayString(in.getAchievementStatus()));
+            out.setAchievementText(FHIRHelper.getConceptDisplayString(in.getAchievementStatus()));
         }
         if (in.hasStart())
         {
@@ -87,7 +87,7 @@ public class GoalMapper {
             }
             else if(in.hasStartDateType())
             {
-                out.setStartDateText(Helper.dateToString(in.getStartDateType().getValue()));
+                out.setStartDateText(FHIRHelper.dateToString(in.getStartDateType().getValue()));
             }
         }
         boolean needTargetDate = true;
@@ -100,11 +100,11 @@ public class GoalMapper {
                 {
                     if (t.hasDueDateType())
                     {
-                        out.setTargetDateText(Helper.dateToString(t.getDueDateType().getValue()));
+                        out.setTargetDateText(FHIRHelper.dateToString(t.getDueDateType().getValue()));
                     }
                     else if (t.hasDueDuration())
                     {
-                        out.setTargetDateText(Helper.durationToString(t.getDueDuration()));
+                        out.setTargetDateText(FHIRHelper.durationToString(t.getDueDuration()));
                     }
                     needTargetDate = false;
                 }

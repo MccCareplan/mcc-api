@@ -1,7 +1,7 @@
 package com.cognitive.nih.niddk.mccapi.services;
 
 import com.cognitive.nih.niddk.mccapi.data.Context;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class ReferenceResolver {
 
     public static Practitioner findPractitioner(Reference ref, Context ctx) {
         Practitioner out = null;
-        if (Helper.isReferenceOfType(ref, "Practitioner")) {
+        if (FHIRHelper.isReferenceOfType(ref, "Practitioner")) {
             String key = getReferenceKey(ref, ctx);
             out = practitionerCache.getIfPresent(key);
             if (out == null)
@@ -49,7 +49,7 @@ public class ReferenceResolver {
 
     public static CareTeam findCareTeam(Reference ref, Context ctx) {
         CareTeam out = null;
-        if (Helper.isReferenceOfType(ref, "CareTeam")) {
+        if (FHIRHelper.isReferenceOfType(ref, "CareTeam")) {
                 try {
                     //DIRECT-FHIR-REF
                     out = ctx.getClient().fetchResourceFromUrl(CareTeam.class, ref.getReference());
@@ -62,7 +62,7 @@ public class ReferenceResolver {
 
     public static Device findDevice(Reference ref, Context ctx) {
         Device out = null;
-        if (Helper.isReferenceOfType(ref, "Device")) {
+        if (FHIRHelper.isReferenceOfType(ref, "Device")) {
             try {
                 //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(Device.class, ref.getReference());
@@ -75,7 +75,7 @@ public class ReferenceResolver {
 
     public static HealthcareService findHealthcareService(Reference ref, Context ctx) {
         HealthcareService out = null;
-        if (Helper.isReferenceOfType(ref, "HealthcareService")) {
+        if (FHIRHelper.isReferenceOfType(ref, "HealthcareService")) {
             try {
                 //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(HealthcareService.class, ref.getReference());
@@ -89,7 +89,7 @@ public class ReferenceResolver {
 
     public static Patient findPatient(Reference ref, Context ctx) {
         Patient out = null;
-        if (Helper.isReferenceOfType(ref, "Patient")) {
+        if (FHIRHelper.isReferenceOfType(ref, "Patient")) {
             try {
                 //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(Patient.class, ref.getReference());
@@ -103,7 +103,7 @@ public class ReferenceResolver {
 
     public static RelatedPerson findRelatedPerson(Reference ref, Context ctx) {
         RelatedPerson out = null;
-        if (Helper.isReferenceOfType(ref, "RelatedPerson")) {
+        if (FHIRHelper.isReferenceOfType(ref, "RelatedPerson")) {
             try {
                 //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(RelatedPerson.class, ref.getReference());
@@ -120,7 +120,7 @@ public class ReferenceResolver {
 
     public static MedicationRequest findMedicationRequest(Reference ref, Context ctx) {
         MedicationRequest out = null;
-        if (Helper.isReferenceOfType(ref, "MedicationRequest"))
+        if (FHIRHelper.isReferenceOfType(ref, "MedicationRequest"))
         {
             try {
                 //DIRECT-FHIR-REF
@@ -135,7 +135,7 @@ public class ReferenceResolver {
 
     public static DetectedIssue findDetectedIssues(Reference ref, Context ctx) {
         DetectedIssue out = null;
-        if (Helper.isReferenceOfType(ref, "DetectedIssue"))
+        if (FHIRHelper.isReferenceOfType(ref, "DetectedIssue"))
         {
             try {
                 //DIRECT-FHIR-REF
@@ -150,7 +150,7 @@ public class ReferenceResolver {
 
     public static Observation findObservation(Reference ref, Context ctx) {
         Observation out = null;
-        if (Helper.isReferenceOfType(ref, "Observation"))
+        if (FHIRHelper.isReferenceOfType(ref, "Observation"))
         {
             try {
                 //DIRECT-FHIR-REF
@@ -166,7 +166,7 @@ public class ReferenceResolver {
 
     public static PractitionerRole findPractitionerRole(Reference ref, Context ctx) {
         PractitionerRole out = null;
-        if (Helper.isReferenceOfType(ref, "PractitionerRole"))
+        if (FHIRHelper.isReferenceOfType(ref, "PractitionerRole"))
         {
             try {
                 //DIRECT-FHIR-REF
@@ -181,7 +181,7 @@ public class ReferenceResolver {
 
     public static RiskAssessment findRiskAssessment(Reference ref, Context ctx) {
         RiskAssessment out = null;
-        if (Helper.isReferenceOfType(ref, "RiskAssessment"))
+        if (FHIRHelper.isReferenceOfType(ref, "RiskAssessment"))
         {
             try {
                 //DIRECT-FHIR-REF
@@ -196,7 +196,7 @@ public class ReferenceResolver {
 
     public static ServiceRequest findServiceRequest(Reference ref, Context ctx) {
         ServiceRequest out = null;
-        if (Helper.isReferenceOfType(ref, "ServiceRequest"))
+        if (FHIRHelper.isReferenceOfType(ref, "ServiceRequest"))
         {
             try {
                 //DIRECT-FHIR-REF
@@ -211,7 +211,7 @@ public class ReferenceResolver {
 
     public static MedicationStatement findMedicationStatement(Reference ref, Context ctx) {
         MedicationStatement out = null;
-        if (Helper.isReferenceOfType(ref, "MedicationStatement"))
+        if (FHIRHelper.isReferenceOfType(ref, "MedicationStatement"))
         {
             try {
                 //DIRECT-FHIR-REF
@@ -226,7 +226,7 @@ public class ReferenceResolver {
 
     public static NutritionOrder findNutritionOrder(Reference ref, Context ctx) {
         NutritionOrder out = null;
-        if (Helper.isReferenceOfType(ref, "NutritionOrder"))
+        if (FHIRHelper.isReferenceOfType(ref, "NutritionOrder"))
         {
             try {
                 //DIRECT-FHIR-REF
@@ -242,7 +242,7 @@ public class ReferenceResolver {
 
     public static Condition findCondition(Reference ref, Context ctx) {
         Condition out = null;
-        if (Helper.isReferenceOfType(ref, "Condition"))
+        if (FHIRHelper.isReferenceOfType(ref, "Condition"))
         {
             try {
                 //DIRECT-FHIR-REF
@@ -257,7 +257,7 @@ public class ReferenceResolver {
 
     public static Medication findMedication(Reference ref, Context ctx) {
         Medication out = null;
-        if (Helper.isReferenceOfType(ref, "Medication"))
+        if (FHIRHelper.isReferenceOfType(ref, "Medication"))
         {
             String key = getReferenceKey(ref, ctx);
             out = medicationCache.getIfPresent(key);
@@ -276,7 +276,7 @@ public class ReferenceResolver {
 
     public static Organization findOrganization(Reference ref, Context ctx) {
         Organization out = null;
-        if (Helper.isReferenceOfType(ref, "Organization"))
+        if (FHIRHelper.isReferenceOfType(ref, "Organization"))
         {
             String key = getReferenceKey(ref, ctx);
             out = organizationCache.getIfPresent(key);

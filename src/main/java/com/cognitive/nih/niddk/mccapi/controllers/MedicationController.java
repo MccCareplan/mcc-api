@@ -9,7 +9,7 @@ import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.mappers.MedicationMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -85,7 +85,7 @@ public class MedicationController {
                         for (CarePlan.CarePlanActivityComponent a : acp) {
                             if (a.hasReference()) {
                                 Reference ref = a.getReference();
-                                if (Helper.isReferenceOfType(ref, "MedicationRequest")) {
+                                if (FHIRHelper.isReferenceOfType(ref, "MedicationRequest")) {
                                     String key = ref.getReference();
                                     if (ref != null) {
                                         if (carePlanMedicationsRequests.containsKey(key)) {

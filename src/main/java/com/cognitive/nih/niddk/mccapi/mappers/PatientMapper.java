@@ -4,9 +4,11 @@ import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccPatient;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
-import com.cognitive.nih.niddk.mccapi.util.Helper;
+import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class PatientMapper {
@@ -45,7 +47,7 @@ public class PatientMapper {
                  if (component.hasPeriod())
                  {
                      Period p = component.getPeriod();
-                     if (!Helper.isInPeriod(p,now))
+                     if (!FHIRHelper.isInPeriod(p,now))
                      {
                          //Skip the contact
                          continue;
@@ -57,7 +59,7 @@ public class PatientMapper {
                      for (CodeableConcept concept: rel) {
                          //TODO: Harden up for System of the Relationship
                          //Maybe http://terminology.hl7.org/CodeSystem/v2-0131 version 2.9
-                         if (Helper.containsCode(concept, type))
+                         if (FHIRHelper.containsCode(concept, type))
                          {
                              out.add(component);
                              break;
@@ -82,7 +84,7 @@ public class PatientMapper {
 
         Contact out = new Contact();
         if (in.hasName()) {
-            out.setName(Helper.getName(in.getName()));
+            out.setName(FHIRHelper.getName(in.getName()));
         } else {
             if (in.hasOrganization()) {
                 Reference orgRef = in.getOrganization();
@@ -94,17 +96,17 @@ public class PatientMapper {
         }
 
         if (in.hasAddress()) {
-            out.setAddress(Helper.addressToString(in.getAddress()));
+            out.setAddress(FHIRHelper.addressToString(in.getAddress()));
         }
 
         //Deal with contact points
-        List<ContactPoint> contactPoints = Helper.filterToCurrentContactPoints(in.getTelecom());
-        Map<String, List<ContactPoint>> cpBySystem = Helper.organizeContactTypesBySystem(contactPoints);
-        ContactPoint bestPhone = Helper.findBestContactByType(cpBySystem, "phone", usePrioriy);
+        List<ContactPoint> contactPoints = FHIRHelper.filterToCurrentContactPoints(in.getTelecom());
+        Map<String, List<ContactPoint>> cpBySystem = FHIRHelper.organizeContactTypesBySystem(contactPoints);
+        ContactPoint bestPhone = FHIRHelper.findBestContactByType(cpBySystem, "phone", usePrioriy);
         if (bestPhone != null) {
             out.setPhone(bestPhone.getValue());
         }
-        ContactPoint bestEmail = Helper.findBestContactByType(cpBySystem, "email", usePrioriy);
+        ContactPoint bestEmail = FHIRHelper.findBestContactByType(cpBySystem, "email", usePrioriy);
         if (bestEmail != null) {
             out.setEmail(bestEmail.getValue());
         }
@@ -116,23 +118,26 @@ public class PatientMapper {
 
     public static Contact fhir2Contact(Patient in, Context ctx) {
         Contact out = new Contact();
-        out.setName(Helper.getBestName(in.getName()));
-        out.setRelFhirId(Helper.getIdString(in.getIdElement()));
+        out.setName(FHIRHelper.getBestName(in.getName()));
+        out.setRelFhirId(FHIRHelper.getIdString(in.getIdElement()));
 
-        Address a = Helper.findBestAddress(in.getAddress(), "home");
+        Address a = FHIRHelper.findBestAddress(in.getAddress(), "home");
         if (a != null) {
-            out.setAddress(Helper.addressToString(a));
+            out.setAddress(FHIRHelper.addressToString(a));
         }
         //in.getContact();   //What to d this this in the future
-
+        if (in.hasPhoto())
+        {
+            out.setHasImage(true);
+        }
         //Deal with contact points
-        List<ContactPoint> contactPoints = Helper.filterToCurrentContactPoints(in.getTelecom());
-        Map<String, List<ContactPoint>> cpBySystem = Helper.organizeContactTypesBySystem(contactPoints);
-        ContactPoint bestPhone = Helper.findBestContactByType(cpBySystem, "phone", "home|mobile|work");
+        List<ContactPoint> contactPoints = FHIRHelper.filterToCurrentContactPoints(in.getTelecom());
+        Map<String, List<ContactPoint>> cpBySystem = FHIRHelper.organizeContactTypesBySystem(contactPoints);
+        ContactPoint bestPhone = FHIRHelper.findBestContactByType(cpBySystem, "phone", "home|mobile|work");
         if (bestPhone != null) {
             out.setPhone(bestPhone.getValue());
         }
-        ContactPoint bestEmail = Helper.findBestContactByType(cpBySystem, "email", "home|work");
+        ContactPoint bestEmail = FHIRHelper.findBestContactByType(cpBySystem, "email", "home|work");
         if (bestEmail != null) {
             out.setEmail(bestEmail.getValue());
         }
@@ -146,12 +151,19 @@ public class PatientMapper {
 
     public static MccPatient fhir2local(Patient in, Context ctx) {
         MccPatient out = new MccPatient();
-        out.setDateOfBirth(Helper.dateToString(in.getBirthDate()));
+        out.setDateOfBirth(FHIRHelper.dateToString(in.getBirthDate()));
+        if (in.hasBirthDate())
+        {
+            LocalDate birth = in.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            int years = java.time.Period.between(birth, LocalDate.now()).getYears();
+            out.setAge(Integer.toString(years));
+        }
+
         out.setGender(in.getGender().getDisplay());
-        out.setName(Helper.getBestName(in.getName()));
+        out.setName(FHIRHelper.getBestName(in.getName()));
         out.setFHIRId(in.getIdElement().getIdPart());
-        out.setRace(Helper.getCodingDisplayExtensionAsString(in, RACE_KEY, OMB_CATEGORY, "Undefined"));
-        out.setEthnicity(Helper.getCodingDisplayExtensionAsString(in, ENTHNICITY_KEY, OMB_CATEGORY, "Undefined"));
+        out.setRace(FHIRHelper.getCodingDisplayExtensionAsString(in, RACE_KEY, OMB_CATEGORY, "Undefined"));
+        out.setEthnicity(FHIRHelper.getCodingDisplayExtensionAsString(in, ENTHNICITY_KEY, OMB_CATEGORY, "Undefined"));
         out.setId(in.hasIdentifier() ? in.getIdentifierFirstRep().getValue() : "Unknown");
         return out;
     }

@@ -13,8 +13,8 @@ deployed using:  $gcloud app deploy
 | -------------- | ---------------------- |
 | Public UI | https://mcc-niddk-backend.wl.r.appspot.com/swagger-ui/index.html?configUrl=/api-docs/swagger-config |
 | Public DOCS | https://mcc-niddk-backend.wl.r.appspot.com/api-docs |
-| Local Dev UI | http:/localhost:8081//swagger-ui/index.html?configUrl=/api-docs/swagger-config |
-| Local Dev DOCS | http:/localhost:8081/api-docs |
+| Local Dev UI | http://localhost:8081//swagger-ui/index.html?configUrl=/api-docs/swagger-config |
+| Local Dev DOCS | http://localhost:8081/api-docs |
 
 # Security
 Currently, this version of the service is using fixed open endpoints. In the very near future all client requests will carry security information will be used by this tier to access the FHIR server,
@@ -184,6 +184,15 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 
 #Recent Changes log
+
+## Release 1.0.11-SNAPSHOT
+- Updated /find/latest/observation to return empty observation when not found, status = "notfound"
+- Add hasImage to contact
+- Renamed util.Helper to FHIRHelper, added MccHelper
+- Added Age to Patient
+- Added Performer to Education and Counselling
+- Added Reason to Education and Counselling
+- Refactored and extended internal helpers.
 
 ## Release 1.0.10-SNAPSHOT
 - Fix careplan lookup during medication summary
