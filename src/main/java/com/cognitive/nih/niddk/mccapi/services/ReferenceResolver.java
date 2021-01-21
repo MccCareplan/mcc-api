@@ -91,6 +91,7 @@ public class ReferenceResolver {
         Patient out = null;
         if (FHIRHelper.isReferenceOfType(ref, "Patient")) {
             try {
+                log.info("PATIENT_ID_CHECK 2"+ref.getReference());
                 //DIRECT-FHIR-REF
                 out = ctx.getClient().fetchResourceFromUrl(Patient.class, ref.getReference());
                 checkOutput(out,ref);
