@@ -8,9 +8,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 public class ValueSetManager {
@@ -28,6 +26,7 @@ public class ValueSetManager {
     private static HashMap<String, ArrayList<String>>  codeMap = new HashMap<>();
     private static HashMap<String, MccValueSet> valueSetMap = new HashMap<>();
 
+
     public ValueSetManager()
     {
     }
@@ -40,7 +39,7 @@ public class ValueSetManager {
 
     public void loadValueSets()
     {
-        List<String> list = getLoadList();
+        Set<String> list = getLoadList();
         for (String id:list)
         {
             loadValueSet(id);
@@ -78,39 +77,39 @@ public class ValueSetManager {
 
     public void  loadValueSet(String setId) {
 
-        MccValueSet vs = new MccValueSet();
-        vs.setId(setId);
-        String fileName = getFileName(setId);
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
-        if (inputStream != null) {
-            Reader in = new InputStreamReader(inputStream);
-            try {
-                Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
-                for (CSVRecord record : records) {
-                    String system = record.get("System");
-                    //String version = record.get("Version");
-                    String code = record.get("Code");
-                    //String display = record.get("Display");
+        if (valueSetMap.containsKey(setId) == false) {
+            MccValueSet vs = new MccValueSet();
+            vs.setId(setId);
+            String fileName = getFileName(setId);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
+            if (inputStream != null) {
+                Reader in = new InputStreamReader(inputStream);
+                try {
+                    Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
+                    for (CSVRecord record : records) {
+                        String system = record.get("System");
+                        //String version = record.get("Version");
+                        String code = record.get("Code");
+                        //String display = record.get("Display");
 
-                    String key = getCodeKey(system, code);
-                    if (codeMap.containsKey(key)) {
-                        ArrayList<String> array = codeMap.get(key);
-                        array.add(setId);
-                        //Consider a String list here
-                    } else {
-                        ArrayList<String> array = new ArrayList<>();
-                        array.add(setId);
-                        codeMap.put(key, array);
+                        String key = getCodeKey(system, code);
+                        if (codeMap.containsKey(key)) {
+                            ArrayList<String> array = codeMap.get(key);
+                            array.add(setId);
+                            //Consider a String list here
+                        } else {
+                            ArrayList<String> array = new ArrayList<>();
+                            array.add(setId);
+                            codeMap.put(key, array);
+                        }
+                        vs.addCode(key);
                     }
-                    vs.addCode(key);
-                }
 
-                valueSetMap.put(setId, vs);
-                //So we ned to both add the value code to the value set and add the value set
-            }
-            catch (IOException exp)
-            {
-                log.error("Error loading valueset "+setId,exp);
+                    valueSetMap.put(setId, vs);
+                    //So we ned to both add the value code to the value set and add the value set
+                } catch (IOException exp) {
+                    log.error("Error loading valueset " + setId, exp);
+                }
             }
         }
     }
@@ -124,9 +123,9 @@ public class ValueSetManager {
         return bld.toString();
     }
 
-    public List<String> getLoadList()
+    public HashSet<String> getLoadList()
     {
-        ArrayList<String> out = new ArrayList<>();
+        HashSet<String> out = new HashSet<>();
         //Todo + Scan directory or load from inventory
         out.add("2.16.840.1.113762.1.4.1222.159");   //CKD
         //out.add("2.16.840.1.113883.3.6929.3.1000");  //eGFR
