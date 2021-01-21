@@ -93,7 +93,10 @@ public class QueryManager {
         Map<String, String[]> pm = request.getParameterMap();
         for (String k: pm.keySet())
         {
-            map.put(k,request.getParameter(k));
+            //Let the first item take priority
+            if (map.containsKey(k)==false) {
+                map.put(k, request.getParameter(k));
+            }
         }
     }
 
