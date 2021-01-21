@@ -34,5 +34,6 @@ class MccGoal {
     private String[] notes;
     private MccCodeableConcept[] outcomeCodes;
     private String outcomeReference;
+    private Acceptance acceptance[];
 
 }

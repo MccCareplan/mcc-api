@@ -3,10 +3,10 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
+import com.cognitive.nih.niddk.mccapi.services.ReferenceResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Goal;
-import org.hl7.fhir.r4.model.Type;
+import com.cognitive.nih.niddk.mccapi.util.JavaHelper;
+import org.hl7.fhir.r4.model.*;
 
 import java.util.List;
 
@@ -61,6 +61,34 @@ public class GoalMapper {
             out.setTargets(outTargets);
         }
 
+        //http://hl7.org/fhir/StructureDefinition/goal-acceptance
+        List<Extension> acc = in.getExtensionsByUrl("http://hl7.org/fhir/StructureDefinition/goal-acceptance");
+        if (acc != null && acc.size()>0) {
+            Acceptance[] acceptances = new Acceptance[acc.size()];
+            int cnt = 0;
+            for (Extension e : acc) {
+                Acceptance a = new Acceptance();
+                List<Extension> i = e.getExtensionsByUrl("individual");
+                Base b = i.get(0).getValue();
+                Reference r = b.castToReference(b);
+                a.setIndividual(ReferenceMapper.fhir2local(r,ctx));
+
+                List<Extension> s = e.getExtensionsByUrl("status");
+                if (s != null && s.size() > 0)
+                {
+                    b = s.get(0).getValue();
+                    a.setCode(b.castToCode(b).getValue());
+                }
+                List<Extension> p = e.getExtensionsByUrl("priority");
+                if (p!= null && p.size() > 0)
+                {
+                    b = p.get(0).getValue();
+                    a.setPriority(CodeableConceptMapper.fhir2local(b.castToCodeableConcept(b),ctx));
+                }
+                acceptances[cnt]= a;
+                cnt++;
+            }
+        }
         return out;
     }
 
@@ -120,6 +148,33 @@ public class GoalMapper {
 
         if (in.hasExpressedBy()) {
             out.setExpressedBy(NameResolver.getReferenceName(in.getExpressedBy(), ctx));
+        }
+
+        //http://hl7.org/fhir/StructureDefinition/goal-acceptance
+        List<Extension> acc = in.getExtensionsByUrl("http://hl7.org/fhir/StructureDefinition/goal-acceptance");
+        if (acc != null && acc.size()>0) {
+            StringBuilder val = new StringBuilder();
+            int cnt = 0;
+            for (Extension e : acc) {
+
+                List<Extension> i = e.getExtensionsByUrl("individual");
+                Base b = i.get(0).getValue();
+                Reference r = b.castToReference(b);
+                JavaHelper.addStringToBufferWithSep(val,NameResolver.getReferenceName(r,ctx),",");
+                List<Extension> s = e.getExtensionsByUrl("status");
+                if (s != null && s.size() > 0)
+                {
+                    b = s.get(0).getValue();
+                    //agree, disagree, pending - Exceptions to agree will be output.
+                    String agree = (b.castToCode(b).getValue());
+                    if (agree.compareTo("agree")!=0) {
+                        val.append(" (");
+                        val.append(agree);
+                        val.append(")");
+                    }
+                }
+            }
+            out.setAcceptance(val.toString());
         }
         return out;
     }
