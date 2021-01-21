@@ -28,6 +28,14 @@ import java.util.*;
 public class ObservationController {
     private final QueryManager queryManager;
 
+    private static HashMap<String,String> revPanelMap = new HashMap<>();
+
+
+    static {
+        //Blood Pressure
+        revPanelMap.put("8462-4","85354-9");
+        revPanelMap.put("8480-6","85354-9");
+    }
     public ObservationController(QueryManager queryManager) {
         this.queryManager = queryManager;
     }
@@ -82,13 +90,40 @@ public class ObservationController {
     }
 
     @GetMapping("/find/latest/observation")
-    public MccObservation getLatestObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code, @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+    public MccObservation getLatestObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code,  @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestParam(name = "translate", defaultValue = "false") String translate, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
 
         ArrayList<MccObservation> list = new ArrayList<>();
+        //Implement a mode that will translate a single code to it's containing value set
+        if (translate.toLowerCase().compareTo("true")==0)
+        {
+            //For now we only support 1 code
+            ArrayList<String> vs;
+            if (code.contains("|")) {
+                String[] parts = code.split("|");
+                vs = ValueSetManager.getValueSetManager().findCodesValuesSets(parts[0],parts[1]);
+            }
+            else
+            {
+                //Default to loinc
+                vs = ValueSetManager.getValueSetManager().findCodesValuesSets("http://loinc.org", code);
+            }
+            if (vs != null && vs.size()>0)
+            {
+                MccValueSet valueSetObj = ValueSetManager.getValueSetManager().findValueSet(vs.get(0));
+                code = valueSetObj.asQueryString();
+            }
+            else if (revPanelMap.containsKey(code))
+            {
+                code = revPanelMap.get(code);
+            }
+
+
+        }
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
         Map<String, String> values = new HashMap<>();
+        values.put("code",code);
         String baseQuery = "Observation.QueryLatest";
         list = this.QueryObservations(baseQuery, mode, client, subjectId, "descending", webRequest, headers, values);
 
@@ -101,6 +136,7 @@ public class ObservationController {
 
 
     }
+
 
     @GetMapping("/observations")
     public MccObservation[] getObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code, @RequestParam(name = "count", defaultValue = "100") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
