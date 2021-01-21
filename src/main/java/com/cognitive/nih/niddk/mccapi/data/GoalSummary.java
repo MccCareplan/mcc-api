@@ -24,5 +24,6 @@ class GoalSummary {
     private String targetDateText;
     private String addresses;
     private String expressedBy;
+    private String acceptance;
     private GoalTarget[] targets;
 }

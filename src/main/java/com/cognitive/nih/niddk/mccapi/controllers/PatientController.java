@@ -31,6 +31,7 @@ public class PatientController {
     @GetMapping("/patient")
     public MccPatient[] getPatients(@RequestParam(required=true) String name, @RequestHeader Map<String, String> headers, WebRequest webRequest)
     {
+        log.debug("Searching for patients , name = "+name);
         ArrayList<MccPatient> out = new ArrayList<>();
         //Create a dummy patient for the moment
         MccPatient p;
@@ -65,6 +66,8 @@ public class PatientController {
     @GetMapping("/patient/{id}")
     public MccPatient getPatient(@PathVariable(value="id") String id, @RequestHeader Map<String, String> headers, WebRequest webRequest)
     {
+        log.info("PATIENT_ID_CHECK 1 = "+id);
+
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
         MccPatient p;
