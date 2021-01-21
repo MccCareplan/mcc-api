@@ -1,3 +1,9 @@
+## Release 1.0.12-SNAPSHOT
+- Updated Goals and Goal Summary for Acceptance
+- Added translate option "/find/latest/observation", so that recognized codes can translate to more complex queries, e.g. a Value set or containing parent observation.
+- Updated query parameter handling to have the first found instance take precedence.
+- fix value set loading to only load a value set once in the event the load list had duplicates
+- started support on procedures.
 
 ## Release 1.0.11-SNAPSHOT
 - Updated /find/latest/observation to return empty observation when not found, status = "notfound"
