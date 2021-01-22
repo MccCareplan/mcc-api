@@ -22,6 +22,10 @@ public class ReferenceResolver {
             .maximumSize(100)
             .build();
 
+    private static Cache<String, Questionnaire> questionnaireCache= Caffeine.newBuilder()
+            .expireAfterWrite(60, TimeUnit.MINUTES)
+            .maximumSize(100)
+            .build();
 
     private static Cache<String, Medication> medicationCache = Caffeine.newBuilder()
             .expireAfterWrite(8, TimeUnit.HOURS)
@@ -39,6 +43,25 @@ public class ReferenceResolver {
                     //DIRECT-FHIR-REF
                     out = ctx.getClient().fetchResourceFromUrl(Practitioner.class, ref.getReference());
                     if (checkOutput(out, ref)) practitionerCache.put(key,out);
+                } catch (Exception e) {
+                    logReferenceException(ref, e);
+                }
+            }
+        }
+        return out;
+    }
+
+    public static Questionnaire findQuestionnaire(Reference ref, Context ctx) {
+        Questionnaire out = null;
+        if (FHIRHelper.isReferenceOfType(ref, "Questionnaire")) {
+            String key = getReferenceKey(ref, ctx);
+            out = questionnaireCache.getIfPresent(key);
+            if (out == null)
+            {
+                try {
+                    //DIRECT-FHIR-REF
+                    out = ctx.getClient().fetchResourceFromUrl(Questionnaire.class, ref.getReference());
+                    if (checkOutput(out, ref)) questionnaireCache.put(key,out);
                 } catch (Exception e) {
                     logReferenceException(ref, e);
                 }
