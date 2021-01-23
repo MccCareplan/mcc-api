@@ -6,12 +6,12 @@ import lombok.Data;
 
 @JsonInclude(JsonInclude.Include. NON_NULL)
 public @Data class MccDosage {
-    private int sequence;
+    private Integer sequence;
     private String text;
     private String patientInstructions;
     private MccCodeableConcept[] additionInstructions;
     private MccTiming timing;
-    private boolean asNeededBoolean;
+    private Boolean asNeededBoolean;
     private MccCodeableConcept asNeededCodableConcept;
     private MccCodeableConcept site;
     private MccCodeableConcept route;
