@@ -379,4 +379,21 @@ public class ReferenceResolver {
         key.append(ref);
         return key.toString();
     }
+
+    public static void clearAllCaches()
+    {
+       practitionerCache.invalidateAll();
+       practitionerCache.cleanUp();
+       medicationCache.invalidateAll();
+       medicationCache.cleanUp();
+       organizationCache.invalidateAll();
+       organizationCache.cleanUp();
+       clearQuestionnaireCache();
+    }
+
+    public static void clearQuestionnaireCache()
+    {
+        questionnaireCache.invalidateAll();
+        questionnaireCache.cleanUp();
+    }
 }

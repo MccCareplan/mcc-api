@@ -26,7 +26,7 @@ public class QueryManager {
     private boolean logQueries = false;
 
     @PostConstruct
-    public void Init()
+    public void init()
     {
         if ( Boolean.parseBoolean(enableLogging)  && Boolean.parseBoolean(log_query_expansion))
         {
@@ -67,6 +67,11 @@ public class QueryManager {
             log.error("Error loading query configuration",e);
         }
 
+    }
+
+    public void reload()
+    {
+        init();
     }
 
     public String getQuery(String key)
