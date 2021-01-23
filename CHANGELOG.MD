@@ -1,3 +1,29 @@
+## Release 1.0.13-SNAPSHOT
+- General QuestionnaireResponse Support
+- General type updates to transmit less empty data
+- GenericType supports coding and decimal
+- Added initial rest endpoints to clear caches
+  - delete /cache
+  - delete /cache/questionnaires
+  - delete /cache/references
+  - delete /cache/valuesets
+  - delete /cache/querymappings
+- add endpoints to support QuestionnaireResponse retrieval
+  - /find/latest/questionnaireresponse/?subject={subject}&code={code}
+  - /find/latest/questionnaireresponseitem/?subject={subject}&code={code}
+  - /summary/questionnaireresponses/?subject={subject}
+  - /questionnaireresponse/{id}
+  - /questionnaireresponse/?subject={subject}
+- added new fhir query keys
+  - Questionnaire.Lookup=/Questionnaire/{id}
+  - Questionnaire.FindForCode=/Questionnaire/?code={code}&_summary=true
+  - QuestionnaireResponse.Query=/QuestionnaireResponse/?questionnaire={ids}&subject={subject} 
+  - QuestionnaireResponse.OpenQuery=/QuestionnaireResponse/?subject={subject}
+  - QuestionnaireResponse.QueryLatest=/QuestionnaireResponse/?questionnaire={ids}&subject={subject}&status=completed,amended,in-progress&_sort=-authored&_count=1
+  - QuestionnaireResponse.Summary.Query=/QuestionnaireResponse/?questionnaire={ids}&subject={subject}&_summary=true
+  - QuestionnaireResponse.Summary.QueryLatest=/QuestionnaireResponse/?questionnaire={ids}&subject={subject}&_sort=-authored&_count=1&_summary=true
+  - QuestionnaireResponse.Lookup=/QuestionnaireResponse/{id}
+  
 ## Release 1.0.12-SNAPSHOT
 - Updated Goals and Goal Summary for Acceptance
 - Added translate option "/find/latest/observation", so that recognized codes can translate to more complex queries, e.g. a Value set or containing parent observation.
