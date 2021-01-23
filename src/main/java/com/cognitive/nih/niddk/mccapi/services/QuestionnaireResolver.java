@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +35,13 @@ public class QuestionnaireResolver {
         this.queryManager = queryManager;
     }
 
+    //Set of statuses that we use to search for results for.
+    private static HashSet<String> activeQuestionnaireStatus = new HashSet<>();
+
+    static {
+        activeQuestionnaireStatus.add("active");
+        activeQuestionnaireStatus.add("retired");
+    }
     /**
      *
      * @param code
@@ -55,8 +63,12 @@ public class QuestionnaireResolver {
                 StringBuilder ids = new StringBuilder();
                 for (Bundle.BundleEntryComponent e : results.getEntry()) {
                     if (e.getResource().fhirType().compareTo("Questionnaire") == 0) {
-                        Questionnaire o = (Questionnaire) e.getResource();
-                        JavaHelper.addStringToBufferWithSep(ids,o.getUrl(),",");
+                        Questionnaire q = (Questionnaire) e.getResource();
+                        String status = q.getStatus().toCode();
+                        if (activeQuestionnaireStatus.contains(status)) {
+                            String id = q.getIdElement().getIdPart();
+                            JavaHelper.addStringToBufferWithSep(ids,id,",");
+                        }
                     }
                 }
                 out = ids.toString();
@@ -92,5 +104,11 @@ public class QuestionnaireResolver {
         key.append(":");
         key.append(ref);
         return key.toString();
+    }
+
+    public void clearCache()
+    {
+        questionnairesForCode.invalidateAll();
+        questionnairesForCode.cleanUp();
     }
 }

@@ -1,5 +1,6 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import com.cognitive.nih.niddk.mccapi.data.primative.MccDate;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccDateTime;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class MccQuestionnaireResponse {
     private String FHIRId;
     private String status;
 
-    private Date authored;
+    private MccDate authored;
 
     private String questionnaire;
     private String author;
