@@ -57,20 +57,20 @@ public @Data class MccTiming implements Comparable {
     public @Data class Repeat
     {
         private Bounds bounds;
-        private int count;
-        private int countMax;
+        private Integer count;
+        private Integer countMax;
         private String duration;
         private String durationMax;
         private String durationUnit; //    	s | min | h | d | wk | mo | a - unit of time (UCUM)
-        private int frequency;
-        private int frequencyMax;
+        private Integer frequency;
+        private Integer frequencyMax;
         private String period;
         private String periodMax;
         private String periodUnit;
         private String[] dayOfWeek;
         private MccTime[] timeOfDay;
         private String[] when;
-        private int offset;
+        private Integer offset;
         private String readable;
 
 

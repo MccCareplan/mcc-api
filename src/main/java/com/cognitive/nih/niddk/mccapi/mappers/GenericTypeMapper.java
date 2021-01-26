@@ -3,6 +3,7 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.data.primative.*;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,8 @@ public class GenericTypeMapper {
     private static final int INSTANT = 16;
     private static final int IDENTIFIER = 17;
     private static final int ID = 18;
+    private static final int CODING = 19;
+    private static final int DECIMAL = 20;
 
 
 
@@ -70,6 +73,8 @@ public class GenericTypeMapper {
         activeKeys.put(MccInstant.fhirType, INSTANT);
         activeKeys.put(MccIdentifer.fhirType, IDENTIFIER);
         activeKeys.put(MccId.fhirType, IDENTIFIER);
+        activeKeys.put(MccCoding.fhirType, CODING);
+        activeKeys.put("decimal",DECIMAL);
     }
 
     public static GenericType fhir2local(Type in, Context ctx) {
@@ -151,6 +156,16 @@ public class GenericTypeMapper {
                     out.setIdentiferValue(fhir2local(in.castToIdentifier(in), ctx));
                     break;
                 }
+                case CODING:
+                {
+                    out.setCodingValue(fhir2local(in.castToCoding(in),ctx));
+                    break;
+                }
+                case DECIMAL:
+                {
+                    out.setDecimalValue(in.castToDecimal(in).getValue());
+                    break;
+                }
                 default: {
                     logger.warn("Type {} regnogized but not yet handled");
                     break;
@@ -182,6 +197,16 @@ public class GenericTypeMapper {
         out.setDate(FHIRHelper.dateToString(in));
         return out;
     }
+
+    public static MccCoding fhir2local(Coding in, Context ctx) {
+        MccCoding out = new MccCoding();
+        out.setCode(in.getCode());
+        out.setDisplay(in.getDisplay());
+        out.setSystem(in.getSystem());
+        out.setVersion(in.getVersion());
+        return out;
+    }
+
     public static MccIdentifer[] fhir2local_identifierArray(List<Identifier> in, Context ctx) {
         MccIdentifer[] o = new MccIdentifer[in.size()];
         int i = 0;
@@ -342,8 +367,13 @@ public class GenericTypeMapper {
                     mccBounds.setRange(fhir2local(repeat.getBoundsRange(), ctx));
                 }
             }
-            mccRepeat.setCount(repeat.getCount());
-            mccRepeat.setCountMax(repeat.getCountMax());
+            if (repeat.hasCount())
+            {
+                mccRepeat.setCount(Integer.valueOf(repeat.getCount()));
+            }
+            if (repeat.hasCountMax()) {
+                mccRepeat.setCountMax(Integer.valueOf(repeat.getCountMax()));
+            }
             if (repeat.hasDuration()) {
                 mccRepeat.setDuration(repeat.getDuration().toPlainString());
             }
@@ -353,8 +383,12 @@ public class GenericTypeMapper {
             if (repeat.hasDurationUnit()) {
                 mccRepeat.setDurationUnit(repeat.getDurationUnit().toCode());
             }
-            mccRepeat.setFrequency(repeat.getFrequency());
-            mccRepeat.setFrequencyMax(repeat.getFrequencyMax());
+            if (repeat.hasFrequency()) {
+                mccRepeat.setFrequency(Integer.valueOf(repeat.getFrequency()));
+            }
+            if (repeat.hasFrequencyMax()) {
+                mccRepeat.setFrequencyMax(Integer.valueOf(repeat.getFrequencyMax()));
+            }
             if (repeat.hasPeriod()) {
                 mccRepeat.setPeriod(repeat.getPeriod().toPlainString());
             }
@@ -394,7 +428,10 @@ public class GenericTypeMapper {
                 }
             }
             mccRepeat.setReadable(FHIRHelper.translateRepeat(repeat));
-            mccRepeat.setOffset(repeat.getOffset());
+            if (repeat.hasOffset())
+            {
+                mccRepeat.setOffset(Integer.valueOf(repeat.getOffset()));
+            }
         }
         out.setReadable(FHIRHelper.translateTiming(in));
         return out;
@@ -417,7 +454,7 @@ public class GenericTypeMapper {
 
         if (in.hasSequence())
         {
-            out.setSequence(in.getSequence());
+            out.setSequence(Integer.valueOf(in.getSequence()));
         }
         if (in.hasAdditionalInstruction())
         {
@@ -480,7 +517,7 @@ public class GenericTypeMapper {
         {
             if (in.hasAsNeededBooleanType())
             {
-                out.setAsNeededBoolean(in.getAsNeededBooleanType().booleanValue());
+                out.setAsNeededBoolean(in.getAsNeededBooleanType().getValue());
             }
             else if (in.hasAsNeededCodeableConcept())
             {

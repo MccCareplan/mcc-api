@@ -4,15 +4,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.math.BigDecimal;
 
-@JsonInclude(JsonInclude.Include. NON_NULL)
+@JsonInclude(value = JsonInclude.Include. NON_EMPTY)
 public @Data class GenericType {
     public static final String fhirType = "Type";
     @NotBlank
     private String valueType;
     private String stringValue;
-    private int integerValue;
-    private boolean booleanValue;
+    private Integer integerValue;
+    private Boolean booleanValue;
     private MccId idValue;
     private MccCodeableConcept codeableConceptValue;
     private MccQuantity quantityValue;
@@ -27,4 +28,6 @@ public @Data class GenericType {
     private MccTiming timingValue;
     private MccInstant instantValue;
     private MccIdentifer identiferValue;
+    private MccCoding codingValue;
+    private BigDecimal decimalValue;
 }

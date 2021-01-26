@@ -227,4 +227,9 @@ public class NameResolver {
         String[] outA = new String[out.size()];
         return out.toArray(outA);
     }
+
+    public static void clearCaches()
+    {
+        //Do nother for now since there is no cache at the moment
+    }
 }

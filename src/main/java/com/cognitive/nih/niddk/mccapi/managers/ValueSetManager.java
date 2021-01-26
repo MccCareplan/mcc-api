@@ -149,5 +149,13 @@ public class ValueSetManager {
         return out;
     }
 
+    public void reloadAllValuesSets()
+    {
+        //Lock lookups
+        //Reload
+        codeMap.clear();
+        valueSetMap.clear();
+        loadValueSets();
+    }
 
 }
