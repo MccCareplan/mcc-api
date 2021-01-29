@@ -146,6 +146,75 @@ public class QuestionnaireResponseController {
 
     }
 
+
+
+    @GetMapping("/find/all/questionnaireresponseitems")
+    public SimpleQuestionnaireItem[] getLatestQuestionnaireResponsesForItem(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code, @RequestParam(name = "count", defaultValue = "100") int maxItems, @RequestParam(name = "sort", defaultValue = "descending") String sortOrder, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+        ArrayList<QuestionnaireResponse> workArray = new ArrayList<>();
+
+        String key;
+
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
+        Map<String, String> values = new HashMap<>();
+
+        Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
+        ctx.setClient(client);
+
+        if (queryManager.doesQueryExist("Questionnaire.FindForCode")) {
+            // find questionnaires for the code
+            String questionnaireIds = questionnaireResolver.findQuestionnairesForCode(code, ctx);
+            if (!questionnaireIds.isEmpty()) {
+                key = getReferenceKey(subjectId + "|" + questionnaireIds, ctx);
+
+                values.put("ids", questionnaireIds);
+                values.put("count",Integer.toString(maxItems));
+                  if (queryManager.doesQueryExist("QuestionnaireResponse.QueryWithOptions")) {
+                        String callUrl = queryManager.setupQuery("QuestionnaireResponse.Query", values, webRequest);
+                        try {
+                            Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+
+                            //Filter
+                            for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                                if (e.getResource().fhirType().compareTo("QuestionnaireResponse") == 0) {
+                                    QuestionnaireResponse o = (QuestionnaireResponse) e.getResource();
+                                    if (activeKeys.get(o.getStatus().toCode()) == ACTIVE_LIST) {
+                                        //We require an authored date
+                                        if (o.hasAuthored()) {
+                                            workArray.add(o);
+                                        }
+                                    }
+                                }
+                            }
+                            //Sort the results
+                            if (workArray.size() > 1) {
+                                Comparator<QuestionnaireResponse> comparator = (QuestionnaireResponse o1, QuestionnaireResponse o2) -> o1.getAuthored().compareTo(o2.getAuthored());
+                                if (sortOrder.compareTo("ascending")==0) {
+                                    workArray.sort(comparator);
+                                }
+                                else {
+                                    workArray.sort(comparator.reversed());
+                                }
+                            }
+                        } catch (Exception e) {
+                            log.warn("Exception during QuestionnaireResponse.Query", e);
+                        }
+                }
+            }
+        }
+
+        SimpleQuestionnaireItem out[]= new SimpleQuestionnaireItem[workArray.size()];
+        int i =0;
+        for (QuestionnaireResponse r: workArray)
+        {
+            out[i] = QuestionnaireResponseMapper.fhir2SimpleItem(r,ctx,"/" + code);
+             i++;
+        }
+
+        return out;
+
+    }
+
     @GetMapping("/find/latest/questionnaireresponseitem")
     public SimpleQuestionnaireItem getLatestQuestionnaireResponseForItem(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         SimpleQuestionnaireItem out = null;

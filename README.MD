@@ -185,6 +185,10 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 #Recent Changes log
 
+## Release 1.0.14-SNAPSHOT
+- Added /find/all/questionnaireresponseitems
+- Added QueryKey: QuestionnaireResponse.QueryWithOptions
+
 ## Release 1.0.13-SNAPSHOT
 - General QuestionnaireResponse Support
 - General type updates to transmit less empty data
