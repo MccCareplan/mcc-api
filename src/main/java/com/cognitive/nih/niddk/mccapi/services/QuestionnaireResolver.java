@@ -40,6 +40,7 @@ public class QuestionnaireResolver {
 
     static {
         activeQuestionnaireStatus.add("active");
+        activeQuestionnaireStatus.add("draft");
         activeQuestionnaireStatus.add("retired");
     }
     /**
