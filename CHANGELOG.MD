@@ -1,3 +1,11 @@
+
+## Release 1.0.16-RELEASE
+- Upgraded to spring-boot-starter-parent 2.4.2
+- Resolves issues with path parsing
+
+## Release 1.0.15-RELEASE
+- Formal release
+
 ## Release 1.0.14-SNAPSHOT
 - Added /find/all/questionnaireresponseitems
 - Added QueryKey: QuestionnaireResponse.QueryWithOptions
