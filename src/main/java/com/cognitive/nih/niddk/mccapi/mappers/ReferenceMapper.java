@@ -2,13 +2,17 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Reference;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public class ReferenceMapper {
+@Slf4j
+@Component
+public class ReferenceMapper implements IReferenceMapper {
 
-    public static MccReference fhir2local(Reference in, Context ctx) {
+    public MccReference fhir2local(Reference in, Context ctx) {
         MccReference out  = new MccReference();
         if (in.hasReference()) {
             String ref = in.getReference();
@@ -26,7 +30,7 @@ public class ReferenceMapper {
         return out;
     }
 
-    public static MccReference[] fhir2local(List<Reference> in, Context ctx)
+    public MccReference[] fhir2local(List<Reference> in, Context ctx)
     {
         MccReference[] o = new MccReference[in.size()];
         int i=0;

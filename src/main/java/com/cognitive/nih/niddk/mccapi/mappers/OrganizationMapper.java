@@ -4,16 +4,20 @@ import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.ContactPoint;
 import org.hl7.fhir.r4.model.Organization;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
-public class OrganizationMapper {
+@Slf4j
+@Component
+public class OrganizationMapper implements IOrganizationMapper {
 
-    public static Contact fhir2Contact(Organization in, Context ctx) {
+    public Contact fhir2Contact(Organization in, Context ctx) {
         Contact out = new Contact();
         out.setName(NameResolver.getName(in,ctx));
         out.setRelFhirId(FHIRHelper.getIdString(in.getIdElement()));

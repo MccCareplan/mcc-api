@@ -8,6 +8,7 @@ import com.cognitive.nih.niddk.mccapi.data.QuestionnaireResponseSummary;
 import com.cognitive.nih.niddk.mccapi.data.SimpleQuestionnaireItem;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.mappers.QuestionnaireResponseMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.services.QuestionnaireResolver;
@@ -57,13 +58,14 @@ public class QuestionnaireResponseController {
 
     private final QueryManager queryManager;
     private final QuestionnaireResolver questionnaireResolver;
+    private final IR4Mapper ir4Mapper;
     private final boolean SERVICE_REQUEST_ENABLED = false;
 
 
-    public QuestionnaireResponseController(QueryManager queryManager, QuestionnaireResolver questionnaireResolver) {
+    public QuestionnaireResponseController(QueryManager queryManager, QuestionnaireResolver questionnaireResolver, IR4Mapper ir4Mapper) {
         this.queryManager = queryManager;
-
         this.questionnaireResolver = questionnaireResolver;
+        this.ir4Mapper = ir4Mapper;
     }
 
     //TODO: Add General Questionnaire support (
@@ -81,7 +83,7 @@ public class QuestionnaireResponseController {
         Map<String, String> values = new HashMap<>();
 
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client);
+        ctx.setClient(client,ir4Mapper);
 
         if (queryManager.doesQueryExist("Questionnaire.FindForCode")) {
             // find questionnaires for the code
@@ -99,7 +101,7 @@ public class QuestionnaireResponseController {
                             Bundle.BundleEntryComponent e = results.getEntryFirstRep();
                             if (e.getResource().fhirType().compareTo("QuestionnaireResponse") == 0) {
                                 QuestionnaireResponse qr = (QuestionnaireResponse) e.getResource();
-                                out = QuestionnaireResponseMapper.fhir2local(qr, ctx);
+                                out = ir4Mapper.fhir2local(qr, ctx);
                             }
                         }
                     } catch (Exception e) {
@@ -129,7 +131,7 @@ public class QuestionnaireResponseController {
                             workArray.sort(comparator.reversed());
                         }
                         if (workArray.size() > 0) {
-                            out = QuestionnaireResponseMapper.fhir2local(workArray.get(0), ctx);
+                            out = ir4Mapper.fhir2local(workArray.get(0), ctx);
                         }
                     } catch (Exception e) {
                         log.warn("Exception during QuestionnaireResponse.Query", e);
@@ -159,7 +161,7 @@ public class QuestionnaireResponseController {
         Map<String, String> values = new HashMap<>();
 
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client);
+        ctx.setClient(client,ir4Mapper);
 
         if (queryManager.doesQueryExist("Questionnaire.FindForCode")) {
             // find questionnaires for the code
@@ -207,7 +209,7 @@ public class QuestionnaireResponseController {
         int i =0;
         for (QuestionnaireResponse r: workArray)
         {
-            out[i] = QuestionnaireResponseMapper.fhir2SimpleItem(r,ctx,"/" + code);
+            out[i] = ir4Mapper.fhir2SimpleItem(r,ctx,"/" + code);
              i++;
         }
 
@@ -226,7 +228,7 @@ public class QuestionnaireResponseController {
         Map<String, String> values = new HashMap<>();
 
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client);
+        ctx.setClient(client,ir4Mapper);
 
         if (queryManager.doesQueryExist("Questionnaire.FindForCode")) {
             // find questionnaires for the code
@@ -293,7 +295,7 @@ public class QuestionnaireResponseController {
             out = new SimpleQuestionnaireItem();
             out.setFHIRId("notfound");
         } else {
-            out = QuestionnaireResponseMapper.fhir2SimpleItem(fnd, ctx, "/" + code);
+            out = ir4Mapper.fhir2SimpleItem(fnd, ctx, "/" + code);
         }
 
         return out;
@@ -322,7 +324,7 @@ public class QuestionnaireResponseController {
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client,ir4Mapper);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("QuestionnaireResponse") == 0) {
                     QuestionnaireResponse qr = (QuestionnaireResponse) e.getResource();
@@ -360,7 +362,8 @@ public class QuestionnaireResponseController {
             {
                 String subjectId = qr.getSubject().getId();
                 Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-                out= QuestionnaireResponseMapper.fhir2local(qr, ctx);
+                ctx.setClient(client,ir4Mapper);
+                out= ir4Mapper.fhir2local(qr, ctx);
             }
         }
 
@@ -387,7 +390,7 @@ public class QuestionnaireResponseController {
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client,ir4Mapper);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("QuestionnaireResponse") == 0) {
                     QuestionnaireResponse qr = (QuestionnaireResponse) e.getResource();
@@ -395,7 +398,7 @@ public class QuestionnaireResponseController {
                         String status = qr.getStatus().toCode();
                         Integer s = activeKeys.get(status);
                         if (s != null && s.intValue() != IGNORE) {
-                            out.add(QuestionnaireResponseMapper.fhir2local(qr, ctx));
+                            out.add(ir4Mapper.fhir2local(qr, ctx));
                         }
                     }
                 }

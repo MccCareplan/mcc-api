@@ -29,18 +29,18 @@ public class GoalLists {
         logger = LoggerFactory.getLogger(GoalLists.class);
 
         //Lifecycle Status
-        //  proposed | planned | accepted | active | on-hold | completed | cancelled | entered-in-error | rejected
+        //  proposed | planned | accepted | active | on-hold | completed | cancelled | entered-in-error | rejected | unknown
 
         //Hash as verified
         Integer active = Integer.valueOf(ACTIVE_LIST);
         Integer inactive = Integer.valueOf(INACTIVE_LIST);
         Integer ignore = Integer.valueOf(IGNORE);
 
-        //	active | recurrence | relapse
         activeKeys.put("proposed",active);
         activeKeys.put("planned",active);
         activeKeys.put("accepted",active);
         activeKeys.put("on-hold",active);
+        activeKeys.put("unknown",active);
         activeKeys.put("completed",inactive);
         activeKeys.put("cancelled",inactive);
         activeKeys.put("rejected",active);

@@ -5,14 +5,20 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.services.ReferenceResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CareTeamMapper {
-    public static List<Contact> fhir2Contacts(CareTeam in, Context ctx) {
+@Slf4j
+@Component
+public class CareTeamMapper implements ICareTeamMapper {
+
+
+    public  List<Contact> fhir2Contacts(CareTeam in, Context ctx) {
         ArrayList<Contact> out = new ArrayList<>();
         String teamName = in.getName();
         String teamId = in.getIdElement().getResourceType() + "/" + in.getIdElement().getId();
@@ -79,9 +85,11 @@ public class CareTeamMapper {
         return out;
     }
 
-    public static Contact fhir2Contact(CareTeam.CareTeamParticipantComponent in, Context ctx) {
+    public Contact fhir2Contact(CareTeam.CareTeamParticipantComponent in, Context ctx) {
         Contact out = null;
         String role = "Unknown Role";
+        IR4Mapper mapper = ctx.getMapper();
+
         if (in.hasRole())
         {
             role = FHIRHelper.getConceptsAsDisplayString(in.getRole());
@@ -104,14 +112,14 @@ public class CareTeamMapper {
                 {
                     Practitioner p = ReferenceResolver.findPractitioner(m,ctx);
                     if (p != null) {
-                        out = PractitionerMapper.fhir2Contact(p, ctx);
+                        out = mapper.fhir2Contact(p, ctx);
                     }
                 }
                 else if (type.compareTo("RelatedPerson")==0)
                 {
                     RelatedPerson r = ReferenceResolver.findRelatedPerson(m,ctx);
                     if ( r != null) {
-                        out = RelatedPersonMapper.fhir2Contact(r,ctx);
+                        out = mapper.fhir2Contact(r,ctx);
                     }
                 }
                 else if (type.compareTo("Organization")==0)
@@ -119,7 +127,7 @@ public class CareTeamMapper {
                     Organization o = ReferenceResolver.findOrganization(m, ctx);
                     if (o != null)
                     {
-                        out = OrganizationMapper.fhir2Contact(o,ctx);
+                        out = mapper.fhir2Contact(o,ctx);
                     }
                 }
 

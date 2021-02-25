@@ -3,6 +3,8 @@ package com.cognitive.nih.niddk.mccapi.data;
 import com.cognitive.nih.niddk.mccapi.managers.ProfileManager;
 import com.cognitive.nih.niddk.mccapi.mappers.CodeableConceptMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IConditionMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.matcher.CodeableConceptMatcher;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Condition;
@@ -144,17 +146,18 @@ public class ConditionLists {
         // As a general rule we want group all condition that have the same base concept into the common concept.
         // The most current representative of the concept should be the displayed concept
         List<String> profiles = ProfileManager.getProfileManager().getProfilesForConceptAsList(c.getCode());
+        IR4Mapper mapper = ctx.getMapper();
 
         if (profiles.isEmpty()) {
             ConditionSummary summary = findConditionIfAlreadySeen(c);
 
             if (summary == null) {
                 summary = new ConditionSummary();
-                summary.setCode(CodeableConceptMapper.fhir2local(c.getCode(), ctx));
+                summary.setCode(mapper.fhir2local(c.getCode(), ctx));
                 //summary.setProfileId(ProfileManager.getProfileManager().getProfilesForConcept(c.getCode()));
                 conditions.add(summary);
             }
-            ConditionHistory history = ConditionMapper.fhir2History(c, ctx);
+            ConditionHistory history = mapper.fhir2History(c, ctx);
             summary.addToHistory(history);
         }
         else
@@ -165,12 +168,12 @@ public class ConditionLists {
 
             if (summary == null) {
                 summary = new ConditionSummary();
-                summary.setCode(CodeableConceptMapper.fhir2local(c.getCode(), ctx));
+                summary.setCode(mapper.fhir2local(c.getCode(), ctx));
                 summary.setProfileId(profile);
                 conditions.add(summary);
             }
 
-            ConditionHistory history = ConditionMapper.fhir2History(c, ctx);
+            ConditionHistory history = mapper.fhir2History(c, ctx);
             summary.addToHistory(history);
 
 

@@ -8,8 +8,9 @@ import com.cognitive.nih.niddk.mccapi.data.MccCarePlanSummary;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.ProfileManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
-import com.cognitive.nih.niddk.mccapi.mappers.CareplanMapper;
-import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.ICareplanMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IConditionMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +29,11 @@ import java.util.*;
 public class CareplanController {
 
     private final QueryManager queryManager;
+    private final IR4Mapper ir4Mapper;
 
-    public CareplanController(QueryManager queryManager) {
+    public CareplanController(QueryManager queryManager,IR4Mapper ir4Mapper) {
         this.queryManager = queryManager;
+        this.ir4Mapper = ir4Mapper;
     }
 
     /**
@@ -53,7 +56,7 @@ public class CareplanController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
 
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client, ir4Mapper);
 
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType() == "CarePlan") {
@@ -61,7 +64,7 @@ public class CareplanController {
                     if (c.getStatus().toCode().compareTo("active")==0 && c.getIntent().toCode().compareTo("plan") ==0 ) {
                         Set<String> profiles = carePlanRecognizedFor(c, ctx);
                         if (profiles.size()>0) {
-                            out.add(CareplanMapper.fhir2Summary(c, profiles, ctx));
+                            out.add(ir4Mapper.fhir2Summary(c, profiles, ctx));
                         }
                     }
                 }
@@ -94,7 +97,7 @@ public class CareplanController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
 
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client,ir4Mapper);
 
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType() == "CarePlan") {
@@ -102,7 +105,7 @@ public class CareplanController {
                     if (c.getStatus().toCode().compareTo("active")==0 && c.getIntent().toCode().compareTo("plan") ==0 ) {
                         Set<String> addresses = carePlanRecognizedFor(c, ctx);
                         if (addresses.size()>0) {
-                            out.add(CareplanMapper.fhir2Summary(c, addresses,ctx));
+                            out.add(ir4Mapper.fhir2Summary(c, addresses,ctx));
                         }
                     }
                 }
@@ -241,7 +244,7 @@ public class CareplanController {
 
     private MccCarePlan mapCarePlan(CarePlan fc, IGenericClient client, Context ctx) {
         MccCarePlan c;
-        c = CareplanMapper.fhir2local(fc,ctx);
+        c = ir4Mapper.fhir2local(fc,ctx);
         //Now deal with relationships
 
         //Start with Addresses
@@ -255,7 +258,7 @@ public class CareplanController {
          Condition add = client.read().resource(Condition.class).withUrl(ref).execute();
          if (index>0) addSum.append(", ");
          addSum.append(FHIRHelper.getConceptDisplayString(add.getCode()));
-         mccAddrs[index] = ConditionMapper.fhir2local(add, ctx);
+         mccAddrs[index] = ir4Mapper.fhir2local(add, ctx);
          index++;
         }
         c.setAddressesSummary(addSum.toString());

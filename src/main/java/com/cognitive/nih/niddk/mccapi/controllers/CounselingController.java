@@ -6,7 +6,7 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.CounselingSummary;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
-import com.cognitive.nih.niddk.mccapi.mappers.CounselingMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
@@ -28,6 +28,7 @@ public class CounselingController {
     private static final int INACTIVE_LIST = 1;
     private static final int IGNORE = 2;
     private static final HashMap<String, Integer> activeKeys = new HashMap<>();
+
 
     static {
         // Procedure Status
@@ -51,12 +52,13 @@ public class CounselingController {
     }
 
     private final QueryManager queryManager;
+    private final IR4Mapper ir4Mapper;
     private final boolean SERVICE_REQUEST_ENABLED = false;
 
 
-    public CounselingController(QueryManager queryManager) {
+    public CounselingController(QueryManager queryManager, IR4Mapper ir4Mapper) {
         this.queryManager = queryManager;
-
+        this.ir4Mapper = ir4Mapper;
     }
 
     @GetMapping("/summary/counselings")
@@ -79,7 +81,7 @@ public class CounselingController {
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client,ir4Mapper);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Procedure") == 0) {
                     Procedure p = (Procedure) e.getResource();
@@ -88,7 +90,7 @@ public class CounselingController {
                         Integer s = activeKeys.get(status);
                         if (s != null && s.intValue() != IGNORE) {
                             //TODO: Filter by intent
-                            CounselingSummary cs = CounselingMapper.fhir2summary(p, ctx);
+                            CounselingSummary cs = ir4Mapper.fhir2CounselingSummary(p, ctx);
                             out.add(cs);
                         }
                     }
@@ -108,13 +110,13 @@ public class CounselingController {
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client,ir4Mapper);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("ServiceRequest") == 0) {
                     ServiceRequest p = (ServiceRequest) e.getResource();
                     //TODO: Add filter by status  active, completed
                     //TODO: Filter by intent
-                    CounselingSummary cs = CounselingMapper.fhir2summary(p, ctx);
+                    CounselingSummary cs = ir4Mapper.fhir2CounselingSummary(p, ctx);
                     out.add(cs);
                 }
             }

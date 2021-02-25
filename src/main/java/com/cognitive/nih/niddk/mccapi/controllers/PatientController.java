@@ -5,7 +5,8 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccPatient;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
-import com.cognitive.nih.niddk.mccapi.mappers.PatientMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IPatientMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
@@ -21,10 +22,13 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class PatientController {
 
+    private final IR4Mapper ir4Mapper;
     private final QueryManager queryManager;
 
-    public PatientController(QueryManager queryManager)
+
+    public PatientController(IR4Mapper ir4Mapper, QueryManager queryManager)
     {
+        this.ir4Mapper = ir4Mapper;
         this.queryManager = queryManager;
     }
 
@@ -50,8 +54,8 @@ public class PatientController {
                 if (e.getResource().fhirType().compareTo("Patient") == 0) {
                     Patient bp = (Patient) e.getResource();
                     Context ctx = ContextManager.getManager().findContextForSubject(bp.hasIdentifier() ? bp.getIdentifierFirstRep().getValue() : "Unknown", headers);
-                    ctx.setClient(client);
-                    p = PatientMapper.fhir2local(bp, ctx);
+                    ctx.setClient(client,ir4Mapper);
+                    p = ir4Mapper.fhir2local(bp, ctx);
                     out.add(p);
                 }
             }
@@ -66,8 +70,6 @@ public class PatientController {
     @GetMapping("/patient/{id}")
     public MccPatient getPatient(@PathVariable(value="id") String id, @RequestHeader Map<String, String> headers, WebRequest webRequest)
     {
-        log.info("PATIENT_ID_CHECK 1 = "+id);
-
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
         MccPatient p;
@@ -82,8 +84,8 @@ public class PatientController {
 
             //Patient fp = client.read().resource(Patient.class).withId(id).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(id, headers);
-            ctx.setClient(client);
-            p = PatientMapper.fhir2local(fp, ctx);
+            ctx.setClient(client,ir4Mapper);
+            p = ir4Mapper.fhir2local(fp, ctx);
         }
         else
         {

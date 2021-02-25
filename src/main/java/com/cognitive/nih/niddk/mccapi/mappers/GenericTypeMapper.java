@@ -3,10 +3,11 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.data.primative.*;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
-import io.swagger.v3.oas.models.security.SecurityScheme;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -20,8 +21,9 @@ import java.util.List;
  *
  */
 
-
-public class GenericTypeMapper {
+@Slf4j
+@Component
+public class GenericTypeMapper implements IGenericTypeMapper {
 
 
     private static final int RANGE = 0;
@@ -45,7 +47,6 @@ public class GenericTypeMapper {
     private static final int ID = 18;
     private static final int CODING = 19;
     private static final int DECIMAL = 20;
-
 
 
     private static final Logger logger = LoggerFactory.getLogger(GenericTypeMapper.class);
@@ -77,7 +78,8 @@ public class GenericTypeMapper {
         activeKeys.put("decimal",DECIMAL);
     }
 
-    public static GenericType fhir2local(Type in, Context ctx) {
+
+    public GenericType fhir2local(Type in, Context ctx) {
         GenericType out = new GenericType();
         String fhirType = in.fhirType();
         out.setValueType(fhirType);
@@ -101,7 +103,7 @@ public class GenericTypeMapper {
                     break;
                 }
                 case CODEABLE_CONCEPT: {
-                    out.setCodeableConceptValue(CodeableConceptMapper.fhir2local(in.castToCodeableConcept(in), ctx));
+                    out.setCodeableConceptValue(ctx.getMapper().fhir2local(in.castToCodeableConcept(in), ctx));
                     break;
                 }
                 case BOOLEAN: {
@@ -178,27 +180,27 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccDate fhir2local(DateType in, Context ctx) {
+    public MccDate fhir2local(DateType in, Context ctx) {
         MccDate out = new MccDate();
         out.setRawDate(in.getValue());
         out.setDate(FHIRHelper.dateToString(in.getValue()));
         return out;
     }
 
-    public static MccId fhir2local(IdType in, Context ctx) {
+    public MccId fhir2local(IdType in, Context ctx) {
         MccId out = new MccId();
         out.setValue(in.getValue());
         return out;
     }
 
-    public static MccDate fhir2local(Date in, Context ctx) {
+    public MccDate fhir2local(Date in, Context ctx) {
         MccDate out = new MccDate();
         out.setRawDate(in);
         out.setDate(FHIRHelper.dateToString(in));
         return out;
     }
 
-    public static MccCoding fhir2local(Coding in, Context ctx) {
+    public MccCoding fhir2local(Coding in, Context ctx) {
         MccCoding out = new MccCoding();
         out.setCode(in.getCode());
         out.setDisplay(in.getDisplay());
@@ -206,8 +208,7 @@ public class GenericTypeMapper {
         out.setVersion(in.getVersion());
         return out;
     }
-
-    public static MccIdentifer[] fhir2local_identifierArray(List<Identifier> in, Context ctx) {
+    public MccIdentifer[] fhir2local_identifierArray(List<Identifier> in, Context ctx) {
         MccIdentifer[] o = new MccIdentifer[in.size()];
         int i = 0;
         for (Identifier id : in) {
@@ -217,7 +218,7 @@ public class GenericTypeMapper {
         return o;
     }
 
-    public static MccDateTime[] fhir2local(List<DateTimeType> in, Context ctx) {
+    public MccDateTime[] fhir2local(List<DateTimeType> in, Context ctx) {
         MccDateTime[] o = new MccDateTime[in.size()];
         int i = 0;
         for (DateTimeType dateTime : in) {
@@ -227,21 +228,21 @@ public class GenericTypeMapper {
         return o;
     }
 
-    public static MccDateTime fhir2local(DateTimeType in, Context ctx) {
+    public MccDateTime fhir2local(DateTimeType in, Context ctx) {
         MccDateTime out = new MccDateTime();
         out.setRawDate(in.getValue());
         out.setDate(FHIRHelper.dateTimeToString(in.getValue()));
         return out;
     }
 
-    public static MccTime fhir2local(TimeType in, Context ctx) {
+    public MccTime fhir2local(TimeType in, Context ctx) {
         MccTime out = new MccTime();
 
         out.setValue(in.getValue());
         return out;
     }
 
-    public static MccPeriod fhir2local(Period in, Context ctx) {
+    public MccPeriod fhir2local(Period in, Context ctx) {
         MccPeriod out = new MccPeriod();
         in.fhirType();
         Period p = in.castToPeriod(in);
@@ -250,7 +251,7 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccSampledData fhir2local(SampledData in, Context ctx) {
+    public MccSampledData fhir2local(SampledData in, Context ctx) {
         MccSampledData out = new MccSampledData();
         out.setOrigin(fhir2local((SimpleQuantity) in.getOrigin(), ctx));
         out.setData(in.getData());
@@ -262,7 +263,7 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccSimpleQuantity fhir2local(SimpleQuantity in, Context ctx) {
+    public MccSimpleQuantity fhir2local(SimpleQuantity in, Context ctx) {
         MccSimpleQuantity out = new MccSimpleQuantity();
         out.setCode(in.getCode());
         out.setSystem(in.getSystem());
@@ -272,7 +273,7 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccIdentifer fhir2local(Identifier in, Context ctx) {
+    public MccIdentifer fhir2local(Identifier in, Context ctx) {
         MccIdentifer out = new MccIdentifer();
         if (in.hasUse()) {
             out.setUse(in.getUse().toCode());
@@ -292,15 +293,15 @@ public class GenericTypeMapper {
         return out;
     }
 
-        public static MccReference fhir2local(Reference in, Context ctx) {
-        return ReferenceMapper.fhir2local(in, ctx);
+    public MccReference fhir2local(Reference in, Context ctx) {
+        return ctx.getMapper().fhir2local(in, ctx);
     }
 
-    public static MccCodeableConcept fhir2local(CodeableConcept in, Context ctx) {
-        return CodeableConceptMapper.fhir2local(in, ctx);
+    public MccCodeableConcept fhir2local(CodeableConcept in, Context ctx) {
+        return ctx.getMapper().fhir2local(in, ctx);
     }
 
-    public static MccQuantity fhir2local(Quantity in, Context ctx) {
+    public MccQuantity fhir2local(Quantity in, Context ctx) {
         MccQuantity out = new MccQuantity();
         out.setCode(in.getCode());
         if (in.getComparator() != null) {
@@ -313,21 +314,21 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccRatio fhir2local(Ratio in, Context ctx) {
+    public MccRatio fhir2local(Ratio in, Context ctx) {
         MccRatio out = new MccRatio();
         out.setDenominator(fhir2local(in.getDenominator(), ctx));
         out.setNumerator(fhir2local(in.getNumerator(), ctx));
         return out;
     }
 
-    public static MccRange fhir2local(Range in, Context ctx) {
+    public MccRange fhir2local(Range in, Context ctx) {
         MccRange out = new MccRange();
         out.setLow(fhir2local(in.getLow(), ctx));
         out.setHigh(fhir2local(in.getHigh(), ctx));
         return out;
     }
 
-    public static MccDuration fhir2local(Duration in, Context ctx) {
+    public MccDuration fhir2local(Duration in, Context ctx) {
         MccDuration out = new MccDuration();
         out.setCode(in.getCode());
         if (in.getComparator() != null) {
@@ -340,19 +341,19 @@ public class GenericTypeMapper {
         return out;
     }
 
-    public static MccInstant fhir2local(InstantType in, Context ctx) {
+    public MccInstant fhir2local(InstantType in, Context ctx) {
         MccInstant out = new MccInstant();
         out.setValue(in.getValueAsString());
         return out;
     }
 
-    public static MccTiming fhir2local(Timing in, Context ctx) {
+    public MccTiming fhir2local(Timing in, Context ctx) {
           MccTiming out = new MccTiming();
         if (in.hasEvent()) {
             out.setEvent(fhir2local(in.getEvent(), ctx));
         }
         if (in.hasCode()) {
-            out.setCode(CodeableConceptMapper.fhir2local(in.getCode(), ctx));
+            out.setCode(ctx.getMapper().fhir2local(in.getCode(), ctx));
         }
         if (in.hasRepeat()) {
             MccTiming.Repeat mccRepeat = out.defineRepeat();
@@ -438,7 +439,7 @@ public class GenericTypeMapper {
 
     }
 
-    public static MccDosage[] fhir2local_dosageList(List<Dosage> in, Context ctx) {
+    public MccDosage[] fhir2local_dosageList(List<Dosage> in, Context ctx) {
         MccDosage[] o = new MccDosage[in.size()];
         int i = 0;
         for (Dosage dosage : in) {
@@ -449,7 +450,7 @@ public class GenericTypeMapper {
 
     }
 
-    public static MccDosage fhir2local(Dosage in, Context ctx) {
+    public MccDosage fhir2local(Dosage in, Context ctx) {
         MccDosage out = new MccDosage();
 
         if (in.hasSequence())
@@ -458,7 +459,7 @@ public class GenericTypeMapper {
         }
         if (in.hasAdditionalInstruction())
         {
-            out.setAdditionInstructions(CodeableConceptMapper.fhir2local(in.getAdditionalInstruction(),ctx));
+            out.setAdditionInstructions(ctx.getMapper().fhir2local(in.getAdditionalInstruction(),ctx));
         }
         if (in.hasText())
         {

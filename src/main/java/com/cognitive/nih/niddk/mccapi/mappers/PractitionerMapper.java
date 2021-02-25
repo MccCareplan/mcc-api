@@ -7,12 +7,15 @@ import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import com.cognitive.nih.niddk.mccapi.util.JavaHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 @Slf4j
-public class PractitionerMapper {
-    public static Contact fhir2Contact(Practitioner in, Context ctx) {
+@Component
+public class PractitionerMapper implements IPractitionerMapper {
+
+    public Contact fhir2Contact(Practitioner in, Context ctx) {
         Contact out = new Contact();
         out.setName(FHIRHelper.getBestName(in.getName()));
         out.setRelFhirId(FHIRHelper.getIdString(in.getIdElement()));

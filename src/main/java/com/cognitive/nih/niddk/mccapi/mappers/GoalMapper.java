@@ -3,33 +3,47 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccReference;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
-import com.cognitive.nih.niddk.mccapi.services.ReferenceResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import com.cognitive.nih.niddk.mccapi.util.JavaHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public class GoalMapper {
+@Slf4j
+@Component
+public class GoalMapper implements IGoalMapper {
 
-    public static MccGoal fhir2local(Goal in, Context ctx)
+
+
+    public  MccGoal fhir2local(Goal in, Context ctx)
     {
         MccGoal out = new MccGoal();
+        IR4Mapper mapper = ctx.getMapper();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setId(in.getIdElement().getValue());
-        out.setDescription(CodeableConceptMapper.fhir2local(in.getDescription(),ctx));
-        out.setOutcomeCodes(CodeableConceptMapper.fhir2local(in.getOutcomeCode(),ctx));
+        out.setDescription(mapper.fhir2local(in.getDescription(),ctx));
+        out.setOutcomeCodes(mapper.fhir2local(in.getOutcomeCode(),ctx));
         if (in.hasAddresses()) {
-            out.setAddresses(ReferenceMapper.fhir2local(in.getAddresses(), ctx));
+            out.setAddresses(mapper.fhir2local_referenceArray(in.getAddresses(), ctx));
         }
-        out.setCategories(CodeableConceptMapper.fhir2local(in.getCategory(),ctx));
+        out.setCategories(mapper.fhir2local(in.getCategory(),ctx));
         out.setCategorySummary(FHIRHelper.getConceptsAsDisplayString(in.getOutcomeCode()));
         if (in.hasExpressedBy()) {
-            out.setExpressedBy(ReferenceMapper.fhir2local(in.getExpressedBy(), ctx));
+            out.setExpressedBy(mapper.fhir2local(in.getExpressedBy(), ctx));
         }
-        out.setLifecycleStatus(in.getLifecycleStatus().toCode()); //Weird mapping
-        out.setPriority(CodeableConceptMapper.fhir2local(in.getPriority(),ctx));
-        out.setCategories(CodeableConceptMapper.fhir2local(in.getCategory(),ctx));
+        if (in.hasLifecycleStatus()) {
+            out.setLifecycleStatus(in.getLifecycleStatus().toCode()); //Weird mapping
+        }
+        else
+        {
+            //Catch errors
+            log.info("Goal violates US Core - Using a status of unknown");
+            out.setLifecycleStatus("unknown");
+        }
+        out.setPriority(mapper.fhir2local(in.getPriority(),ctx));
+        out.setCategories(mapper.fhir2local(in.getCategory(),ctx));
 
         out.setStatusDate(FHIRHelper.dateTimeToString(in.getStatusDate()));
         out.setStatusReason(in.getStatusReason());
@@ -39,13 +53,13 @@ public class GoalMapper {
         if (in.hasStartCodeableConcept())
         {
             out.setUseStartConcept(true);
-            out.setStartConcept(CodeableConceptMapper.fhir2local(in.getStartCodeableConcept(),ctx));
+            out.setStartConcept(mapper.fhir2local(in.getStartCodeableConcept(),ctx));
         }
         else
         {
             out.setUseStartConcept(false);
             out.setStartDateText(FHIRHelper.dateToString(in.getStartDateType().getValue()));
-            out.setStartDate(GenericTypeMapper.fhir2local(in.getStartDateType(),ctx));
+            out.setStartDate(mapper.fhir2local(in.getStartDateType(),ctx));
         }
 
 
@@ -71,7 +85,7 @@ public class GoalMapper {
                 List<Extension> i = e.getExtensionsByUrl("individual");
                 Base b = i.get(0).getValue();
                 Reference r = b.castToReference(b);
-                a.setIndividual(ReferenceMapper.fhir2local(r,ctx));
+                a.setIndividual(mapper.fhir2local(r,ctx));
 
                 List<Extension> s = e.getExtensionsByUrl("status");
                 if (s != null && s.size() > 0)
@@ -83,27 +97,29 @@ public class GoalMapper {
                 if (p!= null && p.size() > 0)
                 {
                     b = p.get(0).getValue();
-                    a.setPriority(CodeableConceptMapper.fhir2local(b.castToCodeableConcept(b),ctx));
+                    a.setPriority(mapper.fhir2local(b.castToCodeableConcept(b),ctx));
                 }
                 acceptances[cnt]= a;
                 cnt++;
             }
+            out.setAcceptance(acceptances);
         }
         return out;
     }
 
-    public static GoalSummary fhir2summary(Goal in, Context ctx)
+    public  GoalSummary fhir2summary(Goal in, Context ctx)
     {
         GoalSummary out = new GoalSummary();
+        IR4Mapper mapper = ctx.getMapper();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setDescription(in.getDescription().getText());
         out.setLifecycleStatus(in.getLifecycleStatus().toCode());
         Coding pcd = FHIRHelper.getCodingForSystem(in.getPriority(),"http://terminology.hl7.org/CodeSystem/goal-priority");
         out.setPriority(pcd==null?"Undefined":pcd.getCode());
         List<Goal.GoalTargetComponent> targets = in.getTarget();
-        MccReference ref = ReferenceMapper.fhir2local(in.getExpressedBy(),ctx);
+        MccReference ref = mapper.fhir2local(in.getExpressedBy(),ctx);
         out.setExpressedByType(ref.getType());
-        out.setAchievementStatus(CodeableConceptMapper.fhir2local(in.getAchievementStatus(),ctx));
+        out.setAchievementStatus(mapper.fhir2local(in.getAchievementStatus(),ctx));
         if (in.hasAchievementStatus()) {
             out.setAchievementText(FHIRHelper.getConceptDisplayString(in.getAchievementStatus()));
         }
@@ -179,17 +195,18 @@ public class GoalMapper {
         return out;
     }
 
-    public static GoalTarget fhir2local(Goal.GoalTargetComponent in, Context ctx)
+    public  GoalTarget fhir2local(Goal.GoalTargetComponent in, Context ctx)
     {
         GoalTarget out = new GoalTarget();
-        out.setMeasure(CodeableConceptMapper.fhir2local(in.getMeasure(),ctx));
+        IR4Mapper mapper = ctx.getMapper();
+        out.setMeasure(mapper.fhir2local(in.getMeasure(),ctx));
         Type x = in.getDue();
         if (x != null)
         {
             out.setDueType(x.fhirType());
         }
         if (in.getDetail()!= null) {
-            out.setValue(GenericTypeMapper.fhir2local(in.getDetail(), ctx));
+            out.setValue(mapper.fhir2local(in.getDetail(), ctx));
         }
         return out;
 

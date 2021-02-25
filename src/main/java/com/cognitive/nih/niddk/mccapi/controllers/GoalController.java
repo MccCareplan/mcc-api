@@ -7,7 +7,7 @@ import com.cognitive.nih.niddk.mccapi.data.GoalSummary;
 import com.cognitive.nih.niddk.mccapi.data.MccGoal;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
-import com.cognitive.nih.niddk.mccapi.mappers.GoalMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
@@ -24,9 +24,11 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class GoalController {
     private final QueryManager queryManager;
+    private final IR4Mapper ir4Mapper;
 
-    public GoalController(QueryManager queryManager) {
+    public GoalController(QueryManager queryManager, IR4Mapper ir4Mapper) {
         this.queryManager = queryManager;
+        this.ir4Mapper = ir4Mapper;
     }
 
 
@@ -69,11 +71,11 @@ public class GoalController {
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client,ir4Mapper);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Goal")==0){
                     Goal g = (Goal) e.getResource();
-                    GoalSummary gs = GoalMapper.fhir2summary(g, ctx);
+                    GoalSummary gs = ir4Mapper.fhir2summary(g, ctx);
                     out.addSummary(gs);
                 }
             }
@@ -94,11 +96,11 @@ public class GoalController {
             //Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //        .returnBundle(Bundle.class).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client,ir4Mapper);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Goal") == 0) {
                     Goal g = (Goal) e.getResource();
-                    out.add(GoalMapper.fhir2local(g, ctx));
+                    out.add(ir4Mapper.fhir2local(g, ctx));
                 }
             }
         }
@@ -122,7 +124,8 @@ public class GoalController {
             //Goal fg = client.read().resource(Goal.class).withId(id).execute();
             String subjectId = fg.getSubject().getId();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            g = GoalMapper.fhir2local(fg, ctx);
+            ctx.setClient(client, ir4Mapper);
+            g = ir4Mapper.fhir2local(fg, ctx);
         }
         else
         {
