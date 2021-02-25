@@ -561,7 +561,8 @@ public class FHIRHelper {
         List<Identifier> out = new ArrayList<>();
         for (Identifier id: identifiers)
         {
-            if (id.getUse().toCode().compareTo("old")!=0)
+            String use = id.hasUse() ? id.getUse().toCode() :"undefined";
+            if (use.compareTo("old")!=0)
             {
                 if (id.hasSystem())
                 {
