@@ -201,6 +201,10 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 - Update FHIRHelpers for Identifier Selection
 - Updated Context to include the current mapper
 - Updated the Patient mapping to support the mcc.patient.id.system to allow deployers to define the system to match for patent Id - see the section "Configuring the patient identifier" in the README.MD
+- Updated the logic for context setup
+- changed mapper naming,
+- fixed check on careteam id
+- Removed static call to QuestionnaireResponse Mapper.
 
 ## Release 1.0.16-RELEASE
 - Upgraded to spring-boot-starter-parent 2.4.2
