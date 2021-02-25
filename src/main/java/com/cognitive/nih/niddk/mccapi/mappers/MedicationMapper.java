@@ -10,28 +10,32 @@ import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import com.cognitive.nih.niddk.mccapi.util.JavaHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Slf4j
-public class MedicationMapper {
+@Component
+public class MedicationMapper implements IMedicationMapper {
 
-    public static MccMedicationRecord fhir2local(MedicationRequest in, Context ctx) {
+
+    public MccMedicationRecord fhir2local(MedicationRequest in, Context ctx) {
         MccMedicationRecord out = new MccMedicationRecord();
+        IR4Mapper mapper = ctx.getMapper();
         out.setType("MedicationRequest");
         out.setFhirId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         if (in.hasStatusReason()) {
             MccCodeableConcept[] reasons = new MccCodeableConcept[1];
-            reasons[0] = CodeableConceptMapper.fhir2local(in.getStatusReason(), ctx);
+            reasons[0] = mapper.fhir2local(in.getStatusReason(), ctx);
             out.setStatusReasons(reasons);
         }
         if (in.hasCategory()) {
-            out.setCategories(CodeableConceptMapper.fhir2local(in.getCategory(), ctx));
+            out.setCategories(mapper.fhir2local(in.getCategory(), ctx));
         }
         if (in.hasMedication()) {
             if (in.hasMedicationCodeableConcept()) {
-                out.setMedication(CodeableConceptMapper.fhir2local(in.getMedicationCodeableConcept(), ctx));
+                out.setMedication(mapper.fhir2local(in.getMedicationCodeableConcept(), ctx));
             }
             if (in.hasMedicationReference()) {
                 Reference ref = in.getMedicationReference();
@@ -42,7 +46,7 @@ public class MedicationMapper {
                 } else {
                     Medication med = ReferenceResolver.findMedication(ref, ctx);
                     if (med != null) {
-                        out.setMedication(CodeableConceptMapper.fhir2local(med.getCode(), ctx));
+                        out.setMedication(mapper.fhir2local(med.getCode(), ctx));
                     } else {
                         log.warn("Failed to resolve reference: " + ref.toString());
                     }
@@ -50,10 +54,10 @@ public class MedicationMapper {
             }
         }
         if (in.hasReasonCode()) {
-            out.setReasons(CodeableConceptMapper.fhir2local(in.getReasonCode(), ctx));
+            out.setReasons(mapper.fhir2local(in.getReasonCode(), ctx));
         }
         if (in.hasDosageInstruction()) {
-            out.setDosages(GenericTypeMapper.fhir2local_dosageList(in.getDosageInstruction(), ctx));
+            out.setDosages(mapper.fhir2local_dosageList(in.getDosageInstruction(), ctx));
         }
         if (in.hasNote()) {
             out.setNote(FHIRHelper.annotationsToString(in.getNote(),ctx));
@@ -62,34 +66,35 @@ public class MedicationMapper {
             out.setPriority(in.getPriority().getDisplay());
         }
         if (in.hasReasonReference()) {
-            out.setReasonReferences(ReferenceMapper.fhir2local(in.getReasonReference(), ctx));
+            out.setReasonReferences(mapper.fhir2local_referenceArray(in.getReasonReference(), ctx));
         }
         if (in.hasDetectedIssue()) {
-            out.setDetectedIssues(ReferenceMapper.fhir2local(in.getDetectedIssue(), ctx));
+            out.setDetectedIssues(mapper.fhir2local_referenceArray(in.getDetectedIssue(), ctx));
         }
 
         if (in.hasRequester()) {
-            out.setRequester(ReferenceMapper.fhir2local(in.getRequester(),ctx));
+            out.setRequester(mapper.fhir2local(in.getRequester(),ctx));
         }
         return out;
     }
 
-    public static MccMedicationRecord fhir2local(MedicationStatement in, Context ctx) {
+    public MccMedicationRecord fhir2local(MedicationStatement in, Context ctx) {
         MccMedicationRecord out = new MccMedicationRecord();
+        IR4Mapper mapper = ctx.getMapper();
         out.setType("MedicationStatement");
         out.setFhirId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         if (in.hasStatusReason()) {
-            out.setStatusReasons(CodeableConceptMapper.fhir2local(in.getStatusReason(), ctx));
+            out.setStatusReasons(mapper.fhir2local(in.getStatusReason(), ctx));
         }
         if (in.hasCategory()) {
             MccCodeableConcept[] categories = new MccCodeableConcept[1];
-            categories[0] = CodeableConceptMapper.fhir2local(in.getCategory(), ctx);
+            categories[0] = mapper.fhir2local(in.getCategory(), ctx);
             out.setCategories(categories);
         }
         if (in.hasMedication()) {
             if (in.hasMedicationCodeableConcept()) {
-                out.setMedication(CodeableConceptMapper.fhir2local(in.getMedicationCodeableConcept(), ctx));
+                out.setMedication(mapper.fhir2local(in.getMedicationCodeableConcept(), ctx));
             }
             if (in.hasMedicationReference()) {
                 Reference ref = in.getMedicationReference();
@@ -100,7 +105,7 @@ public class MedicationMapper {
                 } else {
                     Medication med = ReferenceResolver.findMedication(ref, ctx);
                     if (med != null) {
-                        out.setMedication(CodeableConceptMapper.fhir2local(med.getCode(), ctx));
+                        out.setMedication(mapper.fhir2local(med.getCode(), ctx));
                     } else {
                         log.warn("Failed to resolve reference: " + ref.toString());
                     }
@@ -108,20 +113,20 @@ public class MedicationMapper {
             }
         }
         if (in.hasReasonCode()) {
-            out.setReasons(CodeableConceptMapper.fhir2local(in.getReasonCode(), ctx));
+            out.setReasons(mapper.fhir2local(in.getReasonCode(), ctx));
         }
 
         if (in.hasNote()) {
             out.setNote(FHIRHelper.annotationsToString(in.getNote(),ctx));
         }
         if (in.hasReasonReference()) {
-            out.setReasonReferences(ReferenceMapper.fhir2local(in.getReasonReference(), ctx));
+            out.setReasonReferences(mapper.fhir2local_referenceArray(in.getReasonReference(), ctx));
         }
         return out;
     }
 
 
-    public static MedicationSummary fhir2summary(MedicationRequest in, Context ctx) {
+    public MedicationSummary fhir2summary(MedicationRequest in, Context ctx) {
         MedicationSummary out = new MedicationSummary();
         out.setType("MedicationRequest");
         out.setFhirId(in.getIdElement().getIdPart());
@@ -201,7 +206,7 @@ public class MedicationMapper {
         return out;
     }
 
-    public static MedicationSummary fhir2summary(MedicationStatement in, Context ctx) {
+    public MedicationSummary fhir2summary(MedicationStatement in, Context ctx) {
         MedicationSummary out = new MedicationSummary();
         out.setType("MedicationStatement");
         out.setFhirId(in.getIdElement().getIdPart());
@@ -279,7 +284,7 @@ public class MedicationMapper {
         */
         return out;
     }
-    public static void handleReasonReference(List<Reference> reasonRefs, StringBuilder reasons, Context ctx) {
+    public void handleReasonReference(List<Reference> reasonRefs, StringBuilder reasons, Context ctx) {
         for (Reference r : reasonRefs) {
             if (r.hasDisplay()) {
                 JavaHelper.addStringToBufferWithSep(reasons, r.getDisplay(), ", ");
@@ -311,7 +316,7 @@ public class MedicationMapper {
         }
     }
 
-    public static String handleIssues(List<Reference> issueReferences, Context ctx) {
+    public String handleIssues(List<Reference> issueReferences, Context ctx) {
         StringBuilder issues = new StringBuilder();
         int count = 0;
         for (Reference ref : issueReferences) {

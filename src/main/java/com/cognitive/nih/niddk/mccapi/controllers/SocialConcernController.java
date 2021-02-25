@@ -7,10 +7,10 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.SocialConcern;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
-import org.hl7.fhir.r4.model.Patient;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -23,10 +23,13 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class SocialConcernController {
     private final QueryManager queryManager;
+    private final IR4Mapper mapper;
 
-    public SocialConcernController(QueryManager queryManager)
+
+    public SocialConcernController(QueryManager queryManager, IR4Mapper mapper)
     {
         this.queryManager = queryManager;
+        this.mapper = mapper;
     }
 
     @GetMapping("/socialconcernsummary")
@@ -42,7 +45,7 @@ public class SocialConcernController {
             //Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
             //        .and(Condition.CATEGORY.exactly().code("health-concern")).returnBundle(Bundle.class).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client, mapper);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Condition")==0) {
                     Condition c = (Condition) e.getResource();
@@ -67,7 +70,7 @@ public class SocialConcernController {
         IGenericClient client = fhirSrv.getClient(headers);
 
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
-        ctx.setClient(client);
+        ctx.setClient(client,mapper);
         //TODO: Query for concerns
         //Bundle results = client.search().forResource(CarePlan.class).where(CarePlan.SUBJECT.hasId(subjectId))
         //        .returnBundle(Bundle.class).execute();

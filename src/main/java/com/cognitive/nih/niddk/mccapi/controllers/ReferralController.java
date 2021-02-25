@@ -6,7 +6,7 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.ReferralSummary;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
-import com.cognitive.nih.niddk.mccapi.mappers.ReferralMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +22,11 @@ import java.util.*;
 
 public class ReferralController {
     private final QueryManager queryManager;
+    private final IR4Mapper ir4Mapper;
+
     private static final HashSet<String> supportedCategories = new HashSet<>();
 
     static {
-        //
         // List of categories: 440379008,3457005,409073007,409063005
         supportedCategories.add("440379008"); // “Referral to”
         supportedCategories.add("3457005"); // “Patient Referral"
@@ -34,9 +35,9 @@ public class ReferralController {
 
     }
 
-    public ReferralController(QueryManager queryManager) {
+    public ReferralController(QueryManager queryManager, IR4Mapper ir4Mapper) {
         this.queryManager = queryManager;
-
+        this.ir4Mapper = ir4Mapper;
     }
 
     @GetMapping("/summary/referrals")
@@ -58,7 +59,7 @@ public class ReferralController {
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client,ir4Mapper);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("ServiceRequest")==0) {
                     ServiceRequest p = (ServiceRequest) e.getResource();
@@ -73,7 +74,7 @@ public class ReferralController {
                             //TODO: Filter by intent
                             if (p.hasPerformer()) {
                                 if (isPerformerProvider(p.getPerformer())) {
-                                    ReferralSummary cs = ReferralMapper.fhir2summary(p, ctx);
+                                    ReferralSummary cs = ir4Mapper.fhir2summary(p, ctx);
                                     out.add(cs);
                                 }
                             }

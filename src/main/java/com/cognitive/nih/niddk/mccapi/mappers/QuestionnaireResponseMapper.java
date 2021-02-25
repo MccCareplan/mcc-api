@@ -1,26 +1,27 @@
 package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.*;
-import com.cognitive.nih.niddk.mccapi.data.primative.GenericType;
-import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
-import com.cognitive.nih.niddk.mccapi.util.JavaHelper;
-import org.checkerframework.checker.units.qual.A;
-import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Quantity;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionnaireResponseMapper {
+@Slf4j
+@Component
+public class QuestionnaireResponseMapper implements IQuestionnaireResponseMapper{
 
-    public static MccQuestionnaireResponse fhir2local(QuestionnaireResponse in, Context ctx) {
+
+
+    public  MccQuestionnaireResponse fhir2local(QuestionnaireResponse in, Context ctx) {
         MccQuestionnaireResponse out = new MccQuestionnaireResponse();
+        IR4Mapper mapper = ctx.getMapper();
 
         out.setFHIRId(in.getIdElement().getIdPart());
         if (in.hasAuthored())
         {
-            out.setAuthored(GenericTypeMapper.fhir2local(in.getAuthored(),ctx));
+            out.setAuthored(mapper.fhir2local(in.getAuthored(),ctx));
         }
 
         out.setStatus(in.getStatus().toCode());
@@ -40,14 +41,15 @@ public class QuestionnaireResponseMapper {
 
         return out;
     }
-    public static SimpleQuestionnaireItem fhir2SimpleItem(QuestionnaireResponse in, Context ctx, String linkId)
+    public  SimpleQuestionnaireItem fhir2SimpleItem(QuestionnaireResponse in, Context ctx, String linkId)
     {
         SimpleQuestionnaireItem out = new SimpleQuestionnaireItem();
+        IR4Mapper mapper = ctx.getMapper();
 
         out.setFHIRId(in.getIdElement().getIdPart());
         if (in.hasAuthored())
         {
-            out.setAuthored(GenericTypeMapper.fhir2local(in.getAuthored(),ctx));
+            out.setAuthored(mapper.fhir2local(in.getAuthored(),ctx));
         }
         if (in.hasItem()) {
             QuestionnaireResponseItem fnd = findItem(in, linkId, ctx);
@@ -57,7 +59,7 @@ public class QuestionnaireResponseMapper {
         return out;
     }
 
-    public static QuestionnaireResponseItem findItem(QuestionnaireResponse in, String linkId, Context ctx)
+    public QuestionnaireResponseItem findItem(QuestionnaireResponse in, String linkId, Context ctx)
     {
         QuestionnaireResponseItem fnd=null;
         List<QuestionnaireResponse.QuestionnaireResponseItemComponent> items = in.getItem();
@@ -69,7 +71,7 @@ public class QuestionnaireResponseMapper {
         return fnd;
     }
 
-    public static QuestionnaireResponseItem findItem(QuestionnaireResponse.QuestionnaireResponseItemComponent in, String linkId, Context ctx)
+    public QuestionnaireResponseItem findItem(QuestionnaireResponse.QuestionnaireResponseItemComponent in, String linkId, Context ctx)
     {
         QuestionnaireResponseItem fnd=null;
         if (in.getLinkId().compareTo(linkId)==0)
@@ -106,7 +108,7 @@ public class QuestionnaireResponseMapper {
         return fnd;
     }
 
-    public static QuestionnaireResponseItem fhir2local(QuestionnaireResponse.QuestionnaireResponseItemComponent in, Context ctx) {
+    public  QuestionnaireResponseItem fhir2local(QuestionnaireResponse.QuestionnaireResponseItemComponent in, Context ctx) {
         QuestionnaireResponseItem out = new QuestionnaireResponseItem();
 
         out.setLinkid(in.getLinkId());
@@ -141,11 +143,13 @@ public class QuestionnaireResponseMapper {
         }
         return out;
     }
-    public static QuestionnaireResponseItemAnswer fhir2local(QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent in, Context ctx) {
+
+    public QuestionnaireResponseItemAnswer fhir2local(QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent in, Context ctx) {
         QuestionnaireResponseItemAnswer out = new QuestionnaireResponseItemAnswer();
+        IR4Mapper mapper = ctx.getMapper();
         if (in.hasValue())
         {
-            out.setValue(GenericTypeMapper.fhir2local(in.getValue(),ctx));
+            out.setValue(mapper.fhir2local(in.getValue(),ctx));
         }
         if (in.hasItem())
         {

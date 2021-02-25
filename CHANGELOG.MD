@@ -1,3 +1,11 @@
+## Release 1.0.17-RELEASE
+- Refactored all mapping to use beans
+- Removed PATIENT_ID_CHECK code
+- Avoid null pointer error for goals without a status
+- Update FHIRHelpers for Identifier Selection
+- Updated Context to include the current mapper
+- Updated the Patient mapping to support the mcc.patient.id.system to allow deployers to define the system to match for patent Id - see the section "Configuring the patient identifier" in the README.MD
+
 
 ## Release 1.0.16-RELEASE
 - Upgraded to spring-boot-starter-parent 2.4.2

@@ -10,8 +10,7 @@ import com.cognitive.nih.niddk.mccapi.exception.ItemNotFoundException;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.managers.ValueSetManager;
-import com.cognitive.nih.niddk.mccapi.mappers.CodeableConceptMapper;
-import com.cognitive.nih.niddk.mccapi.mappers.ObservationMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.MccHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,7 @@ import java.util.*;
 @CrossOrigin(origins = "*")
 public class ObservationController {
     private final QueryManager queryManager;
+    private final IR4Mapper ir4Mapper;
 
     private static HashMap<String,String> revPanelMap = new HashMap<>();
 
@@ -36,8 +36,9 @@ public class ObservationController {
         revPanelMap.put("8462-4","85354-9");
         revPanelMap.put("8480-6","85354-9");
     }
-    public ObservationController(QueryManager queryManager) {
+    public ObservationController(QueryManager queryManager, IR4Mapper ir4Mapper) {
         this.queryManager = queryManager;
+        this.ir4Mapper = ir4Mapper;
     }
 
     private ArrayList<MccObservation> QueryObservations(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
@@ -46,7 +47,7 @@ public class ObservationController {
 
         if (calls.size() > 0) {
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client,ir4Mapper);
 
             for (String key : calls) {
                 String callUrl = queryManager.setupQuery(key, values, webRequest);
@@ -56,7 +57,7 @@ public class ObservationController {
                 for (Bundle.BundleEntryComponent e : results.getEntry()) {
                     if (e.getResource().fhirType().compareTo("Observation") == 0) {
                         Observation o = (Observation) e.getResource();
-                        out.add(ObservationMapper.fhir2local(o, ctx));
+                        out.add(ir4Mapper.fhir2local(o, ctx));
                     }
                 }
             }

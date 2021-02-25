@@ -7,12 +7,12 @@ import com.cognitive.nih.niddk.mccapi.data.MccCondition;
 import com.cognitive.nih.niddk.mccapi.exception.ItemNotFoundException;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
-import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IConditionMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -26,9 +26,11 @@ import java.util.Map;
 public class ConditionController {
 
     private final QueryManager queryManager;
+    private final IR4Mapper ir4Mapper;
 
-    public ConditionController(QueryManager queryManager) {
+    public ConditionController(QueryManager queryManager, IR4Mapper ir4Mapper) {
         this.queryManager = queryManager;
+        this.ir4Mapper = ir4Mapper;
     }
 
     private void addConditionToConditionList(ConditionLists list, Condition c, Context ctx) {
@@ -54,7 +56,7 @@ public class ConditionController {
             }
             String subjectId = fc.getSubject().getId();
             Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client);
+            ctx.setClient(client,ir4Mapper);
             c = mapCondition(fc, client, ctx);
         } else {
             c = new MccCondition();
@@ -108,7 +110,7 @@ public class ConditionController {
 
                 //results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://terminology.hl7.org/CodeSystem/condition-category", "problem-list-item"))
                 //    .returnBundle(Bundle.class).execute();
-                ctx.setClient(client);
+                ctx.setClient(client,ir4Mapper);
                 for (Bundle.BundleEntryComponent e : results.getEntry()) {
                     if (e.getResource().fhirType().compareTo("Condition")==0) {
                         Condition c = (Condition) e.getResource();
@@ -128,7 +130,7 @@ public class ConditionController {
 
                 //results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://hl7.org/fhir/us/core/CodeSystem/condition-category", "health-concern"))
                 //   .returnBundle(Bundle.class).execute();
-                ctx.setClient(client);
+                ctx.setClient(client,ir4Mapper);
                 for (Bundle.BundleEntryComponent e : results.getEntry()) {
                     if (e.getResource().fhirType().compareTo("Condition")==0) {
                         Condition c = (Condition) e.getResource();
@@ -164,7 +166,7 @@ public class ConditionController {
                 results = client.fetchResourceFromUrl(Bundle.class, callUrl);
                 //results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://terminology.hl7.org/CodeSystem/condition-category", "problem-list-item"))
                 //        .returnBundle(Bundle.class).execute();
-                ctx.setClient(client);
+                ctx.setClient(client,ir4Mapper);
                 for (Bundle.BundleEntryComponent e : results.getEntry()) {
                     if (e.getResource().fhirType().compareTo("Condition") ==0) {
                         Condition c = (Condition) e.getResource();
@@ -184,7 +186,7 @@ public class ConditionController {
                 results = client.fetchResourceFromUrl(Bundle.class, callUrl);
                 //       results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId)).where(Condition.CATEGORY.exactly().systemAndValues("http://hl7.org/fhir/us/core/CodeSystem/condition-category", "health-concern"))
                 //    .returnBundle(Bundle.class).execute();
-                ctx.setClient(client);
+                ctx.setClient(client,ir4Mapper);
                 for (Bundle.BundleEntryComponent e : results.getEntry()) {
                     if (e.getResource().fhirType().compareTo("Condition")==0) {
                         Condition c = (Condition) e.getResource();
@@ -203,7 +205,7 @@ public class ConditionController {
 
     private MccCondition mapCondition(Condition fc, IGenericClient client, Context ctx) {
         MccCondition c;
-        c = ConditionMapper.fhir2local(fc, ctx);
+        c = ir4Mapper.fhir2local(fc, ctx);
         //Now deal with relationships
 
         /*

@@ -2,16 +2,19 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.Type;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProcedureMapper {
+@Slf4j
+@Component
+public class ProcedureMapper implements IProcedureMapper {
 
-
-    public static String performerToString(List<Procedure.ProcedurePerformerComponent> performers, Context ctx) {
+    public String performerToString(List<Procedure.ProcedurePerformerComponent> performers, Context ctx) {
         StringBuilder perf = new StringBuilder();
         boolean addComma = false;
 
@@ -27,7 +30,7 @@ public class ProcedureMapper {
         return perf.toString();
     }
 
-    public static String[] performerToStringArray(List<Procedure.ProcedurePerformerComponent> performers, Context ctx) {
+    public String[] performerToStringArray(List<Procedure.ProcedurePerformerComponent> performers, Context ctx) {
         ArrayList<String> perfs = new ArrayList<>();
 
         for (Procedure.ProcedurePerformerComponent comp : performers) {

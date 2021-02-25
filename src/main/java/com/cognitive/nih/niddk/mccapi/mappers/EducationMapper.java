@@ -8,24 +8,29 @@ import com.cognitive.nih.niddk.mccapi.data.primative.FuzzyDate;
 import com.cognitive.nih.niddk.mccapi.data.primative.GenericType;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ServiceRequest;
 import org.hl7.fhir.r4.model.Type;
+import org.springframework.stereotype.Component;
 
-public class EducationMapper {
+@Slf4j
+@Component
+public class EducationMapper implements IEducationMapper {
 
-    public static Education fhir2local(Procedure in, Context ctx) {
+    public  Education fhir2local(Procedure in, Context ctx) {
         Education out = new Education();
+        IR4Mapper mapper = ctx.getMapper();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         out.setType("Procedure");
         if (in.hasOutcome()) {
-            out.setOutcome(CodeableConceptMapper.fhir2local(in.getOutcome(), ctx));
+            out.setOutcome(mapper.fhir2local(in.getOutcome(), ctx));
         }
-        out.setTopic(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
+        out.setTopic(mapper.fhir2local(in.getCode(),ctx));
         if (in.hasPerformer())
         {
-            out.setPerformers(ProcedureMapper.performerToStringArray(in.getPerformer(),ctx));
+            out.setPerformers(mapper.performerToStringArray(in.getPerformer(),ctx));
         }
         if (in.hasPerformed())
         {
@@ -35,7 +40,7 @@ public class EducationMapper {
         }
         if (in.hasReasonCode() )
         {
-            out.setReasonsCodes(CodeableConceptMapper.fhir2local(in.getReasonCode(), ctx));
+            out.setReasonsCodes(mapper.fhir2local(in.getReasonCode(), ctx));
         }
         if (in.hasReasonReference())
         {
@@ -44,8 +49,9 @@ public class EducationMapper {
         return out;
     }
 
-    public static EducationSummary fhir2summary(Procedure in, Context ctx) {
+    public  EducationSummary fhir2summary(Procedure in, Context ctx) {
         EducationSummary out = new EducationSummary();
+        IR4Mapper mapper = ctx.getMapper();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         out.setType("Procedure");
@@ -56,12 +62,12 @@ public class EducationMapper {
             out.setDate(perfOn);
         }
         if (in.hasOutcome()) {
-            out.setOutcome(CodeableConceptMapper.fhir2local(in.getOutcome(), ctx));
+            out.setOutcome(mapper.fhir2local(in.getOutcome(), ctx));
         }
-        out.setTopic(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
+        out.setTopic(mapper.fhir2local(in.getCode(),ctx));
         if (in.hasPerformer())
         {
-            out.setPerformer(ProcedureMapper.performerToString(in.getPerformer(),ctx));
+            out.setPerformer(mapper.performerToString(in.getPerformer(),ctx));
         }
         if (in.hasReasonCode() || in.hasReasonReference())
         {
@@ -86,17 +92,18 @@ public class EducationMapper {
     }
 
 
-    public static Education fhir2local(ServiceRequest in, Context ctx) {
+    public  Education fhir2local(ServiceRequest in, Context ctx) {
         Education out = new Education();
         return out;
     }
 
-    public static EducationSummary fhir2summary(ServiceRequest in, Context ctx) {
+    public  EducationSummary fhir2summary(ServiceRequest in, Context ctx) {
         EducationSummary out = new EducationSummary();
+        IR4Mapper mapper = ctx.getMapper();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         out.setType("ServiceRequest");
-        out.setTopic(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
+        out.setTopic(mapper.fhir2local(in.getCode(),ctx));
         if (in.hasOccurrence())
         {
             out.setDisplayDate(FHIRHelper.typeToDateString(in.getOccurrence()));

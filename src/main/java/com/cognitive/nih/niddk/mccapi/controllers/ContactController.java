@@ -5,9 +5,7 @@ import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
-import com.cognitive.nih.niddk.mccapi.mappers.CareTeamMapper;
-import com.cognitive.nih.niddk.mccapi.mappers.PatientMapper;
-import com.cognitive.nih.niddk.mccapi.mappers.PractitionerMapper;
+import com.cognitive.nih.niddk.mccapi.mappers.*;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +24,12 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class ContactController {
     private final QueryManager queryManager;
+    private final IR4Mapper ir4Mapper;
 
-    public ContactController(QueryManager queryManager) {
+
+    public ContactController(QueryManager queryManager, IR4Mapper ir4Mapper) {
         this.queryManager = queryManager;
+        this.ir4Mapper = ir4Mapper;
     }
 
     @GetMapping(value = "/image/contact/{id}", produces = "image/jpeg")
@@ -46,19 +47,19 @@ public class ContactController {
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
         Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client);
+        ctx.setClient(client,ir4Mapper);
 
         Contact contact;
         Patient fp = client.read().resource(Patient.class).withId(subjectId).execute();
 
-        contact = PatientMapper.fhir2Contact(fp, ctx);
+        contact = ir4Mapper.fhir2Contact(fp, ctx);
         out.add(contact);
 
         //Find Emergency Contacts
-        List<Patient.ContactComponent> contacts = PatientMapper.getActiveContactOfType(fp, "C");
+        List<Patient.ContactComponent> contacts = ir4Mapper.getActiveContactOfType(fp, "C");
         if (contacts.size() > 0) {
             for (Patient.ContactComponent pc : contacts) {
-                contact = PatientMapper.fhir2Contact(pc, ctx);
+                contact = ir4Mapper.fhir2Contact(pc, ctx);
                 contact.setRole(Contact.ROLE_EMERGENCY);
                 out.add(contact);
             }
@@ -71,7 +72,7 @@ public class ContactController {
                 if (FHIRHelper.isReferenceOfType(ref, "Practitioner")) {
                     //DIRECT-FHIR-REF
                     Practitioner p = client.fetchResourceFromUrl(Practitioner.class, ref.getReference());
-                    Contact pc = PractitionerMapper.fhir2Contact(p, ctx);
+                    Contact pc = ir4Mapper.fhir2Contact(p, ctx);
                     pc.setRole(Contact.ROLE_PRIMARY_CARE);
                     out.add(pc);
                 }
@@ -81,7 +82,7 @@ public class ContactController {
         }
 
         //If a care plan is presented then we process it to find the care teams
-        if (!StringUtils.isEmpty(carePlanId)) {
+        if (!StringUtils.hasText(carePlanId)) {
             // Fetch Careplan
 
             try {
@@ -102,7 +103,7 @@ public class ContactController {
                             if (FHIRHelper.isReferenceOfType(ref, "CareTeam")) {
                                 CareTeam t = client.fetchResourceFromUrl(CareTeam.class, ref.getReference());
                                 if (t != null) {
-                                    out.addAll(CareTeamMapper.fhir2Contacts(t, ctx));
+                                    out.addAll(ir4Mapper.fhir2Contacts(t, ctx));
                                 }
                             }
                         }
@@ -115,10 +116,10 @@ public class ContactController {
 
 
         //Finally we look for Insurance
-        contacts = PatientMapper.getActiveContactOfType(fp, "I");
+        contacts = ir4Mapper.getActiveContactOfType(fp, "I");
         if (contacts.size() > 0) {
             for (Patient.ContactComponent pc : contacts) {
-                contact = PatientMapper.fhir2Contact(pc, ctx);
+                contact = ir4Mapper.fhir2Contact(pc, ctx);
                 contact.setRole(Contact.ROLE_INSURANCE);
                 out.add(contact);
             }

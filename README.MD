@@ -93,6 +93,15 @@ details on Spring boot.
 | fhir.default.server.address | FHIR_DEFAULT_SERVER_ADDRESS | Default open fhir server| https://api.logicahealth.org/MCCeCarePlanTest/open | https://api.logicahealth.org/MCCeCarePlanTest/open |
 | fhir.secure.server.address | FHIR_SECURE_SERVER_ADDRESS |Default secure fhir server | https://api.logicahealth.org/MCCeCarePlanTest/data | https://api.logicahealth.org/MCCeCarePlanTest/data |
 | logging.level.org.springframework | | | WARN | WARN |
+| mcc.patient.id.system | MCC_PATIENT_ID_SYSTEM | System used to determine the Patient Id| | | |
+
+#### Configuring the patient identifier
+
+The default scheme for mapping to the display patient identifier is scan the identifier list based on use, using the identifier based on a rank (Official | Usual | Temp | Secondary) returning the first identifier of the highest rank. This behavior can be refined so that only identifier from a specific system will be selected.
+Setting the property mcc.patient.id.system to the value of the required system will filter the list down matching identifier that match that system,
+For example if the property is set to urn:oid:2.16.840.1.113883.3.2076.2.100 then the OHSU medical record number would be used, while setting the value to urn:oid:2.16.840.1.113883.4.3.41 would search for Oregon Driver's Licenses.
+Ideally identifiers could be select by type code (https://www.hl7.org/fhir/valueset-identifier-type.html). Current real world data does not seem to support this.
+
 
 #### Logging related environment variables 
  | Property Name | System Env. Variable eqv | Description | Dev | Prod |
@@ -184,6 +193,14 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 
 #Recent Changes log
+
+## Release 1.0.17-RELEASE 
+- Refactored all mapping to use beans
+- Removed PATIENT_ID_CHECK code
+- Avoid null pointer error for goals without a status
+- Update FHIRHelpers for Identifier Selection
+- Updated Context to include the current mapper
+- Updated the Patient mapping to support the mcc.patient.id.system to allow deployers to define the system to match for patent Id - see the section "Configuring the patient identifier" in the README.MD
 
 ## Release 1.0.16-RELEASE
 - Upgraded to spring-boot-starter-parent 2.4.2

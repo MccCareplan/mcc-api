@@ -7,11 +7,18 @@ import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.*;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+@Component
+public class PatientMapper implements IPatientMapper {
 
-public class PatientMapper {
+    @Value("${mcc.patient.id.system:}")
+    private String patientIdSystem;
+
     private static String RACE_KEY = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race";
     private static String ENTHNICITY_KEY = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity";
     private static String OMB_CATEGORY = "ombCategory";
@@ -33,7 +40,7 @@ public class PatientMapper {
 
     }
 
-    public static List<Patient.ContactComponent> getActiveContactOfType(Patient in, String type)
+    public List<Patient.ContactComponent> getActiveContactOfType(Patient in, String type)
     {
         ArrayList<Patient.ContactComponent> out = new ArrayList<>();
         if (in.hasContact())
@@ -71,7 +78,7 @@ public class PatientMapper {
         }
         return out;
     }
-    public static Contact fhir2Contact(Patient.ContactComponent in, Context ctx) {
+    public Contact fhir2Contact(Patient.ContactComponent in, Context ctx) {
         String usePrioriy = PRIORITY_PRIVATE;
 
         if (in.hasRelationship()) {
@@ -116,7 +123,7 @@ public class PatientMapper {
 
     }
 
-    public static Contact fhir2Contact(Patient in, Context ctx) {
+    public Contact fhir2Contact(Patient in, Context ctx) {
         Contact out = new Contact();
         out.setName(FHIRHelper.getBestName(in.getName()));
         out.setRelFhirId(FHIRHelper.getIdString(in.getIdElement()));
@@ -149,7 +156,7 @@ public class PatientMapper {
     }
 
 
-    public static MccPatient fhir2local(Patient in, Context ctx) {
+    public MccPatient fhir2local(Patient in, Context ctx) {
         MccPatient out = new MccPatient();
         out.setDateOfBirth(FHIRHelper.dateToString(in.getBirthDate()));
         if (in.hasBirthDate())
@@ -164,7 +171,24 @@ public class PatientMapper {
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setRace(FHIRHelper.getCodingDisplayExtensionAsString(in, RACE_KEY, OMB_CATEGORY, "Undefined"));
         out.setEthnicity(FHIRHelper.getCodingDisplayExtensionAsString(in, ENTHNICITY_KEY, OMB_CATEGORY, "Undefined"));
-        out.setId(in.hasIdentifier() ? in.getIdentifierFirstRep().getValue() : "Unknown");
+        //
+
+        if (in.hasIdentifier())
+        {
+            Identifier id = FHIRHelper.findBestIdentifierBySystem(in.getIdentifier(),patientIdSystem);
+            if (id != null)
+            {
+                out.setId(id.getValue());
+            }
+            else
+            {
+                out.setId("Not Found");
+            }
+        }
+        else
+        {
+            out.setId("Undefined");
+        }
         return out;
     }
 

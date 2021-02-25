@@ -1,6 +1,7 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 
 import java.util.Date;
@@ -13,6 +14,8 @@ public class Context {
     private HashMap<String, String> headers;
     private Context parent;
     private IGenericClient client;
+    private IR4Mapper mapper;
+
     private Date now;
 
     public static final Context NULL_CONTEXT = new Context();
@@ -85,9 +88,12 @@ public class Context {
         return client;
     }
 
-    public void setClient(IGenericClient client) {
+    public void setClient(IGenericClient client, IR4Mapper mapper ) {
         this.client = client;
+        this.mapper = mapper;
     }
+
+    public IR4Mapper getMapper() { return mapper;}
 
     public Date getNow()
     {

@@ -4,21 +4,26 @@ import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.data.primative.FuzzyDate;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ServiceRequest;
-import org.hl7.fhir.r4.model.Type;
+import org.springframework.stereotype.Component;
 
-public class CounselingMapper {
+@Slf4j
+@Component
+public class CounselingMapper implements ICounselingMapper {
 
-    public static Counseling fhir2local(Procedure in, Context ctx) {
+    public  Counseling fhir2local(Procedure in, Context ctx) {
         Counseling out = new Counseling();
+        IR4Mapper mapper = ctx.getMapper();
+
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         out.setType("Procedure");
         if (in.hasOutcome()) {
-            out.setOutcome(CodeableConceptMapper.fhir2local(in.getOutcome(), ctx));
+            out.setOutcome(mapper.fhir2local(in.getOutcome(), ctx));
         }
-        out.setTopic(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
+        out.setTopic(mapper.fhir2local(in.getCode(),ctx));
         if (in.hasPerformed())
         {
             out.setDisplayDate(FHIRHelper.typeToDateString(in.getPerformed()));
@@ -27,11 +32,11 @@ public class CounselingMapper {
         }
         if (in.hasPerformer())
         {
-            out.setPerformer(ProcedureMapper.performerToStringArray(in.getPerformer(),ctx));
+            out.setPerformer(mapper.performerToStringArray(in.getPerformer(),ctx));
         }
         if (in.hasReasonCode() )
         {
-            out.setReasonsCodes(CodeableConceptMapper.fhir2local(in.getReasonCode(), ctx));
+            out.setReasonsCodes(mapper.fhir2local(in.getReasonCode(), ctx));
         }
         if (in.hasReasonReference())
         {
@@ -40,15 +45,16 @@ public class CounselingMapper {
         return out;
     }
 
-    public static CounselingSummary fhir2summary(Procedure in, Context ctx) {
+    public  CounselingSummary fhir2summary(Procedure in, Context ctx) {
         CounselingSummary out = new CounselingSummary();
+        IR4Mapper mapper = ctx.getMapper();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         out.setType("Procedure");
         if (in.hasOutcome()) {
-            out.setOutcome(CodeableConceptMapper.fhir2local(in.getOutcome(), ctx));
+            out.setOutcome(mapper.fhir2local(in.getOutcome(), ctx));
         }
-        out.setTopic(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
+        out.setTopic(mapper.fhir2local(in.getCode(),ctx));
         if (in.hasPerformed())
         {
             out.setDisplayDate(FHIRHelper.typeToDateString(in.getPerformed()));
@@ -57,7 +63,7 @@ public class CounselingMapper {
         }
         if (in.hasPerformer())
         {
-            out.setPerformer(ProcedureMapper.performerToString(in.getPerformer(),ctx));
+            out.setPerformer(mapper.performerToString(in.getPerformer(),ctx));
         }
 
         if (in.hasReasonCode() || in.hasReasonReference())
@@ -84,17 +90,18 @@ public class CounselingMapper {
     }
 
 
-    public static Counseling fhir2local(ServiceRequest in, Context ctx) {
+    public  Counseling fhir2local(ServiceRequest in, Context ctx) {
         Counseling out = new Counseling();
         return out;
     }
 
-    public static CounselingSummary fhir2summary(ServiceRequest in, Context ctx) {
+    public  CounselingSummary fhir2summary(ServiceRequest in, Context ctx) {
         CounselingSummary out = new CounselingSummary();
+        IR4Mapper mapper = ctx.getMapper();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setStatus(in.getStatus().toCode());
         out.setType("ServiceRequest");
-        out.setTopic(CodeableConceptMapper.fhir2local(in.getCode(),ctx));
+        out.setTopic(mapper.fhir2local(in.getCode(),ctx));
         if (in.hasOccurrence())
         {
             out.setDisplayDate(FHIRHelper.typeToDateString(in.getOccurrence()));

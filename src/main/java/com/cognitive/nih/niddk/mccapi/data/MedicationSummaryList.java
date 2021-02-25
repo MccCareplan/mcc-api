@@ -1,5 +1,6 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
+import com.cognitive.nih.niddk.mccapi.mappers.IMedicationMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.MedicationMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.MedicationRequest;
@@ -74,9 +75,9 @@ public class MedicationSummaryList {
         return inactiveMedications.toArray(out);
     }
 
-    public void addMedicationStatement(MedicationStatement ms, Context ctx)
+    public void addMedicationStatement(MedicationStatement ms,  Context ctx)
     {
-        MedicationSummary mr = MedicationMapper.fhir2summary(ms,ctx);
+        MedicationSummary mr = ctx.getMapper().fhir2summary(ms,ctx);
         String status = mr.getStatus();
         Integer s = activeMedStmtKeys.get(status);
         if (s != null) {
@@ -106,9 +107,9 @@ public class MedicationSummaryList {
         }
     }
 
-    public void addMedicationRequest(MedicationRequest mreq, HashMap<String,String> cpRefs, Context ctx)
+    public void addMedicationRequest(MedicationRequest mreq, HashMap<String,String> cpRefs,  Context ctx)
     {
-        MedicationSummary mr = MedicationMapper.fhir2summary(mreq,ctx);
+        MedicationSummary mr = ctx.getMapper().fhir2summary(mreq,ctx);
         if (cpRefs.containsKey(mr.getFhirId()))
         {
             mr.setOnCareplans(cpRefs.get(mr.getFhirId()));
