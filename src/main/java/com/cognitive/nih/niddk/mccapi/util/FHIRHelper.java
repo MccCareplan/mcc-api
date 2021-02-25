@@ -499,7 +499,8 @@ public class FHIRHelper {
         // Sort Ids by use official |  usual | temp | secondary | old
         int score = 0;
         for (Identifier id: identifiers) {
-            switch (id.getUse().toCode())
+            String use = id.getUse()!= null ? id.getUse().toCode() : "undefined";
+            switch (use)
             {
                 case "official":
                 {
@@ -532,13 +533,21 @@ public class FHIRHelper {
                     }
                     break;
                 }
+                case "undefined":
+                {
+                    if (score < 1)
+                    {
+                        score =1;
+                        out = id;
+                    }
+                }
                 case "old":
                 {
                     break;
                 }
                 default:
                 {
-                    log.info("Unknown identifier use "+id.getUse().toCode());
+                    log.info("Unknown identifier use "+use);
                     break;
                 }
             }
