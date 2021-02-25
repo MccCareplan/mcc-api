@@ -3,6 +3,7 @@ package com.cognitive.nih.niddk.mccapi.util;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.Enumeration;
 import org.hl7.fhir.r4.model.*;
@@ -10,7 +11,7 @@ import org.hl7.fhir.r4.model.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+@Slf4j
 public class FHIRHelper {
     private static final String dateFormat = "MM/dd/yyyy";
     private static final SimpleDateFormat fmtDate = new SimpleDateFormat(dateFormat);
@@ -468,6 +469,114 @@ public class FHIRHelper {
             //TODO: Log as missing extension
             return defValue;
         }
+    }
+
+    public static Identifier findBestIdentifierBySystem(List<Identifier> identifiers, String system)
+    {
+        Identifier out = null;
+
+        if (!StringUtils.isEmpty(system))
+        {
+            List<Identifier>  fnd = getIdentifersBySystem(identifiers,system);
+            if (fnd.size()>0)
+            {
+                out = getBestIdentifierByUse(fnd);
+            }
+
+        }
+        else
+        {
+            out = getBestIdentifierByUse(identifiers);
+
+        }
+        return out;
+    }
+
+    public static Identifier getBestIdentifierByUse(List<Identifier> identifiers)
+    {
+        Identifier out = null;
+
+        // Sort Ids by use official |  usual | temp | secondary | old
+        int score = 0;
+        for (Identifier id: identifiers) {
+            switch (id.getUse().toCode())
+            {
+                case "official":
+                {
+                    return id;
+                }
+                case "usual":
+                {
+                    if (score < 4)
+                    {
+                        out = id;
+                        score = 4;
+                    }
+                    break;
+                }
+                case "temp":
+                {
+                    if (score < 3 )
+                    {
+                        score = 3;
+                        out = id;
+                    }
+                    break;
+                }
+                case "secondary":
+                {
+                    if (score < 2)
+                    {
+                        score = 2;
+                        out = id;
+                    }
+                    break;
+                }
+                case "old":
+                {
+                    break;
+                }
+                default:
+                {
+                    log.info("Unknown identifier use "+id.getUse().toCode());
+                    break;
+                }
+            }
+        }
+        return out;
+    }
+
+    public static  List<Identifier> getIdentifersBySystem(List<Identifier> identifiers, String system)
+    {
+        //We will filter old identifiers
+        List<Identifier> out = new ArrayList<>();
+        for (Identifier id: identifiers)
+        {
+            if (id.getUse().toCode().compareTo("old")!=0)
+            {
+                if (id.hasSystem())
+                {
+                    if (id.getSystem().compareTo(system)==0)
+                    {
+                        //Ok the id is in the system
+                        //Consider with period is relivant and includes now
+                        if (id.hasPeriod()==false)
+                        {
+                            out.add(id);
+                        }
+                        else
+                        {
+                            Date d = new Date();
+                            if (isInPeriod(id.getPeriod(),d))
+                            {
+                                out.add(id);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return out;
     }
 
     public static Coding getCodingForSystem(CodeableConcept concept, String system) {

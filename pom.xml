@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.cognitive.nih.niddk</groupId>
 	<artifactId>mcc-api</artifactId>
-	<version>1.0.16-RELEASE</version>
+	<version>1.0.17-RELEASE</version>
 	<name>mcc-api</name>
 	<description>MCC API Server</description>
 

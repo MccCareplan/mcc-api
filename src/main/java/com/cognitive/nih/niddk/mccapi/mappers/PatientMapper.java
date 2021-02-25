@@ -7,6 +7,7 @@ import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import org.hl7.fhir.r4.model.*;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -14,6 +15,10 @@ import java.time.ZoneId;
 import java.util.*;
 @Component
 public class PatientMapper implements IPatientMapper {
+
+    @Value("${mcc.patient.id.system:}")
+    private String patientIdSystem;
+
     private static String RACE_KEY = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race";
     private static String ENTHNICITY_KEY = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity";
     private static String OMB_CATEGORY = "ombCategory";
@@ -167,9 +172,23 @@ public class PatientMapper implements IPatientMapper {
         out.setRace(FHIRHelper.getCodingDisplayExtensionAsString(in, RACE_KEY, OMB_CATEGORY, "Undefined"));
         out.setEthnicity(FHIRHelper.getCodingDisplayExtensionAsString(in, ENTHNICITY_KEY, OMB_CATEGORY, "Undefined"));
         //
-        out.setId(in.hasIdentifier() ? in.getIdentifierFirstRep().getValue() : "Unknown");
 
-        System.getenv("DEFAULT_FHIR_SERVER");
+        if (in.hasIdentifier())
+        {
+            Identifier id = FHIRHelper.findBestIdentifierBySystem(in.getIdentifier(),patientIdSystem);
+            if (id != null)
+            {
+                out.setId(id.getValue());
+            }
+            else
+            {
+                out.setId("Not Found");
+            }
+        }
+        else
+        {
+            out.setId("Undefined");
+        }
         return out;
     }
 
