@@ -166,7 +166,7 @@ public class QuestionnaireResponseMapper implements IQuestionnaireResponseMapper
         return out;
     }
 
-    public static QuestionnaireResponseSummary fhir2summary(QuestionnaireResponse in, Context ctx) {
+    public QuestionnaireResponseSummary fhir2summary(QuestionnaireResponse in, Context ctx) {
         QuestionnaireResponseSummary out = new QuestionnaireResponseSummary();
 
         out.setFHIRId(in.getIdElement().getIdPart());

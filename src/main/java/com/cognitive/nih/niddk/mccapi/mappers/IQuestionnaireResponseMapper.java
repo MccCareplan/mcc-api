@@ -10,4 +10,5 @@ public interface IQuestionnaireResponseMapper {
     QuestionnaireResponseItem findItem(QuestionnaireResponse.QuestionnaireResponseItemComponent in, String linkId, Context ctx);
     QuestionnaireResponseItem fhir2local(QuestionnaireResponse.QuestionnaireResponseItemComponent in, Context ctx);
     QuestionnaireResponseItemAnswer fhir2local(QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent in, Context ctx);
+    QuestionnaireResponseSummary fhir2summary(QuestionnaireResponse in, Context ctx);
 }

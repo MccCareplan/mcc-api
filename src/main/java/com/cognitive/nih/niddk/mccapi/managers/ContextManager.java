@@ -1,6 +1,8 @@
 package com.cognitive.nih.niddk.mccapi.managers;
 
+import ca.uhn.fhir.rest.client.api.IGenericClient;
 import com.cognitive.nih.niddk.mccapi.data.Context;
+import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 
 
 import java.util.HashMap;
@@ -17,10 +19,11 @@ public class ContextManager {
      subjectMap = new HashMap<>();
     }
 
-    public Context findContextForSubject(String subjectId, Map<String, String> headers)
+    public Context setupContext(String subjectId, IGenericClient client, IR4Mapper mapper, Map<String, String> headers)
     {
         Context out = null;
         Context fnd = null;
+
         //Deal with calls with no subject - Which get a unique context
 
         if (subjectId != null) {
@@ -44,6 +47,8 @@ public class ContextManager {
             out.setHeaders(copyHeaders(headers));
         }
 
+        out.setClient(client);
+        out.setMapper(mapper);
 
 
         return out;

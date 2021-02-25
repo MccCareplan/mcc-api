@@ -247,6 +247,11 @@ public class R4Mapper implements IR4Mapper {
     }
 
     @Override
+    public QuestionnaireResponseSummary fhir2summary(QuestionnaireResponse in, Context ctx) {
+        return questionnaireResponseMapper.fhir2summary(in,ctx);
+    }
+
+    @Override
     public MccReference fhir2local(Reference in, Context ctx) {
         return referenceMapper.fhir2local(in,ctx);
     }

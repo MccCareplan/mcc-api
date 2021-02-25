@@ -9,7 +9,6 @@ import com.cognitive.nih.niddk.mccapi.data.SimpleQuestionnaireItem;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
-import com.cognitive.nih.niddk.mccapi.mappers.QuestionnaireResponseMapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.services.QuestionnaireResolver;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -58,14 +57,14 @@ public class QuestionnaireResponseController {
 
     private final QueryManager queryManager;
     private final QuestionnaireResolver questionnaireResolver;
-    private final IR4Mapper ir4Mapper;
+    private final IR4Mapper mapper;
     private final boolean SERVICE_REQUEST_ENABLED = false;
 
 
-    public QuestionnaireResponseController(QueryManager queryManager, QuestionnaireResolver questionnaireResolver, IR4Mapper ir4Mapper) {
+    public QuestionnaireResponseController(QueryManager queryManager, QuestionnaireResolver questionnaireResolver, IR4Mapper mapper) {
         this.queryManager = queryManager;
         this.questionnaireResolver = questionnaireResolver;
-        this.ir4Mapper = ir4Mapper;
+        this.mapper = mapper;
     }
 
     //TODO: Add General Questionnaire support (
@@ -82,8 +81,7 @@ public class QuestionnaireResponseController {
         IGenericClient client = fhirSrv.getClient(headers);
         Map<String, String> values = new HashMap<>();
 
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client,ir4Mapper);
+        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
 
         if (queryManager.doesQueryExist("Questionnaire.FindForCode")) {
             // find questionnaires for the code
@@ -101,7 +99,7 @@ public class QuestionnaireResponseController {
                             Bundle.BundleEntryComponent e = results.getEntryFirstRep();
                             if (e.getResource().fhirType().compareTo("QuestionnaireResponse") == 0) {
                                 QuestionnaireResponse qr = (QuestionnaireResponse) e.getResource();
-                                out = ir4Mapper.fhir2local(qr, ctx);
+                                out = mapper.fhir2local(qr, ctx);
                             }
                         }
                     } catch (Exception e) {
@@ -131,7 +129,7 @@ public class QuestionnaireResponseController {
                             workArray.sort(comparator.reversed());
                         }
                         if (workArray.size() > 0) {
-                            out = ir4Mapper.fhir2local(workArray.get(0), ctx);
+                            out = mapper.fhir2local(workArray.get(0), ctx);
                         }
                     } catch (Exception e) {
                         log.warn("Exception during QuestionnaireResponse.Query", e);
@@ -160,8 +158,7 @@ public class QuestionnaireResponseController {
         IGenericClient client = fhirSrv.getClient(headers);
         Map<String, String> values = new HashMap<>();
 
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client,ir4Mapper);
+        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
 
         if (queryManager.doesQueryExist("Questionnaire.FindForCode")) {
             // find questionnaires for the code
@@ -209,7 +206,7 @@ public class QuestionnaireResponseController {
         int i =0;
         for (QuestionnaireResponse r: workArray)
         {
-            out[i] = ir4Mapper.fhir2SimpleItem(r,ctx,"/" + code);
+            out[i] = mapper.fhir2SimpleItem(r,ctx,"/" + code);
              i++;
         }
 
@@ -227,8 +224,7 @@ public class QuestionnaireResponseController {
         IGenericClient client = fhirSrv.getClient(headers);
         Map<String, String> values = new HashMap<>();
 
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client,ir4Mapper);
+        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
 
         if (queryManager.doesQueryExist("Questionnaire.FindForCode")) {
             // find questionnaires for the code
@@ -295,7 +291,7 @@ public class QuestionnaireResponseController {
             out = new SimpleQuestionnaireItem();
             out.setFHIRId("notfound");
         } else {
-            out = ir4Mapper.fhir2SimpleItem(fnd, ctx, "/" + code);
+            out = mapper.fhir2SimpleItem(fnd, ctx, "/" + code);
         }
 
         return out;
@@ -323,8 +319,8 @@ public class QuestionnaireResponseController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client,ir4Mapper);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("QuestionnaireResponse") == 0) {
                     QuestionnaireResponse qr = (QuestionnaireResponse) e.getResource();
@@ -332,7 +328,7 @@ public class QuestionnaireResponseController {
                         String status = qr.getStatus().toCode();
                         Integer s = activeKeys.get(status);
                         if (s != null && s.intValue() != IGNORE) {
-                            out.add(QuestionnaireResponseMapper.fhir2summary(qr, ctx));
+                            out.add(mapper.fhir2summary(qr, ctx));
                         }
                     }
                 }
@@ -361,9 +357,8 @@ public class QuestionnaireResponseController {
             if (qr != null)
             {
                 String subjectId = qr.getSubject().getId();
-                Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-                ctx.setClient(client,ir4Mapper);
-                out= ir4Mapper.fhir2local(qr, ctx);
+                Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+                out= mapper.fhir2local(qr, ctx);
             }
         }
 
@@ -389,8 +384,7 @@ public class QuestionnaireResponseController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client,ir4Mapper);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("QuestionnaireResponse") == 0) {
                     QuestionnaireResponse qr = (QuestionnaireResponse) e.getResource();
@@ -398,7 +392,7 @@ public class QuestionnaireResponseController {
                         String status = qr.getStatus().toCode();
                         Integer s = activeKeys.get(status);
                         if (s != null && s.intValue() != IGNORE) {
-                            out.add(ir4Mapper.fhir2local(qr, ctx));
+                            out.add(mapper.fhir2local(qr, ctx));
                         }
                     }
                 }

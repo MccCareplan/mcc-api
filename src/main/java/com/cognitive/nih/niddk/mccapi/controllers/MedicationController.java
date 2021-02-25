@@ -22,11 +22,11 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class MedicationController {
     private final QueryManager queryManager;
-    private final IR4Mapper ir4Mapper;
+    private final IR4Mapper mapper;
 
-    public MedicationController(QueryManager queryManager, IR4Mapper ir4Mapper) {
+    public MedicationController(QueryManager queryManager, IR4Mapper mapper) {
         this.queryManager = queryManager;
-        this.ir4Mapper = ir4Mapper;
+        this.mapper = mapper;
         ;
     }
 
@@ -35,8 +35,7 @@ public class MedicationController {
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client,ir4Mapper);
+        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
         HashMap<String, String> carePlanMedicationsRequests = new HashMap<>();
         getClanPlanMedReqIds(careplanId, carePlanMedicationsRequests, client, ctx);
 
@@ -116,20 +115,19 @@ public class MedicationController {
         IGenericClient client = fhirSrv.getClient(headers);
         MccMedicationRecord out = null;
 
-        Context ctx = ContextManager.getManager().findContextForSubject(null, headers);
-        ctx.setClient(client,ir4Mapper);
+        Context ctx = ContextManager.getManager().setupContext(null, client, mapper, headers);
 
         if (type.compareTo("MedicationRequest") == 0) {
             //DIRECT-FHIR-REF
             MedicationRequest mr = client.fetchResourceFromUrl(MedicationRequest.class, id);
             if (mr != null) {
-                out = ir4Mapper.fhir2local(mr, ctx);
+                out = mapper.fhir2local(mr, ctx);
             }
         } else if (type.compareTo("MedicationStatement") == 0) {
             //DIRECT-FHIR-REF
             MedicationStatement ms = client.fetchResourceFromUrl(MedicationStatement.class, id);
             if (ms != null) {
-                out = ir4Mapper.fhir2local(ms, ctx);
+                out = mapper.fhir2local(ms, ctx);
             }
         }
         return out;
@@ -141,8 +139,7 @@ public class MedicationController {
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-        ctx.setClient(client,ir4Mapper);
+        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
 
         HashMap<String, String> carePlanMedicationsRequests = new HashMap<>();
         getClanPlanMedReqIds(careplanId, carePlanMedicationsRequests, client, ctx);

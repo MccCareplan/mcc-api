@@ -44,8 +44,7 @@ public class SocialConcernController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             //Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
             //        .and(Condition.CATEGORY.exactly().code("health-concern")).returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client, mapper);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Condition")==0) {
                     Condition c = (Condition) e.getResource();
@@ -69,8 +68,7 @@ public class SocialConcernController {
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
 
-        Context ctx = ContextManager.getManager().findContextForSubject(subjectId,headers);
-        ctx.setClient(client,mapper);
+        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
         //TODO: Query for concerns
         //Bundle results = client.search().forResource(CarePlan.class).where(CarePlan.SUBJECT.hasId(subjectId))
         //        .returnBundle(Bundle.class).execute();

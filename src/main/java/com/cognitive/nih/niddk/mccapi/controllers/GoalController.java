@@ -24,11 +24,11 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class GoalController {
     private final QueryManager queryManager;
-    private final IR4Mapper ir4Mapper;
+    private final IR4Mapper mapper;
 
-    public GoalController(QueryManager queryManager, IR4Mapper ir4Mapper) {
+    public GoalController(QueryManager queryManager, IR4Mapper mapper) {
         this.queryManager = queryManager;
-        this.ir4Mapper = ir4Mapper;
+        this.mapper = mapper;
     }
 
 
@@ -70,12 +70,11 @@ public class GoalController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client,ir4Mapper);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Goal")==0){
                     Goal g = (Goal) e.getResource();
-                    GoalSummary gs = ir4Mapper.fhir2summary(g, ctx);
+                    GoalSummary gs = mapper.fhir2summary(g, ctx);
                     out.addSummary(gs);
                 }
             }
@@ -95,12 +94,11 @@ public class GoalController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             //Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //        .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client,ir4Mapper);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Goal") == 0) {
                     Goal g = (Goal) e.getResource();
-                    out.add(ir4Mapper.fhir2local(g, ctx));
+                    out.add(mapper.fhir2local(g, ctx));
                 }
             }
         }
@@ -123,9 +121,8 @@ public class GoalController {
 
             //Goal fg = client.read().resource(Goal.class).withId(id).execute();
             String subjectId = fg.getSubject().getId();
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client, ir4Mapper);
-            g = ir4Mapper.fhir2local(fg, ctx);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            g = mapper.fhir2local(fg, ctx);
         }
         else
         {

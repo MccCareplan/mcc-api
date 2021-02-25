@@ -22,13 +22,13 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class PatientController {
 
-    private final IR4Mapper ir4Mapper;
+    private final IR4Mapper mapper;
     private final QueryManager queryManager;
 
 
-    public PatientController(IR4Mapper ir4Mapper, QueryManager queryManager)
+    public PatientController(IR4Mapper mapper, QueryManager queryManager)
     {
-        this.ir4Mapper = ir4Mapper;
+        this.mapper = mapper;
         this.queryManager = queryManager;
     }
 
@@ -53,9 +53,8 @@ public class PatientController {
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Patient") == 0) {
                     Patient bp = (Patient) e.getResource();
-                    Context ctx = ContextManager.getManager().findContextForSubject(bp.hasIdentifier() ? bp.getIdentifierFirstRep().getValue() : "Unknown", headers);
-                    ctx.setClient(client,ir4Mapper);
-                    p = ir4Mapper.fhir2local(bp, ctx);
+                    Context ctx = ContextManager.getManager().setupContext(bp.hasIdentifier() ? bp.getIdentifierFirstRep().getValue() : "Unknown", client, mapper, headers);
+                    p = mapper.fhir2local(bp, ctx);
                     out.add(p);
                 }
             }
@@ -81,11 +80,9 @@ public class PatientController {
 
         if (callUrl != null) {
             Patient fp = client.fetchResourceFromUrl(Patient.class, callUrl);
-
+            Context ctx = ContextManager.getManager().setupContext(id, client, mapper, headers);
             //Patient fp = client.read().resource(Patient.class).withId(id).execute();
-            Context ctx = ContextManager.getManager().findContextForSubject(id, headers);
-            ctx.setClient(client,ir4Mapper);
-            p = ir4Mapper.fhir2local(fp, ctx);
+            p = mapper.fhir2local(fp, ctx);
         }
         else
         {

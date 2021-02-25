@@ -88,12 +88,16 @@ public class Context {
         return client;
     }
 
-    public void setClient(IGenericClient client, IR4Mapper mapper ) {
+    public void setClient(IGenericClient client ) {
         this.client = client;
-        this.mapper = mapper;
     }
 
     public IR4Mapper getMapper() { return mapper;}
+
+    public void setMapper(IR4Mapper mapper)
+    {
+        this.mapper = mapper;
+    }
 
     public Date getNow()
     {

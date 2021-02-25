@@ -22,7 +22,7 @@ import java.util.*;
 
 public class ReferralController {
     private final QueryManager queryManager;
-    private final IR4Mapper ir4Mapper;
+    private final IR4Mapper mapper;
 
     private static final HashSet<String> supportedCategories = new HashSet<>();
 
@@ -35,9 +35,9 @@ public class ReferralController {
 
     }
 
-    public ReferralController(QueryManager queryManager, IR4Mapper ir4Mapper) {
+    public ReferralController(QueryManager queryManager, IR4Mapper mapper) {
         this.queryManager = queryManager;
-        this.ir4Mapper = ir4Mapper;
+        this.mapper = mapper;
     }
 
     @GetMapping("/summary/referrals")
@@ -58,8 +58,7 @@ public class ReferralController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client,ir4Mapper);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("ServiceRequest")==0) {
                     ServiceRequest p = (ServiceRequest) e.getResource();
@@ -74,7 +73,7 @@ public class ReferralController {
                             //TODO: Filter by intent
                             if (p.hasPerformer()) {
                                 if (isPerformerProvider(p.getPerformer())) {
-                                    ReferralSummary cs = ir4Mapper.fhir2summary(p, ctx);
+                                    ReferralSummary cs = mapper.fhir2summary(p, ctx);
                                     out.add(cs);
                                 }
                             }

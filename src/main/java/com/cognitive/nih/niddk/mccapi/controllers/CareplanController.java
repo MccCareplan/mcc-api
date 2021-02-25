@@ -29,11 +29,11 @@ import java.util.*;
 public class CareplanController {
 
     private final QueryManager queryManager;
-    private final IR4Mapper ir4Mapper;
+    private final IR4Mapper mapper;
 
-    public CareplanController(QueryManager queryManager,IR4Mapper ir4Mapper) {
+    public CareplanController(QueryManager queryManager,IR4Mapper mapper) {
         this.queryManager = queryManager;
-        this.ir4Mapper = ir4Mapper;
+        this.mapper = mapper;
     }
 
     /**
@@ -55,8 +55,7 @@ public class CareplanController {
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
 
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client, ir4Mapper);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
 
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType() == "CarePlan") {
@@ -64,7 +63,7 @@ public class CareplanController {
                     if (c.getStatus().toCode().compareTo("active")==0 && c.getIntent().toCode().compareTo("plan") ==0 ) {
                         Set<String> profiles = carePlanRecognizedFor(c, ctx);
                         if (profiles.size()>0) {
-                            out.add(ir4Mapper.fhir2Summary(c, profiles, ctx));
+                            out.add(mapper.fhir2Summary(c, profiles, ctx));
                         }
                     }
                 }
@@ -96,8 +95,7 @@ public class CareplanController {
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
 
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
-            ctx.setClient(client,ir4Mapper);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
 
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType() == "CarePlan") {
@@ -105,7 +103,7 @@ public class CareplanController {
                     if (c.getStatus().toCode().compareTo("active")==0 && c.getIntent().toCode().compareTo("plan") ==0 ) {
                         Set<String> addresses = carePlanRecognizedFor(c, ctx);
                         if (addresses.size()>0) {
-                            out.add(ir4Mapper.fhir2Summary(c, addresses,ctx));
+                            out.add(mapper.fhir2Summary(c, addresses,ctx));
                         }
                     }
                 }
@@ -200,7 +198,7 @@ public class CareplanController {
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
 
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
 
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType() == "CarePlan") {
@@ -230,7 +228,7 @@ public class CareplanController {
             CarePlan fc = client.fetchResourceFromUrl(CarePlan.class, callUrl);
             //CarePlan fc = client.read().resource(CarePlan.class).withId(id).execute();
             String subjectId = fc.getSubject().getId();
-            Context ctx = ContextManager.getManager().findContextForSubject(subjectId, headers);
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
             c = mapCarePlan(fc, client, ctx);
         }
         else
@@ -244,7 +242,7 @@ public class CareplanController {
 
     private MccCarePlan mapCarePlan(CarePlan fc, IGenericClient client, Context ctx) {
         MccCarePlan c;
-        c = ir4Mapper.fhir2local(fc,ctx);
+        c = mapper.fhir2local(fc,ctx);
         //Now deal with relationships
 
         //Start with Addresses
@@ -258,7 +256,7 @@ public class CareplanController {
          Condition add = client.read().resource(Condition.class).withUrl(ref).execute();
          if (index>0) addSum.append(", ");
          addSum.append(FHIRHelper.getConceptDisplayString(add.getCode()));
-         mccAddrs[index] = ir4Mapper.fhir2local(add, ctx);
+         mccAddrs[index] = mapper.fhir2local(add, ctx);
          index++;
         }
         c.setAddressesSummary(addSum.toString());
