@@ -24,13 +24,14 @@ public class R4Mapper implements IR4Mapper {
     private final IOrganizationMapper organizationMapper;
     private final IPatientMapper patientMapper;
     private final IPractitionerMapper practitionerMapper;
+    private final IPractitionerRoleMapper practitionerRoleMapper;
     private final IProcedureMapper procedureMapper;
     private final IQuestionnaireResponseMapper questionnaireResponseMapper;
     private final IReferenceMapper referenceMapper;
     private final IReferralMapper referralMapper;
     private final IRelatedPersonMapper relatedPersonMapper;
 
-    public R4Mapper(ICareplanMapper careplanMapper, ICareTeamMapper careTeamMapper, ICodeableConceptMapper codeableConceptMapper, IConditionMapper conditionMapper, ICounselingMapper counselingMapper, IEducationMapper educationMapper, IGenericTypeMapper genericTypeMapper, IGoalMapper goalMapper, IMedicationMapper medicationMapper, IObservationMapper observationMapper, IOrganizationMapper organizationMapper, IPatientMapper patientMapper, IPractitionerMapper practitionerMapper, IProcedureMapper procedureMapper, IQuestionnaireResponseMapper questionnaireResponseMapper, IReferenceMapper referenceMapper, IReferralMapper referralMapper, IRelatedPersonMapper relatedPersonMapper) {
+    public R4Mapper(ICareplanMapper careplanMapper, ICareTeamMapper careTeamMapper, ICodeableConceptMapper codeableConceptMapper, IConditionMapper conditionMapper, ICounselingMapper counselingMapper, IEducationMapper educationMapper, IGenericTypeMapper genericTypeMapper, IGoalMapper goalMapper, IMedicationMapper medicationMapper, IObservationMapper observationMapper, IOrganizationMapper organizationMapper, IPatientMapper patientMapper, IPractitionerMapper practitionerMapper, IPractitionerRoleMapper practitionerRoleMapper, IProcedureMapper procedureMapper, IQuestionnaireResponseMapper questionnaireResponseMapper, IReferenceMapper referenceMapper, IReferralMapper referralMapper, IRelatedPersonMapper relatedPersonMapper) {
         this.careplanMapper = careplanMapper;
         this.careTeamMapper = careTeamMapper;
         this.codeableConceptMapper = codeableConceptMapper;
@@ -44,6 +45,7 @@ public class R4Mapper implements IR4Mapper {
         this.organizationMapper = organizationMapper;
         this.patientMapper = patientMapper;
         this.practitionerMapper = practitionerMapper;
+        this.practitionerRoleMapper = practitionerRoleMapper;
         this.procedureMapper = procedureMapper;
         this.questionnaireResponseMapper = questionnaireResponseMapper;
         this.referenceMapper = referenceMapper;
@@ -350,6 +352,16 @@ public class R4Mapper implements IR4Mapper {
     @Override
     public Contact fhir2Contact(RelatedPerson in, Context ctx) {
         return relatedPersonMapper.fhir2Contact(in,ctx);
+    }
+
+    @Override
+    public Contact fhir2Contact(PractitionerRole in, Context ctx) {
+        return practitionerRoleMapper.fhir2Contact(in,ctx);
+    }
+
+    @Override
+    public void updateContact(PractitionerRole in, Contact contact, Context ctx) {
+        practitionerRoleMapper.updateContact(in,contact,ctx);
     }
 
     @Override
