@@ -1,3 +1,17 @@
+
+## Release 1.0.18-RELEASE
+- Support /observationssegmented query by value set for a segemented valueset retrieval - Added initial mappers for PractitionerRole
+- Add ObservationCollection and ObservationList to support /observationssegmented query
+- Added property mcc.provider.pullbyrole
+- Added properties to control contact fetch (mcc.careteam.use.active, mcc.careteam.use.careplan)
+- Updated contact mapping to make a best attempt to get Telephone, Email and Address, includes scanning Provider Role and Enhanced organization use.
+- Added new Query Key: PractitionerRole.Query=/PractitionerRole/?practitioner={id}&active=true
+- Added new Query Key: CareTeam.Query.ActiveList=/CareTeam/?subject={subject}&status=active
+- Updated ParctitionerRole query to use internal overridable system.
+- Enhanced CareTeam mapping to do a first cut on ParctitionerRole.
+- Enhanced CareTeam mapping to log unknown member types.
+
+
 ## Release 1.0.17-RELEASE
 - Refactored all mapping to use beans
 - Removed PATIENT_ID_CHECK code
