@@ -10,10 +10,12 @@ import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,10 +28,24 @@ public class ContactController {
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
 
+    @Value("${mcc.careteam.use.active}")
+    private String useActiveCareplans;
+    boolean isUseActiveCareplans;
+
+    @Value("${mcc.careteam.use.careplan}")
+    private String useCareTeamsFromPlan;
+    private boolean isUseCareTeamsFromPlan;
 
     public ContactController(QueryManager queryManager, IR4Mapper mapper) {
         this.queryManager = queryManager;
         this.mapper = mapper;
+    }
+
+    @PostConstruct
+    public void Init()
+    {
+        isUseActiveCareplans = Boolean.parseBoolean(useActiveCareplans);
+        isUseCareTeamsFromPlan = Boolean.parseBoolean(useCareTeamsFromPlan);
     }
 
     @GetMapping(value = "/image/contact/{id}", produces = "image/jpeg")
@@ -80,8 +96,9 @@ public class ContactController {
 
         }
 
+        boolean foundCareTeam = false;
         //If a care plan is presented then we process it to find the care teams
-        if (StringUtils.hasText(carePlanId)) {
+        if (StringUtils.hasText(carePlanId) && isUseCareTeamsFromPlan) {
             // Fetch Careplan
 
             try {
@@ -100,6 +117,7 @@ public class ContactController {
                         //TODO: In the future maybe remove duplicate when more then one team is present
                         for (Reference ref : teams) {
                             if (FHIRHelper.isReferenceOfType(ref, "CareTeam")) {
+                                foundCareTeam = true;
                                 CareTeam t = client.fetchResourceFromUrl(CareTeam.class, ref.getReference());
                                 if (t != null) {
                                     out.addAll(mapper.fhir2Contacts(t, ctx));
@@ -113,7 +131,30 @@ public class ContactController {
             }
         }
 
+        if (!foundCareTeam && isUseActiveCareplans)
+        {
+            //For some reason there was no careplan or associated caretem - So we will look for anyu active careteam
+            Map<String, String> values = new HashMap<>();
+            values.put("subject", subjectId);
 
+            String callUrl = queryManager.setupQuery("CareTeam.Query.ActiveList", values, webRequest);
+            if (callUrl != null)
+            {
+                Bundle fc = client.fetchResourceFromUrl(Bundle.class, callUrl);
+                if (fc != null && !fc.isEmpty())
+                {
+                    for (Bundle.BundleEntryComponent e: fc.getEntry())
+                    {
+                        if (e.getResource().fhirType().compareTo("CareTeam") == 0) {
+                            CareTeam t = (CareTeam) e.getResource();
+                            out.addAll(mapper.fhir2Contacts(t, ctx));
+                        }
+                    }
+                }
+
+            }
+
+        }
         //Finally we look for Insurance
         contacts = mapper.getActiveContactOfType(fp, "I");
         if (contacts.size() > 0) {

@@ -21,7 +21,7 @@ public class CareTeamMapper implements ICareTeamMapper {
     public  List<Contact> fhir2Contacts(CareTeam in, Context ctx) {
         ArrayList<Contact> out = new ArrayList<>();
         String teamName = in.getName();
-        String teamId = in.getIdElement().getResourceType() + "/" + in.getIdElement().getId();
+        String teamId = in.getIdElement().getResourceType() + "/" + in.getIdElement().getIdPart().toString();
         Date now = new Date();
         if (in.hasPeriod())
         {
@@ -108,26 +108,46 @@ public class CareTeamMapper implements ICareTeamMapper {
             else
             {
                 String type = FHIRHelper.getReferenceType(m);
-                if (type.compareTo("Practitioner") == 0)
+                switch (type)
                 {
-                    Practitioner p = ReferenceResolver.findPractitioner(m,ctx);
-                    if (p != null) {
-                        out = mapper.fhir2Contact(p, ctx);
-                    }
-                }
-                else if (type.compareTo("RelatedPerson")==0)
-                {
-                    RelatedPerson r = ReferenceResolver.findRelatedPerson(m,ctx);
-                    if ( r != null) {
-                        out = mapper.fhir2Contact(r,ctx);
-                    }
-                }
-                else if (type.compareTo("Organization")==0)
-                {
-                    Organization o = ReferenceResolver.findOrganization(m, ctx);
-                    if (o != null)
+                    case "Practitioner":
                     {
-                        out = mapper.fhir2Contact(o,ctx);
+                        Practitioner p = ReferenceResolver.findPractitioner(m,ctx);
+                        if (p != null) {
+                            out = mapper.fhir2Contact(p, ctx);
+                        }
+                        break;
+                    }
+                    case "RelatedPerson":
+                    {
+                        RelatedPerson r = ReferenceResolver.findRelatedPerson(m,ctx);
+                        if ( r != null) {
+                            out = mapper.fhir2Contact(r,ctx);
+                        }
+                        break;
+                    }
+                    case "Organization":
+                    {
+                        Organization o = ReferenceResolver.findOrganization(m, ctx);
+                        if (o != null)
+                        {
+                            out = mapper.fhir2Contact(o,ctx);
+                        }
+                        break;
+                    }
+                    case "Patient":
+                    {
+                        //In contacts already included
+                        break;
+                    }
+                    case "PractitionerRole":
+                    {
+                        break;
+                    }
+                    default:
+                    {
+                        log.warn("Unknown careteam member type ("+type+") not handled");
+                        break;
                     }
                 }
 
