@@ -18,6 +18,7 @@ public @Data class MccCodeableConcept implements MccType {
     @JsonIgnore
     public String getKey(String defSystem)
     {
+        String out = "Unknown";
         MccCoding fndCode=null;
         if (!StringUtils.isEmpty(defSystem))
         {
@@ -35,9 +36,13 @@ public @Data class MccCodeableConcept implements MccType {
         {
             //Default to first code
             fndCode=coding[0];
-        }
-        return fndCode.getKey(defSystem);
 
+        }
+
+        if (fndCode != null) {
+            out = fndCode.getKey(defSystem);
+        }
+        return out;
     }
 
     @JsonIgnore
