@@ -29,8 +29,8 @@ public class ContactController {
     private final IR4Mapper mapper;
 
     @Value("${mcc.careteam.use.active}")
-    private String useActiveCareplans;
-    boolean isUseActiveCareplans;
+    private String useActiveCareTeams;
+    boolean isUseActiveCareTeams;
 
     @Value("${mcc.careteam.use.careplan}")
     private String useCareTeamsFromPlan;
@@ -44,7 +44,7 @@ public class ContactController {
     @PostConstruct
     public void Init()
     {
-        isUseActiveCareplans = Boolean.parseBoolean(useActiveCareplans);
+        isUseActiveCareTeams = Boolean.parseBoolean(useActiveCareTeams);
         isUseCareTeamsFromPlan = Boolean.parseBoolean(useCareTeamsFromPlan);
     }
 
@@ -131,9 +131,9 @@ public class ContactController {
             }
         }
 
-        if (!foundCareTeam && isUseActiveCareplans)
+        if (!foundCareTeam && isUseActiveCareTeams)
         {
-            //For some reason there was no careplan or associated caretem - So we will look for anyu active careteam
+            //For some reason there was no careplan or associated careteam - So we will look for any active careteam
             Map<String, String> values = new HashMap<>();
             values.put("subject", subjectId);
 
