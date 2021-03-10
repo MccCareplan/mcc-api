@@ -53,6 +53,8 @@ public interface IR4Mapper {
     Referral fhir2local(ServiceRequest in, Context ctx);
     ReferralSummary fhir2summary(ServiceRequest in, Context ctx);
     Contact fhir2Contact(RelatedPerson in, Context ctx);
+    Contact fhir2Contact(PractitionerRole in, Context ctx);
+    void updateContact(PractitionerRole in, Contact contact, Context ctx);
 
     // Types
     GenericType fhir2local(Type in, Context ctx);

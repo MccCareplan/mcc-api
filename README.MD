@@ -94,6 +94,11 @@ details on Spring boot.
 | fhir.secure.server.address | FHIR_SECURE_SERVER_ADDRESS |Default secure fhir server | https://api.logicahealth.org/MCCeCarePlanTest/data | https://api.logicahealth.org/MCCeCarePlanTest/data |
 | logging.level.org.springframework | | | WARN | WARN |
 | mcc.patient.id.system | MCC_PATIENT_ID_SYSTEM | System used to determine the Patient Id| | | |
+| mcc.provider.pullbyrole | MCC_PROVIDER_PULLBYROLE | Allow provider contact info to be fetched by practitioner role | TRUE | TRUE |
+| mcc.careteam.use.active | MCC_CARETEAM_USE_ACTIVE | Enable Contacts to look for careteams if none are a part of the selected careplan | TRUE | TRUE |
+| mcc.careteam.use.careplan | MCC_CARETEAM_USE_CAREPLAN | Enable Contacts to us the currently selected Care plan to determine teams | TRUE | TRUE |
+
+
 
 #### Configuring the patient identifier
 
@@ -194,6 +199,19 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 #Recent Changes log
 
+## Release 1.0.18-RELEASE
+- Support /observationssegmented query by value set for a segemented valueset retrieval - Added initial mappers for PractitionerRole
+- Add ObservationCollection and ObservationList to support /observationssegmented query
+- Added property mcc.provider.pullbyrole
+- Added properties to control contact fetch (mcc.careteam.use.active, mcc.careteam.use.careplan)
+- Updated contact mapping to make a best attempt to get Telephone, Email and Address, includes scanning Provider Role and Enhanced organization use.
+- Added new Query Key: PractitionerRole.Query=/PractitionerRole/?practitioner={id}&active=true
+- Added new Query Key: CareTeam.Query.ActiveList=/CareTeam/?subject={subject}&status=active
+- Updated ParctitionerRole query to use internal overridable system.
+- Enhanced CareTeam mapping to do a first cut on ParctitionerRole.
+- Enhanced CareTeam mapping to log unknown member types.
+
+
 ## Release 1.0.17-RELEASE 
 - Refactored all mapping to use beans
 - Removed PATIENT_ID_CHECK code
@@ -210,55 +228,6 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 - Upgraded to spring-boot-starter-parent 2.4.2
 - Resolves issues with path parsing 
 
-## Release 1.0.15-RELEASE 
-- Formal release
-
-## Release 1.0.14-SNAPSHOT
-- Added /find/all/questionnaireresponseitems
-- Added QueryKey: QuestionnaireResponse.QueryWithOptions
-
-## Release 1.0.13-SNAPSHOT
-- General QuestionnaireResponse Support
-- General type updates to transmit less empty data
-- GenericType supports coding and decimal
-- Added initial rest endpoints to clear caches
- - delete /cache
- - delete /cache/questionnaires
- - delete /cache/references
- - delete /cache/valuesets
- - delete /cache/querymappings
-- add endpoints to support QuestionnaireResponse retrieval
- - /find/latest/questionnaireresponse/?subject={subject}&code={code}
- - /find/latest/questionnaireresponseitem/?subject={subject}&code={code}
- - /summary/questionnaireresponses/?subject={subject}
- - /questionnaireresponse/{id}
- - /questionnaireresponse/?subject={subject}
-- added new fhir query keys
- - Questionnaire.Lookup=/Questionnaire/{id}
- - Questionnaire.FindForCode=/Questionnaire/?code={code}&_summary=true
- - QuestionnaireResponse.Query=/QuestionnaireResponse/?questionnaire={ids}&subject={subject}
- - QuestionnaireResponse.OpenQuery=/QuestionnaireResponse/?subject={subject}
- - QuestionnaireResponse.QueryLatest=/QuestionnaireResponse/?questionnaire={ids}&subject={subject}&status=completed,amended,in-progress&_sort=-authored&_count=1
- - QuestionnaireResponse.Summary.Query=/QuestionnaireResponse/?questionnaire={ids}&subject={subject}&_summary=true
- - QuestionnaireResponse.Summary.QueryLatest=/QuestionnaireResponse/?questionnaire={ids}&subject={subject}&_sort=-authored&_count=1&_summary=true
- - QuestionnaireResponse.Lookup=/QuestionnaireResponse/{id}
-
-
-## Release 1.0.12-SNAPSHOT
-- Updated Goals and Goal Summary for Acceptance
-- Added translate option "/find/latest/observation", so that recognized codes can translate to more complex queries, e.g. a Value set or containing parent observation.
-- Updated query parameter handling to have the first found instance take precedence.
-- fix value set loading to only load a value set once in the event the load list had duplicates
-- started support on procedures.
-
-## Release 1.0.11-SNAPSHOT
-- Updated /find/latest/observation to return empty observation when not found, status = "notfound"
-- Add hasImage to contact
-- Renamed util.Helper to FHIRHelper, added MccHelper
-- Added Age to Patient
-- Added Performer to Education and Counselling
-- Added Reason to Education and Counselling
-- Refactored and extended internal helpers.
 
 
 The full change log may be found and https://github.com/MccCareplan/mcc-api/blob/master/CHANGELOG.MD

@@ -2,18 +2,40 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
+import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.services.ReferenceResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import com.cognitive.nih.niddk.mccapi.util.JavaHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @Slf4j
 @Component
 public class PractitionerMapper implements IPractitionerMapper {
+    @Value("${mcc.provider.pullbyrole}")
+    private String usePullByRole;
+    private boolean isUsePullByRole;
+
+    private final IPractitionerRoleMapper practitionerRoleMapper;
+    private final QueryManager queryManager;
+
+    public PractitionerMapper(IPractitionerRoleMapper practitionerRoleMapper, QueryManager queryManager) {
+        this.practitionerRoleMapper = practitionerRoleMapper;
+        this.queryManager = queryManager;
+    }
+
+    @PostConstruct
+    public void init()
+    {
+        isUsePullByRole = Boolean.parseBoolean(usePullByRole);
+    }
 
     public Contact fhir2Contact(Practitioner in, Context ctx) {
         Contact out = new Contact();
@@ -41,8 +63,15 @@ public class PractitionerMapper implements IPractitionerMapper {
             out.setEmail(bestEmail.getValue());
         }
         try {
+
+            Map<String, String> values = new HashMap<>();
+            values.put("id", in.getId());
+
+            String callUrl = queryManager.setupQuery("PractitionerRole.Query", values);
+
+
             String id = in.getId();
-            Bundle bundle = ctx.getClient().search().forResource(PractitionerRole.class).where(PractitionerRole.PRACTITIONER.hasId(id)).returnBundle(Bundle.class).execute();
+            Bundle bundle = ctx.getClient().fetchResourceFromUrl(Bundle.class,callUrl);
             StringBuilder orgs = new StringBuilder();
             int orgCount = 0;
 
@@ -68,7 +97,19 @@ public class PractitionerMapper implements IPractitionerMapper {
                             if (o != null)
                             {
                                 JavaHelper.addStringToBufferWithSep(orgs,o.getName(),", ");
+                                if (StringUtils.isBlank(out.getAddress())&& o.hasAddress())
+                                {
+                                    a = FHIRHelper.findBestAddress(o.getAddress(), "work");
+                                    if (a != null) {
+                                        out.setAddress(FHIRHelper.addressToString(a));
+                                    }
+                                }
                             }
+                        }
+                        if (isUsePullByRole)
+                        {
+                            //Update Contact data as needed
+                            practitionerRoleMapper.updateContact(pr,out,ctx);
                         }
                     }
                 }

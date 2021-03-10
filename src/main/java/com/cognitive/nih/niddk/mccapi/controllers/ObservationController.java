@@ -6,6 +6,7 @@ import com.cognitive.nih.niddk.mccapi.data.MccObservation;
 import com.cognitive.nih.niddk.mccapi.data.MccValueSet;
 import com.cognitive.nih.niddk.mccapi.data.primative.GenericType;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
+import com.cognitive.nih.niddk.mccapi.data.primative.ObservationCollection;
 import com.cognitive.nih.niddk.mccapi.exception.ItemNotFoundException;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
@@ -78,6 +79,41 @@ public class ObservationController {
         return out;
     }
 
+    private ObservationCollection QueryObservationsSegmented(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
+        ObservationCollection out = new ObservationCollection();
+        List<String> calls = getQueryStrings(baseQuery, mode);
+
+        if (calls.size() > 0) {
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+
+            for (String key : calls) {
+                String callUrl = queryManager.setupQuery(key, values, webRequest);
+                Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+                //In general the we expect the return value to be in descending date order
+
+                for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                    if (e.getResource().fhirType().compareTo("Observation") == 0) {
+                        Observation o = (Observation) e.getResource();
+                        out.add(mapper.fhir2local(o, ctx),"http://loinc.org");
+                    }
+                }
+            }
+
+            Comparator<MccObservation> comparator = (MccObservation o1, MccObservation o2) -> o1.getEffective().compareTo(o2.getEffective());
+            //Now we need possibly to sort the output
+            if (sortOrder.compareTo("ascending") == 0) {
+                //We need ascending order
+                out.sort(comparator);
+            } else  {
+                out.sort(comparator.reversed());
+            }
+
+        } else {
+            //TODO: Deal with suppressed query return
+            log.info(baseQuery + " suppressed by override");
+        }
+        return out;
+    }
     /**
      * Creates a compound query key
      *
@@ -192,6 +228,33 @@ public class ObservationController {
         outA = out.toArray(outA);
         return outA;
     }
+    @GetMapping("/observationssegmented")
+    public ObservationCollection getObservationsSegmented(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "valueset") String valueset, @RequestParam(name = "max", defaultValue = "1000") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+
+        ObservationCollection out;
+        FHIRServices fhirSrv = FHIRServices.getFhirServices();
+        IGenericClient client = fhirSrv.getClient(headers);
+
+
+        //Right now this search is using the local expanded version of the value set
+        //If the server supports code:in then it would be better to use that feature
+        MccValueSet valueSetObj = ValueSetManager.getValueSetManager().findValueSet(valueset);
+        if (valueSetObj != null) {
+
+            Map<String, String> values = new HashMap<>();
+            values.put("codes", valueSetObj.asQueryString());
+            values.put("count", Integer.toString(maxItems));
+            String baseQuery = "Observation.QueryValueSetExpanded";
+            out = this.QueryObservationsSegmented(baseQuery, mode, client, subjectId, sortOrder, webRequest, headers, values);
+
+        } else {
+            throw new ItemNotFoundException("No such valaue set: " + valueset);
+
+        }
+
+        return out;
+    }
+
 
     /**
      * Finds the queries that will match the request, for most modes this will be a single item
