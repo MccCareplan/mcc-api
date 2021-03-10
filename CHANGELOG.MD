@@ -11,7 +11,6 @@
 - Enhanced CareTeam mapping to do a first cut on ParctitionerRole.
 - Enhanced CareTeam mapping to log unknown member types.
 
-
 ## Release 1.0.17-RELEASE
 - Refactored all mapping to use beans
 - Removed PATIENT_ID_CHECK code

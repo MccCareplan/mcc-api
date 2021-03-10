@@ -94,8 +94,8 @@ details on Spring boot.
 | fhir.secure.server.address | FHIR_SECURE_SERVER_ADDRESS |Default secure fhir server | https://api.logicahealth.org/MCCeCarePlanTest/data | https://api.logicahealth.org/MCCeCarePlanTest/data |
 | logging.level.org.springframework | | | WARN | WARN |
 | mcc.patient.id.system | MCC_PATIENT_ID_SYSTEM | System used to determine the Patient Id| | | |
-| mcc.provider.pullbyrole | MCC_PROVIDER_PULLBYROLE | Allow provider contact info to be fecthed by practitioner role | TRUE | TRUE |
-| mcc.careteam.use.active | MCC_CARETEAM_USE_ACTIVE | Enable Contacts to look for careteams in none are a part of the selected careplan | TRUE | TRUE |
+| mcc.provider.pullbyrole | MCC_PROVIDER_PULLBYROLE | Allow provider contact info to be fetched by practitioner role | TRUE | TRUE |
+| mcc.careteam.use.active | MCC_CARETEAM_USE_ACTIVE | Enable Contacts to look for careteams if none are a part of the selected careplan | TRUE | TRUE |
 | mcc.careteam.use.careplan | MCC_CARETEAM_USE_CAREPLAN | Enable Contacts to us the currently selected Care plan to determine teams | TRUE | TRUE |
 
 
