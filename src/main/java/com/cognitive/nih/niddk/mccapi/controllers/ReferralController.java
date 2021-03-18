@@ -11,9 +11,11 @@ import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Slf4j
@@ -24,6 +26,11 @@ public class ReferralController {
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
 
+
+    @Value("${mcc.referral.require_performer:true}")
+    private String requirePerformer;
+    private boolean bRequirePerformer = true;
+
     private static final HashSet<String> supportedCategories = new HashSet<>();
 
     static {
@@ -33,6 +40,11 @@ public class ReferralController {
         supportedCategories.add("409073007"); // “Education"
         supportedCategories.add("409063005"); // “Counseling”
 
+    }
+    @PostConstruct
+    public void config()
+    {
+        bRequirePerformer = Boolean.parseBoolean(requirePerformer);
     }
 
     public ReferralController(QueryManager queryManager, IR4Mapper mapper) {
@@ -71,11 +83,19 @@ public class ReferralController {
                         //Add PerformerType
                         if (p.hasRequester()) {
                             //TODO: Filter by intent
-                            if (p.hasPerformer()) {
-                                if (isPerformerProvider(p.getPerformer())) {
-                                    ReferralSummary cs = mapper.fhir2summary(p, ctx);
-                                    out.add(cs);
+                            if (bRequirePerformer)
+                            {
+                                if (p.hasPerformer()) {
+                                    if (isPerformerProvider(p.getPerformer())) {
+                                        ReferralSummary cs = mapper.fhir2summary(p, ctx);
+                                        out.add(cs);
+                                    }
                                 }
+                            }
+                            else
+                            {
+                                ReferralSummary cs = mapper.fhir2summary(p, ctx);
+                                out.add(cs);
                             }
                         }
                     }
