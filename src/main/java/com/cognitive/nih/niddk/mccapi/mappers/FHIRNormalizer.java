@@ -30,7 +30,7 @@ public class FHIRNormalizer implements IFHIRNormalizer {
     {
         Coding out = cd.copy();
         String system = out.getSystem();
-        if (systemMap.containsKey(system))
+        if (system != null && systemMap.containsKey(system))
         {
             out.setSystem(systemMap.get(system));
         }
@@ -39,7 +39,7 @@ public class FHIRNormalizer implements IFHIRNormalizer {
     public void normalizeCoding(Coding cd)
     {
         String system = cd.getSystem();
-        if (systemMap.containsKey(system))
+        if (system != null && systemMap.containsKey(system))
         {
             cd.setSystem(systemMap.get(system));
         }
