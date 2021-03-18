@@ -11,6 +11,7 @@ import java.util.Set;
 
 @Component
 public class R4Mapper implements IR4Mapper {
+    private final IFHIRNormalizer fhirNormalizer;
     private final ICareplanMapper careplanMapper;
     private final ICareTeamMapper careTeamMapper;
     private final ICodeableConceptMapper codeableConceptMapper;
@@ -30,8 +31,11 @@ public class R4Mapper implements IR4Mapper {
     private final IReferenceMapper referenceMapper;
     private final IReferralMapper referralMapper;
     private final IRelatedPersonMapper relatedPersonMapper;
+    private final ICodingMapper codingMapper;
 
-    public R4Mapper(ICareplanMapper careplanMapper, ICareTeamMapper careTeamMapper, ICodeableConceptMapper codeableConceptMapper, IConditionMapper conditionMapper, ICounselingMapper counselingMapper, IEducationMapper educationMapper, IGenericTypeMapper genericTypeMapper, IGoalMapper goalMapper, IMedicationMapper medicationMapper, IObservationMapper observationMapper, IOrganizationMapper organizationMapper, IPatientMapper patientMapper, IPractitionerMapper practitionerMapper, IPractitionerRoleMapper practitionerRoleMapper, IProcedureMapper procedureMapper, IQuestionnaireResponseMapper questionnaireResponseMapper, IReferenceMapper referenceMapper, IReferralMapper referralMapper, IRelatedPersonMapper relatedPersonMapper) {
+
+    public R4Mapper(IFHIRNormalizer fhirNormalizer, ICareplanMapper careplanMapper, ICareTeamMapper careTeamMapper, ICodeableConceptMapper codeableConceptMapper, IConditionMapper conditionMapper, ICounselingMapper counselingMapper, IEducationMapper educationMapper, IGenericTypeMapper genericTypeMapper, IGoalMapper goalMapper, IMedicationMapper medicationMapper, IObservationMapper observationMapper, IOrganizationMapper organizationMapper, IPatientMapper patientMapper, IPractitionerMapper practitionerMapper, IPractitionerRoleMapper practitionerRoleMapper, IProcedureMapper procedureMapper, IQuestionnaireResponseMapper questionnaireResponseMapper, IReferenceMapper referenceMapper, IReferralMapper referralMapper, IRelatedPersonMapper relatedPersonMapper, ICodingMapper codingMapper) {
+        this.fhirNormalizer = fhirNormalizer;
         this.careplanMapper = careplanMapper;
         this.careTeamMapper = careTeamMapper;
         this.codeableConceptMapper = codeableConceptMapper;
@@ -51,6 +55,7 @@ public class R4Mapper implements IR4Mapper {
         this.referenceMapper = referenceMapper;
         this.referralMapper = referralMapper;
         this.relatedPersonMapper = relatedPersonMapper;
+        this.codingMapper = codingMapper;
     }
 
     @Override
@@ -340,6 +345,11 @@ public class R4Mapper implements IR4Mapper {
     }
 
     @Override
+    public IFHIRNormalizer getNormalizer() {
+        return fhirNormalizer;
+    }
+
+    @Override
     public Referral fhir2local(ServiceRequest in, Context ctx) {
         return referralMapper.fhir2local(in,ctx);
     }
@@ -386,7 +396,12 @@ public class R4Mapper implements IR4Mapper {
 
     @Override
     public MccCoding fhir2local(Coding in, Context ctx) {
-        return genericTypeMapper.fhir2local(in,ctx);
+        return codingMapper.fhir2local(in,ctx);
+    }
+
+    @Override
+    public MccCoding fhir2localUnnormalized(Coding in, Context ctx) {
+        return codingMapper.fhir2localUnnormalized(in,ctx);
     }
 
     @Override

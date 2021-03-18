@@ -5,8 +5,6 @@ import com.cognitive.nih.niddk.mccapi.data.primative.*;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -48,8 +46,8 @@ public class GenericTypeMapper implements IGenericTypeMapper {
     private static final int CODING = 19;
     private static final int DECIMAL = 20;
 
-
-    private static final Logger logger = LoggerFactory.getLogger(GenericTypeMapper.class);
+    private final ICodingMapper codingMapper;
+    private final ICodeableConceptMapper codeableConceptMapper;
 
     private static HashMap<String, Integer> activeKeys = new HashMap<>();
 
@@ -76,6 +74,11 @@ public class GenericTypeMapper implements IGenericTypeMapper {
         activeKeys.put(MccId.fhirType, IDENTIFIER);
         activeKeys.put(MccCoding.fhirType, CODING);
         activeKeys.put("decimal",DECIMAL);
+    }
+
+    public GenericTypeMapper(ICodingMapper codingMapper, ICodeableConceptMapper codeableConceptMapper) {
+        this.codingMapper = codingMapper;
+        this.codeableConceptMapper = codeableConceptMapper;
     }
 
 
@@ -169,12 +172,12 @@ public class GenericTypeMapper implements IGenericTypeMapper {
                     break;
                 }
                 default: {
-                    logger.warn("Type {} regnogized but not yet handled");
+                    log.warn("Type {} regnogized but not yet handled",fhirType);
                     break;
                 }
             }
         } else {
-            logger.warn("Unmapped type {}, ignoring", fhirType);
+            log.warn("Unmapped type {}, ignoring", fhirType);
         }
 
         return out;
@@ -201,13 +204,15 @@ public class GenericTypeMapper implements IGenericTypeMapper {
     }
 
     public MccCoding fhir2local(Coding in, Context ctx) {
-        MccCoding out = new MccCoding();
-        out.setCode(in.getCode());
-        out.setDisplay(in.getDisplay());
-        out.setSystem(in.getSystem());
-        out.setVersion(in.getVersion());
-        return out;
+        return codingMapper.fhir2local(in,ctx);
+        //MccCoding out = new MccCoding();
+        //out.setCode(in.getCode());
+        //out.setDisplay(in.getDisplay());
+        //out.setSystem(in.getSystem());
+        //out.setVersion(in.getVersion());
+        //return out;
     }
+
     public MccIdentifer[] fhir2local_identifierArray(List<Identifier> in, Context ctx) {
         MccIdentifer[] o = new MccIdentifer[in.size()];
         int i = 0;
@@ -298,7 +303,7 @@ public class GenericTypeMapper implements IGenericTypeMapper {
     }
 
     public MccCodeableConcept fhir2local(CodeableConcept in, Context ctx) {
-        return ctx.getMapper().fhir2local(in, ctx);
+        return codeableConceptMapper.fhir2local(in, ctx);
     }
 
     public MccQuantity fhir2local(Quantity in, Context ctx) {

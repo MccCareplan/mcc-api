@@ -66,6 +66,8 @@ public interface IR4Mapper {
     MccCodeableConcept conceptFromCode(String code, String text);
     MccCodeableConcept[] fhir2local(List<CodeableConcept> in, Context ctx);
     MccCoding fhir2local(Coding in, Context ctx);
+    MccCoding fhir2localUnnormalized(Coding in, Context ctx);
+
     MccIdentifer[] fhir2local_identifierArray(List<Identifier> in, Context ctx);
     MccDateTime[] fhir2local_dateTimeArray(List<DateTimeType> in, Context ctx);
     MccDateTime fhir2local(DateTimeType in, Context ctx);
@@ -82,4 +84,6 @@ public interface IR4Mapper {
     MccTiming fhir2local(Timing in, Context ctx);
     MccDosage[] fhir2local_dosageList(List<Dosage> in, Context ctx);
     MccDosage fhir2local(Dosage in, Context ctx);
+
+    IFHIRNormalizer getNormalizer();
 }

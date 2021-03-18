@@ -48,7 +48,7 @@ public class ConditionMapper implements IConditionMapper {
                 out.setIdentifer(mapper.fhir2local_identifierArray(in.getIdentifier(),ctx));
             }
             //Find what if any profile we have for this
-            out.setProfileId(ProfileManager.getProfileManager().getProfilesForConcept(in.getCode()));
+            out.setProfileId(ProfileManager.getSingleton().getProfilesForConcept(in.getCode(),ctx));
         }
         return out;
     }
