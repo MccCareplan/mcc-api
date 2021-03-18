@@ -1,7 +1,14 @@
+## Release 1.0.19
+- Added coding Normalization for Systems (Support ICD9/10, Snomed, Loinc, RxNorm)
+- Added mcc.referral.require_performer to allow referral selection logic to be customized
+- Added mcc.careplan.use.fallback to control use fallback mechanisms for finding the best careplan
+- Default the CarePlan Title if it is not present
+- Added mcc.codeableconcept.use.additive.normalization to control is codeable concepts that are have codings that require normalization will retain a copy of the un-normalized coding.
+
 
 ## Release 1.0.18-RELEASE
 - Support /observationssegmented query by value set for a segemented valueset retrieval - Added initial mappers for PractitionerRole
-- Add ObservationCollection and ObservationList to support /observationssegmented query
+- Added ObservationCollection and ObservationList to support /observationssegmented query
 - Added property mcc.provider.pullbyrole
 - Added properties to control contact fetch (mcc.careteam.use.active, mcc.careteam.use.careplan)
 - Updated contact mapping to make a best attempt to get Telephone, Email and Address, includes scanning Provider Role and Enhanced organization use.

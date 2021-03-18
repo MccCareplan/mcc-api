@@ -97,9 +97,9 @@ details on Spring boot.
 | mcc.provider.pullbyrole | MCC_PROVIDER_PULLBYROLE | Allow provider contact info to be fetched by practitioner role | TRUE | TRUE |
 | mcc.careteam.use.active | MCC_CARETEAM_USE_ACTIVE | Enable Contacts to look for careteams if none are a part of the selected careplan | TRUE | TRUE |
 | mcc.careteam.use.careplan | MCC_CARETEAM_USE_CAREPLAN | Enable Contacts to us the currently selected Care plan to determine teams | TRUE | TRUE |
-
-
-
+| mcc.careplan.use.fallback | MCC_CAREPLAN_USE_FALLBACK | Enable fallback careplan matching | TRUE | TRUE |
+| mcc.referral.require_performer | MCC_REFERRAL_REQUIRE_PERFORMER | If true a ServiceRequest must have a performer to be considered a Referral | TRUE | TRUE |
+| mcc.codeableconcept.use.additive.normalization | MCC_CODEABLECONCEPT_USE_ADDITIVE_NORMALIZATION  | When true codings in codeable concepts that require normalization are preserved and a normalized copy is added | FALSE | FALSE |
 #### Configuring the patient identifier
 
 The default scheme for mapping to the display patient identifier is scan the identifier list based on use, using the identifier based on a rank (Official | Usual | Temp | Secondary) returning the first identifier of the highest rank. This behavior can be refined so that only identifier from a specific system will be selected.
@@ -199,9 +199,17 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 #Recent Changes log
 
+
+## Release 1.0.19
+- Added coding Normalization for Systems (Support ICD9/10, Snomed, Loinc, RxNorm)
+- Added mcc.referral.require_performer to allow referral selection logic to be customized
+- Added mcc.careplan.use.fallback to control use fallback mechanisms for finding the best careplan
+- Default the CarePlan Title if it is not present
+- Added mcc.codeableconcept.use.additive.normalization to control is codeable concepts that are have codings that require normalization will retain a copy of the un-normalized coding. 
+
 ## Release 1.0.18-RELEASE
 - Support /observationssegmented query by value set for a segemented valueset retrieval - Added initial mappers for PractitionerRole
-- Add ObservationCollection and ObservationList to support /observationssegmented query
+- Added ObservationCollection and ObservationList to support /observationssegmented query
 - Added property mcc.provider.pullbyrole
 - Added properties to control contact fetch (mcc.careteam.use.active, mcc.careteam.use.careplan)
 - Updated contact mapping to make a best attempt to get Telephone, Email and Address, includes scanning Provider Role and Enhanced organization use.
