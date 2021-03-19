@@ -43,6 +43,7 @@ public class CareplanController {
     public void init()
     {
         bUseFallback = Boolean.parseBoolean(useFallback);
+        log.info("Config: mcc.careplan.use.fallback = "+useFallback);
     }
     /**
      * Return a list of care plans that are active and that address recognizated MCC Conditions

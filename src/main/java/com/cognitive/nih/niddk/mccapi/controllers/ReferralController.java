@@ -45,6 +45,7 @@ public class ReferralController {
     public void config()
     {
         bRequirePerformer = Boolean.parseBoolean(requirePerformer);
+        log.info("Config: mcc.referral.require_performer = "+requirePerformer);
     }
 
     public ReferralController(QueryManager queryManager, IR4Mapper mapper) {

@@ -31,6 +31,7 @@ public class CodeableConceptMapper implements ICodeableConceptMapper {
     public void config()
     {
         bUseAdditiveNormalization = Boolean.parseBoolean(useAdditiveNormalization);
+        log.info("Config: mcc.codeableconcept.use.additive.normalization = "+useAdditiveNormalization);
     }
 
     public MccCodeableConcept fhir2local(CodeableConcept in, Context ctx)

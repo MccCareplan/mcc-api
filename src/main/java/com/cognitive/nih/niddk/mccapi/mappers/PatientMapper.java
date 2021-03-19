@@ -5,15 +5,18 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccPatient;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 @Component
+@Slf4j
 public class PatientMapper implements IPatientMapper {
 
     @Value("${mcc.patient.id.system:}")
@@ -38,6 +41,11 @@ public class PatientMapper implements IPatientMapper {
         useMap.put("S", PRIORITY_PUBLIC); // State Agency
         useMap.put("U", PRIORITY_PUBLIC ); // Unknown
 
+    }
+    @PostConstruct
+    public void config()
+    {
+        log.info("Config: mcc.patient.id.system = " + patientIdSystem);
     }
 
     public List<Patient.ContactComponent> getActiveContactOfType(Patient in, String type)
