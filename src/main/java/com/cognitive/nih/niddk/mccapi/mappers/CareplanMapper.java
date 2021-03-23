@@ -25,8 +25,8 @@ public class CareplanMapper implements ICareplanMapper {
         MccCarePlan out = new MccCarePlan();
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setId(in.hasIdentifier() ? in.getIdentifierFirstRep().getValue() : "Unknown");
-        out.setTitle(in.getTitle());
-        out.setDescription(in.getDescription());
+        out.setTitle(in.hasTitle()?in.getTitle():"Untitled Careplan");
+        out.setDescription(in.hasDescription()?in.getDescription():"No description available");
         out.setNotes(FHIRHelper.annotationsToString(in.getNote(),ctx));
         out.setStatus(in.getStatus().getDisplay());
         out.setIntent(in.getIntent().getDisplay());

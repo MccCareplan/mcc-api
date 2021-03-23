@@ -13,6 +13,23 @@ public class CodingMapper implements ICodingMapper {
     public MccCoding fhir2local(Coding in, Context ctx)
     {
         //TODO: Consider a cache
+        // Normalize the coding in required
+        ctx.getMapper().getNormalizer().normalizeCoding(in);
+        //
+        MccCoding out = new MccCoding();
+        out.setCode(in.getCode());
+        out.setDisplay(in.getDisplay());
+        out.setSystem(in.getSystem());
+        out.setVersion(in.getVersion());
+        return out;
+    }
+
+    public MccCoding fhir2localUnnormalized(Coding in, Context ctx)
+    {
+        //TODO: Consider a cache
+        // Normalize the coding in required
+        ctx.getMapper().getNormalizer().normalizeCoding(in);
+        //
         MccCoding out = new MccCoding();
         out.setCode(in.getCode());
         out.setDisplay(in.getDisplay());

@@ -8,8 +8,6 @@ import com.cognitive.nih.niddk.mccapi.data.MccCarePlanSummary;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.ProfileManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
-import com.cognitive.nih.niddk.mccapi.mappers.ICareplanMapper;
-import com.cognitive.nih.niddk.mccapi.mappers.IConditionMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
@@ -18,24 +16,35 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CarePlan;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Reference;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @RestController
 @Slf4j
 @CrossOrigin(origins = "*")
 public class CareplanController {
+    @Value("${mcc.careplan.use.fallback}")
+    private String useFallback;
+    private boolean bUseFallback = false;
 
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
 
-    public CareplanController(QueryManager queryManager,IR4Mapper mapper) {
+    public CareplanController(QueryManager queryManager, IR4Mapper mapper) {
         this.queryManager = queryManager;
         this.mapper = mapper;
     }
 
+    @PostConstruct
+    public void init()
+    {
+        bUseFallback = Boolean.parseBoolean(useFallback);
+        log.info("Config: mcc.careplan.use.fallback = "+useFallback);
+    }
     /**
      * Return a list of care plans that are active and that address recognizated MCC Conditions
      * @param subjectId
@@ -86,6 +95,8 @@ public class CareplanController {
     @GetMapping("/find/best/careplan")
     public MccCarePlanSummary[] getBest(@RequestParam(required = true, name = "subject") String subjectId,  @RequestParam(name = "matchScheme", defaultValue = "profiles") String matchScheme, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         ArrayList<MccCarePlanSummary> out = new ArrayList<>();
+        ArrayList<MccCarePlanSummary> fallback = new ArrayList<>();
+
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
@@ -105,10 +116,23 @@ public class CareplanController {
                         if (addresses.size()>0) {
                             out.add(mapper.fhir2Summary(c, addresses,ctx));
                         }
+                        else
+                        {
+                            fallback.add(mapper.fhir2Summary(c, addresses,ctx));
+                        }
                     }
                 }
             }
         }
+
+        //If no matching conditions are found, use a lastModified Schema and the fallback list.
+        //Controled  by a feature flag.
+        if (out.size() == 0 && bUseFallback )
+        {
+            matchScheme = "lastModified";
+            out = fallback;
+        }
+
 
         if (out.size()>1)
         {
@@ -156,7 +180,7 @@ public class CareplanController {
                 {
                     try {
                         Condition condition = ctx.getClient().fetchResourceFromUrl(Condition.class, ref.getReference());
-                          List<String> profiles = getConditionProfiles(condition);
+                          List<String> profiles = getConditionProfiles(condition, ctx);
                         if (profiles != null)
                         {
                             for (String p:profiles)
@@ -175,12 +199,12 @@ public class CareplanController {
         return out;
     }
 
-    protected List<String> getConditionProfiles(Condition condition)
+    protected List<String> getConditionProfiles(Condition condition, Context ctx)
     {
         List<String> out=null;
         if (condition.hasCode())
         {
-            out = ProfileManager.getProfileManager().getProfilesForConceptAsList(condition.getCode());
+            out = ProfileManager.getSingleton().getProfilesForConceptAsList(condition.getCode(), ctx);
         }
         return out;
     }

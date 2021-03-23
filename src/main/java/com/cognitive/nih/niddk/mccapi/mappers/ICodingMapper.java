@@ -6,4 +6,5 @@ import org.hl7.fhir.r4.model.Coding;
 
 public interface ICodingMapper {
     MccCoding fhir2local(Coding in, Context ctx);
+    MccCoding fhir2localUnnormalized(Coding in, Context ctx);
 }

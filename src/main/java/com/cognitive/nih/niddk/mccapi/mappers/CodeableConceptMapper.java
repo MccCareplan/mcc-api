@@ -6,19 +6,38 @@ import com.cognitive.nih.niddk.mccapi.data.primative.MccCoding;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Component
 public class CodeableConceptMapper implements ICodeableConceptMapper {
 
+    @Value("${mcc.codeableconcept.use.additive.normalization:false}")
+    private String useAdditiveNormalization;
+    boolean bUseAdditiveNormalization = false;
+
+    private final FHIRNormalizer fhirNormalizer;
+
+    public CodeableConceptMapper(FHIRNormalizer fhirNormalizer) {
+        this.fhirNormalizer = fhirNormalizer;
+    }
+
+    @PostConstruct
+    public void config()
+    {
+        bUseAdditiveNormalization = Boolean.parseBoolean(useAdditiveNormalization);
+        log.info("Config: mcc.codeableconcept.use.additive.normalization = "+useAdditiveNormalization);
+    }
 
     public MccCodeableConcept fhir2local(CodeableConcept in, Context ctx)
     {
         MccCodeableConcept out = new MccCodeableConcept();
-        MccCoding[] codes = new MccCoding[in.getCoding().size()];
+        ArrayList<MccCoding> codes = new ArrayList<>();
         String text = null;
         IR4Mapper mapper = ctx.getMapper();
 
@@ -28,7 +47,12 @@ public class CodeableConceptMapper implements ICodeableConceptMapper {
         int i=0;
         for (Coding c: in.getCoding())
         {
-            codes[i] = mapper.fhir2local(c, ctx);
+            if (bUseAdditiveNormalization && fhirNormalizer.requiresNormalization(c))
+            {
+                    codes.add(mapper.fhir2localUnnormalized(c,ctx));
+            }
+
+            codes.add(mapper.fhir2local(c, ctx));
             if (text == null)
             {
                 if (c.hasDisplay())
@@ -50,7 +74,10 @@ public class CodeableConceptMapper implements ICodeableConceptMapper {
                 text = "Concept with no Code";
             }
         }
-        out.setCoding(codes);
+        MccCoding[] bOut = new MccCoding[codes.size()];
+        codes.toArray(bOut);
+        out.setCoding(bOut);
+
         out.setText(text);
         return out;
     }

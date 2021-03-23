@@ -32,9 +32,10 @@ public class PractitionerMapper implements IPractitionerMapper {
     }
 
     @PostConstruct
-    public void init()
+    public void config()
     {
         isUsePullByRole = Boolean.parseBoolean(usePullByRole);
+        log.info("Config: mcc.provider.pullbyrole = "+usePullByRole);
     }
 
     public Contact fhir2Contact(Practitioner in, Context ctx) {

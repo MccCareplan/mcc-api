@@ -42,10 +42,12 @@ public class ContactController {
     }
 
     @PostConstruct
-    public void Init()
+    public void config()
     {
         isUseActiveCareTeams = Boolean.parseBoolean(useActiveCareTeams);
         isUseCareTeamsFromPlan = Boolean.parseBoolean(useCareTeamsFromPlan);
+        log.info("Config: mcc.careteam.use.active = "+useActiveCareTeams);
+        log.info("Config: mcc.careteam.use.careplan = "+useCareTeamsFromPlan);
     }
 
     @GetMapping(value = "/image/contact/{id}", produces = "image/jpeg")

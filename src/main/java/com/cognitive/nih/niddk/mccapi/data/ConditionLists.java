@@ -145,8 +145,8 @@ public class ConditionLists {
         // We need to logic for groups by profile/common translations - This is esp. true of staged conditions
         // As a general rule we want group all condition that have the same base concept into the common concept.
         // The most current representative of the concept should be the displayed concept
-        List<String> profiles = ProfileManager.getProfileManager().getProfilesForConceptAsList(c.getCode());
         IR4Mapper mapper = ctx.getMapper();
+        List<String> profiles = ProfileManager.getSingleton().getProfilesForConceptAsList(c.getCode(),ctx);
 
         if (profiles.isEmpty()) {
             ConditionSummary summary = findConditionIfAlreadySeen(c);
