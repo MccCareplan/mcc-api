@@ -26,7 +26,7 @@ public class CareplanMapper implements ICareplanMapper {
         out.setFHIRId(in.getIdElement().getIdPart());
         out.setId(in.hasIdentifier() ? in.getIdentifierFirstRep().getValue() : "Unknown");
         out.setTitle(in.hasTitle()?in.getTitle():"Untitled Careplan");
-        out.setDescription(in.hasDescription()?in.getDescription():"No desciption available");
+        out.setDescription(in.hasDescription()?in.getDescription():"No description available");
         out.setNotes(FHIRHelper.annotationsToString(in.getNote(),ctx));
         out.setStatus(in.getStatus().getDisplay());
         out.setIntent(in.getIntent().getDisplay());
