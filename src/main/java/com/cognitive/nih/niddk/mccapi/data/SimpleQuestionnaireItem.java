@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class SimpleQuestionnaireItem {
     private String FHIRId;
+    private String type="QuestionnaireResponse";
     private MccDate authored;
     private QuestionnaireResponseItem item;
 }

@@ -1078,4 +1078,9 @@ public class FHIRHelper {
         out.setCoding(codes);
         return out;
     }
+
+    public static int compare(DateTimeType d1, DateType d2)
+    {
+        return d1.getValue().compareTo(d2.getValue());
+    }
 }
