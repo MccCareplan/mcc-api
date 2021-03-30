@@ -1,3 +1,9 @@
+## Release 1.0.20
+- Support for Observation based Patient Reported Data
+- New Property: mcc.patient.reported.data.use.observations controls if PRD/Survey uses Observations
+- New Property: mcc.patient.reported.data.use.questionnaires controls if PRD/Survey use QuestionnaireResponses
+
+
 ## Release 1.0.19
 - Added coding Normalization for Systems (Support ICD9/10, Snomed, Loinc, RxNorm)
 - Added mcc.referral.require_performer to allow referral selection logic to be customized

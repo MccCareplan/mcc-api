@@ -87,19 +87,28 @@ The profile used may be overridden at runtime by either selecting a different pr
 or by providing and entirely different definition for the properties file. See the 
 details on Spring boot.
 
+### Core Operational Environment Variables
+
  | Property Name | System Env. Variable eqv | Description | Dev | Prod |
  | -------------- | ---------------------- | ---------------- | --------- | ------ |
-| server.port | SERVER_PORT | The port on which tomcat runs | 8081 | Tomcat Def (8080) |
-| fhir.default.server.address | FHIR_DEFAULT_SERVER_ADDRESS | Default open fhir server| https://api.logicahealth.org/MCCeCarePlanTest/open | https://api.logicahealth.org/MCCeCarePlanTest/open |
-| fhir.secure.server.address | FHIR_SECURE_SERVER_ADDRESS |Default secure fhir server | https://api.logicahealth.org/MCCeCarePlanTest/data | https://api.logicahealth.org/MCCeCarePlanTest/data |
-| logging.level.org.springframework | | | WARN | WARN |
-| mcc.patient.id.system | MCC_PATIENT_ID_SYSTEM | System used to determine the Patient Id| | | |
-| mcc.provider.pullbyrole | MCC_PROVIDER_PULLBYROLE | Allow provider contact info to be fetched by practitioner role | TRUE | TRUE |
-| mcc.careteam.use.active | MCC_CARETEAM_USE_ACTIVE | Enable Contacts to look for careteams if none are a part of the selected careplan | TRUE | TRUE |
-| mcc.careteam.use.careplan | MCC_CARETEAM_USE_CAREPLAN | Enable Contacts to us the currently selected Care plan to determine teams | TRUE | TRUE |
-| mcc.careplan.use.fallback | MCC_CAREPLAN_USE_FALLBACK | Enable fallback careplan matching | TRUE | TRUE |
-| mcc.referral.require_performer | MCC_REFERRAL_REQUIRE_PERFORMER | If true a ServiceRequest must have a performer to be considered a Referral | TRUE | TRUE |
-| mcc.codeableconcept.use.additive.normalization | MCC_CODEABLECONCEPT_USE_ADDITIVE_NORMALIZATION  | When true codings in codeable concepts that require normalization are preserved and a normalized copy is added | FALSE | FALSE |
+ | fhir.default.server.address | FHIR_DEFAULT_SERVER_ADDRESS | Default open fhir server| https://api.logicahealth.org/MCCeCarePlanTest/open | https://api.logicahealth.org/MCCeCarePlanTest/open |
+ | fhir.secure.server.address | FHIR_SECURE_SERVER_ADDRESS |Default secure fhir server | https://api.logicahealth.org/MCCeCarePlanTest/data | https://api.logicahealth.org/MCCeCarePlanTest/data |
+ | logging.level.org.springframework | | | WARN | WARN |
+ | server.port | SERVER_PORT | The port on which tomcat runs | 8081 | Tomcat Def (8080) |
+
+### Environment variabls for API Behavior control
+ | Property Name | System Env. Variable eqv | Description | Dev | Prod |
+ | -------------- | ---------------------- | ---------------- | --------- | ------ |
+ | mcc.careteam.use.active | MCC_CARETEAM_USE_ACTIVE | Enable Contacts to look for careteams if none are a part of the selected careplan | TRUE | TRUE |
+ | mcc.careteam.use.careplan | MCC_CARETEAM_USE_CAREPLAN | Enable Contacts to us the currently selected Care plan to determine teams | TRUE | TRUE |
+ | mcc.careplan.use.fallback | MCC_CAREPLAN_USE_FALLBACK | Enable fallback careplan matching | TRUE | TRUE |
+ | mcc.codeableconcept.use.additive.normalization | MCC_CODEABLECONCEPT_USE_ADDITIVE_NORMALIZATION  | When true codings in codeable concepts that require normalization are preserved and a normalized copy is added | FALSE | FALSE |
+ | mcc.patient.id.system | MCC_PATIENT_ID_SYSTEM | System used to determine the Patient Id| | | |
+ | mcc.patient.reported.data.use.observations | MCC_PATIENT_REPORTED_DATA_USE_OBSERVATIONS | When true observations will be check for patient reported reported data | TRUE | TRUE |
+ | mcc.patient.reported.data.use.questionnaires | MCC_PATIENT_REPORTED_DATA_USE_QUESTIONNAIRES | When true questionnaire responses will be check for patient reported data | TRUE | TRUE |
+ | mcc.provider.pullbyrole | MCC_PROVIDER_PULLBYROLE | Allow provider contact info to be fetched by practitioner role | TRUE | TRUE |
+ | mcc.referral.require_performer | MCC_REFERRAL_REQUIRE_PERFORMER | If true a ServiceRequest must have a performer to be considered a Referral | TRUE | TRUE |
+
 #### Configuring the patient identifier
 
 The default scheme for mapping to the display patient identifier is scan the identifier list based on use, using the identifier based on a rank (Official | Usual | Temp | Secondary) returning the first identifier of the highest rank. This behavior can be refined so that only identifier from a specific system will be selected.
@@ -199,6 +208,10 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 #Recent Changes log
 
+## Release 1.0.20
+- Support for Observation based Patient Reported Data
+- New Property: mcc.patient.reported.data.use.observations controls if PRD/Survey uses Observations
+- New Property: mcc.patient.reported.data.use.questionnaires controls if PRD/Survey use QuestionnaireResponses
 
 ## Release 1.0.19
 - Added coding Normalization for Systems (Support ICD9/10, Snomed, Loinc, RxNorm)

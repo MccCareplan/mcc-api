@@ -48,6 +48,7 @@ public interface IR4Mapper {
     QuestionnaireResponseItem fhir2local(QuestionnaireResponse.QuestionnaireResponseItemComponent in, Context ctx);
     QuestionnaireResponseItemAnswer fhir2local(QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent in, Context ctx);
     QuestionnaireResponseSummary fhir2summary(QuestionnaireResponse in, Context ctx);
+    SimpleQuestionnaireItem fhir2SimpleItem(Observation in, Context ctx, String linkId);
     MccReference fhir2local(Reference in, Context ctx);
     MccReference[] fhir2local_referenceArray(List<Reference> in, Context ctx);
     Referral fhir2local(ServiceRequest in, Context ctx);

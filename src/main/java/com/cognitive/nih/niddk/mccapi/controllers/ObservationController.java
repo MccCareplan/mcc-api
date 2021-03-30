@@ -42,7 +42,45 @@ public class ObservationController {
         this.mapper = mapper;
     }
 
-    private ArrayList<MccObservation> QueryObservations(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
+    protected ArrayList<Observation> QueryObservationsRaw(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
+        ArrayList<Observation> out = new ArrayList<>();
+        List<String> calls = getQueryStrings(baseQuery, mode);
+
+        if (calls.size() > 0) {
+            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+
+            for (String key : calls) {
+                String callUrl = queryManager.setupQuery(key, values, webRequest);
+                Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
+                //In general the we expect the return value to be in descending date order
+
+                for (Bundle.BundleEntryComponent e : results.getEntry()) {
+                    if (e.getResource().fhirType().compareTo("Observation") == 0) {
+                        Observation o = (Observation) e.getResource();
+                        out.add(o);
+                    }
+                }
+            }
+            /* TODO: Fix sorting
+            //Now we need possibly to sort the output
+            if (sortOrder.compareTo("ascending") == 0) {
+                //We need ascending order
+                out.sort((Observation o1, Observation o2) -> o1.getEffective().compareTo(o2.getEffective()));
+            } else if (calls.size() > 1) {
+                Comparator<MccObservation> comparator = (MccObservation o1, MccObservation o2) -> o1.getEffective().compareTo(o2.getEffective());
+
+                //We need to merge multiples into one and sort descending
+                out.sort(comparator.reversed());
+            }
+             */
+        } else {
+            //TODO: Deal with suppressed query return
+            log.info(baseQuery + " suppressed by override");
+        }
+        return out;
+    }
+
+    protected ArrayList<MccObservation> QueryObservations(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
         ArrayList<MccObservation> out = new ArrayList<>();
         List<String> calls = getQueryStrings(baseQuery, mode);
 

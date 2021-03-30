@@ -1,7 +1,10 @@
 package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.*;
+import com.cognitive.nih.niddk.mccapi.data.primative.GenericType;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r4.model.DateType;
+import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.QuestionnaireResponse;
 import org.springframework.stereotype.Component;
 
@@ -55,6 +58,51 @@ public class QuestionnaireResponseMapper implements IQuestionnaireResponseMapper
             QuestionnaireResponseItem fnd = findItem(in, linkId, ctx);
             if (fnd != null)
                 out.setItem(fnd);
+        }
+        return out;
+    }
+
+    public  SimpleQuestionnaireItem fhir2SimpleItem(Observation in, Context ctx, String linkId)
+    {
+        SimpleQuestionnaireItem out = new SimpleQuestionnaireItem();
+        IR4Mapper mapper = ctx.getMapper();
+        out.setType("Observation");
+        out.setFHIRId(in.getIdElement().getIdPart());
+        if (in.hasEffectiveDateTimeType())
+        {
+            DateType date = in.getEffectiveDateTimeType().castToDate(in.getEffectiveDateTimeType());
+            out.setAuthored(mapper.fhir2local(date,ctx));
+        }
+        QuestionnaireResponseItem item = new QuestionnaireResponseItem();
+        out.setItem(item);
+        item.setLinkid(linkId);
+        if (in.hasValue()) {
+            QuestionnaireResponseItemAnswer[] answers = new QuestionnaireResponseItemAnswer[1];
+            answers[0] = new QuestionnaireResponseItemAnswer();
+            answers[0].setValue(ctx.getMapper().fhir2local(in.getValue(),ctx));
+            item.setAnswers(answers);
+        }
+        if (in.hasComponent())
+        {
+            List<Observation.ObservationComponentComponent> components = in.getComponent();
+            QuestionnaireResponseItem[] items = new QuestionnaireResponseItem[components.size()];
+            int i = 0;
+            //Handle components
+            for(Observation.ObservationComponentComponent c : components)
+            {
+                QuestionnaireResponseItem subItem = new QuestionnaireResponseItem();
+                if (c.hasCode()) {
+                    subItem.setLinkid(c.getCode().getCodingFirstRep().getCode());
+                }
+                if (c.hasValue()) {
+                    QuestionnaireResponseItemAnswer[] answers = new QuestionnaireResponseItemAnswer[1];
+                    answers[0] = new QuestionnaireResponseItemAnswer();
+                    answers[0].setValue(ctx.getMapper().fhir2local(in.getValue(),ctx));
+                    subItem.setAnswers(answers);
+                }
+                i++;
+            }
+            item.setItems(items);
         }
         return out;
     }
