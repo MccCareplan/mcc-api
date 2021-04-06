@@ -260,7 +260,7 @@ public class R4Mapper implements IR4Mapper {
 
     @Override
     public SimpleQuestionnaireItem fhir2SimpleItem(Observation in, Context ctx, String linkId) {
-        return questionnaireResponseMapper.fhir2SimpleItem(in,ctx,linkId);
+        return observationMapper.fhir2SimpleItem(in,ctx,linkId);
     }
 
     @Override
