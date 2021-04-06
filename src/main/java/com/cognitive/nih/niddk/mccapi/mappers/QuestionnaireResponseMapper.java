@@ -62,50 +62,6 @@ public class QuestionnaireResponseMapper implements IQuestionnaireResponseMapper
         return out;
     }
 
-    public  SimpleQuestionnaireItem fhir2SimpleItem(Observation in, Context ctx, String linkId)
-    {
-        SimpleQuestionnaireItem out = new SimpleQuestionnaireItem();
-        IR4Mapper mapper = ctx.getMapper();
-        out.setType("Observation");
-        out.setFHIRId(in.getIdElement().getIdPart());
-        if (in.hasEffectiveDateTimeType())
-        {
-            DateType date = in.getEffectiveDateTimeType().castToDate(in.getEffectiveDateTimeType());
-            out.setAuthored(mapper.fhir2local(date,ctx));
-        }
-        QuestionnaireResponseItem item = new QuestionnaireResponseItem();
-        out.setItem(item);
-        item.setLinkid(linkId);
-        if (in.hasValue()) {
-            QuestionnaireResponseItemAnswer[] answers = new QuestionnaireResponseItemAnswer[1];
-            answers[0] = new QuestionnaireResponseItemAnswer();
-            answers[0].setValue(ctx.getMapper().fhir2local(in.getValue(),ctx));
-            item.setAnswers(answers);
-        }
-        if (in.hasComponent())
-        {
-            List<Observation.ObservationComponentComponent> components = in.getComponent();
-            QuestionnaireResponseItem[] items = new QuestionnaireResponseItem[components.size()];
-            int i = 0;
-            //Handle components
-            for(Observation.ObservationComponentComponent c : components)
-            {
-                QuestionnaireResponseItem subItem = new QuestionnaireResponseItem();
-                if (c.hasCode()) {
-                    subItem.setLinkid(c.getCode().getCodingFirstRep().getCode());
-                }
-                if (c.hasValue()) {
-                    QuestionnaireResponseItemAnswer[] answers = new QuestionnaireResponseItemAnswer[1];
-                    answers[0] = new QuestionnaireResponseItemAnswer();
-                    answers[0].setValue(ctx.getMapper().fhir2local(in.getValue(),ctx));
-                    subItem.setAnswers(answers);
-                }
-                i++;
-            }
-            item.setItems(items);
-        }
-        return out;
-    }
 
     public QuestionnaireResponseItem findItem(QuestionnaireResponse in, String linkId, Context ctx)
     {

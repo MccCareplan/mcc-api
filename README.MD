@@ -96,7 +96,7 @@ details on Spring boot.
  | logging.level.org.springframework | | | WARN | WARN |
  | server.port | SERVER_PORT | The port on which tomcat runs | 8081 | Tomcat Def (8080) |
 
-### Environment variabls for API Behavior control
+### Environment variables for API Behavior control
  | Property Name | System Env. Variable eqv | Description | Dev | Prod |
  | -------------- | ---------------------- | ---------------- | --------- | ------ |
  | mcc.careteam.use.active | MCC_CARETEAM_USE_ACTIVE | Enable Contacts to look for careteams if none are a part of the selected careplan | TRUE | TRUE |
@@ -207,6 +207,10 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 
 #Recent Changes log
+
+## Release 1.0.21
+- Move the mapping of Observations to SimpleQuestionnaireItems to the ObservationMapper
+- Fix data handling Observation Mapping to SimpleQuestionnaireItems
 
 ## Release 1.0.20
 - Support for Observation based Patient Reported Data

@@ -1,3 +1,7 @@
+## Release 1.0.21
+- Move the mapping of Observations to SimpleQuestionnaireItems to the ObservationMapper
+- Fix data handling Observation Mapping to SimpleQuestionnaireItems
+
 ## Release 1.0.20
 - Support for Observation based Patient Reported Data
 - New Property: mcc.patient.reported.data.use.observations controls if PRD/Survey uses Observations
