@@ -8,6 +8,7 @@ import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Quantity;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -155,8 +156,8 @@ public class ObservationMapper implements IObservationMapper {
         out.setFHIRId(in.getIdElement().getIdPart());
         if (in.hasEffectiveDateTimeType())
         {
-            DateType date = in.getEffectiveDateTimeType().castToDate(in.getEffectiveDateTimeType());
-            out.setAuthored(mapper.fhir2local(date,ctx));
+            Date eftDate = in.getEffectiveDateTimeType().getValue();
+            out.setAuthored(mapper.fhir2local(eftDate,ctx));
         }
         QuestionnaireResponseItem item = new QuestionnaireResponseItem();
         out.setItem(item);
