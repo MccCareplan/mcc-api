@@ -33,13 +33,14 @@ public class MedicationLists {
         Integer inactive = Integer.valueOf(INACTIVE_LIST);
         Integer ignore = Integer.valueOf(IGNORE);
 
-        //Medication Request Status: 	active | on-hold | cancelled | completed | entered-in-error | not-taken | draft | unknown
+        //Medication Request Status: 	active | on-hold | cancelled | completed | entered-in-error | stopped | draft | unknown
+        //
         activeMedReqKeys.put("active",active);
         activeMedReqKeys.put("on-hold",inactive);
         activeMedReqKeys.put("cancelled",inactive);
         activeMedReqKeys.put("completed",inactive);
         activeMedReqKeys.put("entered-in-error",ignore);
-        activeMedReqKeys.put("not-taken",inactive);
+        activeMedReqKeys.put("stopped",inactive);
         activeMedReqKeys.put("unknown",inactive);
 
         //Medication Statement Status: 	active | completed | entered-in-error | intended | stopped | on-hold | unknown | not-taken
