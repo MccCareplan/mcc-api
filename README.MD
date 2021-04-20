@@ -107,12 +107,16 @@ details on Spring boot.
  | mcc.patient.reported.data.use.observations | MCC_PATIENT_REPORTED_DATA_USE_OBSERVATIONS | When true observations will be check for patient reported reported data | TRUE | TRUE |
  | mcc.patient.reported.data.use.questionnaires | MCC_PATIENT_REPORTED_DATA_USE_QUESTIONNAIRES | When true questionnaire responses will be check for patient reported data | TRUE | TRUE |
  | mcc.provider.pullbyrole | MCC_PROVIDER_PULLBYROLE | Allow provider contact info to be fetched by practitioner role | TRUE | TRUE |
+ | mcc.referral.require_category | MCC_REFERRAL_REQUIRE_CATEGORY| If true a ServiceRequest must have a category to be considered a Referral | FALSE | FALSE |
  | mcc.referral.require_performer | MCC_REFERRAL_REQUIRE_PERFORMER | If true a ServiceRequest must have a performer to be considered a Referral | TRUE | TRUE |
-
+ | mcc.referral.use_valueset| MCC_REFERRAL_USE_VALUESSET | If true a ServiceRequest in valueswet to be considerred a Referral | TRUE | TRUE |
+ | mcc.social_concern.use_category | MCC_SOCIAL_CONCERN_USE_CATEGORY | If true Social Concerns use the HealthConcern Category | TRUE | TRUE |
+ | mcc.social_concern.use_valueset | MCC_SOCIAL_CONCERN_USE_VALUESET | If true Social Concerns are identified by membership in a valuse set | FALSE | FALSE |
+ 
 #### Configuring the patient identifier
 
 The default scheme for mapping to the display patient identifier is scan the identifier list based on use, using the identifier based on a rank (Official | Usual | Temp | Secondary) returning the first identifier of the highest rank. This behavior can be refined so that only identifier from a specific system will be selected.
-Setting the property mcc.patient.id.system to the value of the required system will filter the list down matching identifier that match that system,
+Setting the property mcc.patient.id.system to the value of the required system will filter the list down by matching the identifiers that match that system,
 For example if the property is set to urn:oid:2.16.840.1.113883.3.2076.2.100 then the OHSU medical record number would be used, while setting the value to urn:oid:2.16.840.1.113883.4.3.41 would search for Oregon Driver's Licenses.
 Ideally identifiers could be select by type code (https://www.hl7.org/fhir/valueset-identifier-type.html). Current real world data does not seem to support this.
 
@@ -207,6 +211,29 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 
 #Recent Changes log
+
+## Relase 1.0.23 - Forthcoming
+- Revision of condition summary and history to support recorded vs onset
+  + Condition structure changes to firstOnset and firstRecord
+  + Condition date removed
+
+## Release 1.0.22
+- More Date Conversion Fixes
+- Updated Referrals, additional configuration options and support for valueset
+- Support valueset overrides using the directory /usr/local/mcc-api/valuesets/override
+- Support valueset supplements using the directory /usr/local/mcc-api/valuesets/supplement
+- New properties to control referrals 
+  + mcc.referral.use_valueset
+  + mcc.referral.require_category
+- Updated the Referral valueset to reflect the Implementation Guide
+- Changed the defaults for referrals so that is Category use now defaults to false, while value set use not defaults to true.
+- New support for using a value set to control what conditions are social concerns
+- Updated FHIR Queries around health concerns
+  + Removed: Condition.QueryHealthConcerns 
+  + Added Condition.QueryHealthConcerns.ByCategory=/Condition/?subject={subject}&category=http%3A%2F%2Fhl7.org%2Ffhir%2Fus%2Fcore%2FCodeSystem%2Fcondition-category%7Chealth-concern
+  + Added Condition.QueryHealthConcerns.ForValueSet=/Condition/?subject={subject}
+- Added very basic social concerns value set (One code for Food insecurity)
+
 
 ## Release 1.0.21
 - Move the mapping of Observations to SimpleQuestionnaireItems to the ObservationMapper
