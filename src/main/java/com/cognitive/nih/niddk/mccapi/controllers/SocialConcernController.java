@@ -1,30 +1,39 @@
 package com.cognitive.nih.niddk.mccapi.controllers;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
-import com.cognitive.nih.niddk.mccapi.data.ConditionLists;
-import com.cognitive.nih.niddk.mccapi.data.ConditionSummary;
-import com.cognitive.nih.niddk.mccapi.data.Context;
-import com.cognitive.nih.niddk.mccapi.data.SocialConcern;
+import com.cognitive.nih.niddk.mccapi.data.*;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
+import com.cognitive.nih.niddk.mccapi.managers.ValueSetManager;
 import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
+import com.cognitive.nih.niddk.mccapi.util.MCC2HFHIRHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Slf4j
 @RestController
 @CrossOrigin(origins = "*")
 public class SocialConcernController {
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
+    @Value("${mcc.social_concern.use_category:true}")
+    private String useCategopry;
+    private boolean bUseCategory = true;
+    @Value("${mcc.social_concern.use_valueset:true}")
+    private String useValueSet;
+    private boolean bUseValueSet = true;
 
+    private static String valueSetId = "SocialConcerns";
 
     public SocialConcernController(QueryManager queryManager, IR4Mapper mapper)
     {
@@ -32,13 +41,33 @@ public class SocialConcernController {
         this.mapper = mapper;
     }
 
+    @PostConstruct
+    public void config() {
+
+        bUseCategory = Boolean.parseBoolean(useCategopry);
+        log.info("Config: mcc.social_concern.require_category = " + useCategopry);
+        bUseValueSet = Boolean.parseBoolean(useValueSet);
+        log.info("Config: mcc.social_concern.use_valueset = " + useValueSet);
+    }
+
+
     @GetMapping("/socialconcernsummary")
     public ConditionLists getConditionSummary(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = false, name = "careplan") String careplanId, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
         ConditionLists out = new ConditionLists();
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
         Map<String, String> values = new HashMap<>();
-        String callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns", values, webRequest);
+
+        String callUrl = null;
+        if (bUseCategory)
+        {
+            callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns.use_category", values, webRequest);
+        }
+        else if (bUseValueSet)
+        {
+            callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns.use_valueset", values, webRequest);
+        }
+
 
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
@@ -47,6 +76,10 @@ public class SocialConcernController {
             Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Condition")==0) {
+                    if (bUseValueSet)
+                    {
+                        //Verify the conditoin is in the value set
+                    }
                     Condition c = (Condition) e.getResource();
                     addCondtionToConditionList(out, c, ctx);
                 }
@@ -94,11 +127,19 @@ public class SocialConcernController {
         out.add(new SocialConcern("Education Level"));
         out.add(new SocialConcern("Environmental Conditions"));
 `       */
-
+        MccValueSet valueSet = ValueSetManager.getValueSetManager().findValueSet(valueSetId);
         ConditionLists concerns = new ConditionLists();
 
         Map<String, String> values = new HashMap<>();
-        String callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns", values, webRequest);
+        String callUrl = null;
+        if (bUseCategory)
+        {
+            callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns.use_category", values, webRequest);
+        }
+        else if (bUseValueSet)
+        {
+            callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns.use_valueset", values, webRequest);
+        }
 
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
@@ -109,6 +150,17 @@ public class SocialConcernController {
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Condition")==0) {
                     Condition c = (Condition) e.getResource();
+                    if (bUseValueSet)
+                    {
+                        //Verify the condition is in the value set
+                        if (c.hasCode()) {
+                            if (!MCC2HFHIRHelper.conceptInValueSet(c.getCode(),valueSet))
+                            {
+                                //Skip - this concept is not one we consider to be a referral
+                                continue;
+                            }
+                        }
+                    }
                     addCondtionToConditionList(concerns, c, ctx);
                 }
             }
