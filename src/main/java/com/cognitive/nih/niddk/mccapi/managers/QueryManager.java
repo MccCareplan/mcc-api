@@ -39,21 +39,21 @@ public class QueryManager {
             Configuration override=null;
 
             base = configs.properties("fhirqueries.properties");
-            String overidepath = "/usr/local/mcc-api/fhirqueries.properties";
+            String overridepath = "/usr/local/mcc-api/fhirqueries.properties";
             try {
 
-                override = configs.properties(overidepath);
-                log.info("Using a FHIR Query Override file:"+ overidepath);
+                override = configs.properties(overridepath);
+                log.info("Using a FHIR Query Override file:"+ overridepath);
             }
             catch(Exception e)
             {
                 //Supress
                 if (log.isDebugEnabled()) {
-                    log.debug("Override file load error: " + overidepath, e);
+                    log.debug("Override file load error: " + overridepath, e);
                 }
                 else
                 {
-                    log.info("No override file accessible at "+overidepath);
+                    log.info("No override file accessible at "+overridepath);
                 }
             }
             cc = new CompositeConfiguration();
