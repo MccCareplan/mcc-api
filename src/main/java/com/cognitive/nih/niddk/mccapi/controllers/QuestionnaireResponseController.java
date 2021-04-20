@@ -245,9 +245,8 @@ public class QuestionnaireResponseController {
                 if (fnd != null) {
                     //OK We need top see if
                     if (fnd.hasAuthored() && obs.hasEffectiveDateTimeType()) {
-                        DateType questionnaireDate = fnd.getAuthoredElement().castToDate(fnd.getAuthoredElement());
                         DateTimeType obsDate = obs.getEffectiveDateTimeType();
-                        if (FHIRHelper.compare(obsDate,questionnaireDate) >= 0)
+                        if (FHIRHelper.compare(obsDate,fnd.getAuthoredElement()) >= 0)
                         {
                             out = ctx.getMapper().fhir2SimpleItem(obs, ctx, code);
                         }
