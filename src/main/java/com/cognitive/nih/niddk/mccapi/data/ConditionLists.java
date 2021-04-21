@@ -6,6 +6,8 @@ import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.IConditionMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.matcher.CodeableConceptMatcher;
+import com.cognitive.nih.niddk.mccapi.util.MCC2HFHIRHelper;
+import com.cognitive.nih.niddk.mccapi.util.MccHelper;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Condition;
 
@@ -208,7 +210,7 @@ public class ConditionLists {
         return null;
     }
 
-    public void categorizeConditions()
+    public void categorizeConditions(boolean useCategories, boolean useValueSet, MccValueSet valueSet)
     {
 
         for (ConditionSummary c: this.conditions)
@@ -224,10 +226,28 @@ public class ConditionLists {
 
             Integer activeStatus = activeKeys.get(activeKey);
 
-            // problem-list-item | encounter-diagnosis | health-concern
-            String categories = c.getCategories();
-            boolean isProblemOrEncounter = categories.contains("problem-list-item") || categories.contains("encounter-diagnosis");
-            boolean isHealthConcern = categories.contains("health-concern");
+            //Logic to determine if a problem or social concern
+            boolean isProblemOrEncounter;
+            boolean isHealthConcern;
+            if (useCategories ) {
+                // problem-list-item | encounter-diagnosis | health-concern
+                String categories = c.getCategories();
+                isProblemOrEncounter = categories.contains("problem-list-item") || categories.contains("encounter-diagnosis");
+                isHealthConcern = categories.contains("health-concern");
+            }
+            else
+            {
+                //we assume using a value set of social concerns
+                if (MccHelper.conceptInValueSet(c.getCode(),valueSet))
+                {
+                    isProblemOrEncounter = false;
+                    isHealthConcern = true;
+                }
+                else {
+                    isProblemOrEncounter = true;
+                    isHealthConcern = false;
+                }
+            }
 
             if (activeStatus != null)
             {

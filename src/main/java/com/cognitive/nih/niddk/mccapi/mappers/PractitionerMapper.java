@@ -66,12 +66,12 @@ public class PractitionerMapper implements IPractitionerMapper {
         try {
 
             Map<String, String> values = new HashMap<>();
-            values.put("id", in.getId());
+            String id = in.getIdElement().getIdPart();
+            values.put("id",id);
 
             String callUrl = queryManager.setupQuery("PractitionerRole.Query", values);
 
 
-            String id = in.getId();
             Bundle bundle = ctx.getClient().fetchResourceFromUrl(Bundle.class,callUrl);
             StringBuilder orgs = new StringBuilder();
             int orgCount = 0;

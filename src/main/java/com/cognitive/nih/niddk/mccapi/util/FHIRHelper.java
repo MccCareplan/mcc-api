@@ -1083,4 +1083,10 @@ public class FHIRHelper {
     {
         return d1.getValue().compareTo(d2.getValue());
     }
+
+    public static int compare(DateTimeType d1, DateTimeType d2)
+    {
+        return d1.getValue().compareTo(d2.getValue());
+    }
+
 }

@@ -1,3 +1,20 @@
+## Release 1.0.22
+- More Date Conversion Fixes
+- Updated Referrals, additional configuration options and support for valueset
+- Support valueset overrides using the directory /usr/local/mcc-api/valuesets/override
+- Support valueset supplements using the directory /usr/local/mcc-api/valuesets/supplement
+- New properties to control referrals
+  + mcc.referral.use_valueset
+  + mcc.referral.require_category
+- Updated the Referral valueset to reflect the Implementation Guide
+- Changed the defaults for referrals so that is Category use now defaults to false, while value set use not defaults to true.
+- New support for using a value set to control what conditions are social concerns
+- Updated FHIR Queries around health concerns
+  + Removed: Condition.QueryHealthConcerns
+  + Added Condition.QueryHealthConcerns.ByCategory=/Condition/?subject={subject}&category=http%3A%2F%2Fhl7.org%2Ffhir%2Fus%2Fcore%2FCodeSystem%2Fcondition-category%7Chealth-concern
+  + Added Condition.QueryHealthConcerns.ForValueSet=/Condition/?subject={subject}
+- Added very basic social concerns value set (One code for Food insecurity)
+
 ## Release 1.0.21
 - Move the mapping of Observations to SimpleQuestionnaireItems to the ObservationMapper
 - Fix data handling Observation Mapping to SimpleQuestionnaireItems
