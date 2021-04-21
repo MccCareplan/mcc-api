@@ -73,6 +73,14 @@ public class ValueSetManager {
         return bld.toString();
     }
 
+    public String getSimpleFileName(String valueSetId) {
+        StringBuilder bld = new StringBuilder();
+        bld.append(valueSetId);
+        bld.append(".csv");
+        return bld.toString();
+    }
+
+
     public HashSet<String> getLoadList() {
         HashSet<String> out = new HashSet<>();
         //Todo + Scan directory or load from inventory
@@ -146,12 +154,13 @@ public class ValueSetManager {
             MccValueSet vs = new MccValueSet();
             vs.setId(setId);
             String fileName = getFileName(setId);
+            String simpleFileName = getSimpleFileName(setId);
             InputStream inputStream;
             try {
 
 
                 if (possibleOverrides) {
-                    Path overrideFile = override.resolve(fileName);
+                    Path overrideFile = override.resolve(simpleFileName);
                     if (Files.exists(overrideFile)) {
                         inputStream = Files.newInputStream(overrideFile);
                         log.info("Using an override file for the value set:  " + setId);
@@ -171,7 +180,7 @@ public class ValueSetManager {
 
                 //Ok now either the original or an override is loaded, so we check for a supplement
                 if (possibleSupplements) {
-                    Path supplementFile = supplement.resolve(fileName);
+                    Path supplementFile = supplement.resolve(simpleFileName);
                     if (Files.exists(supplementFile)) {
                         inputStream = Files.newInputStream(supplementFile);
                         log.info("Using an supplements file for the value set:  " + setId);
