@@ -1,8 +1,13 @@
 package com.cognitive.nih.niddk.mccapi.util;
 
+import com.cognitive.nih.niddk.mccapi.data.MccValueSet;
 import com.cognitive.nih.niddk.mccapi.data.primative.GenericType;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCoding;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
+
+import java.util.List;
 
 public class MccHelper {
 
@@ -42,5 +47,23 @@ public class MccHelper {
         out.setValueType("string");
         out.setStringValue(in);
         return out;
+    }
+
+    public static boolean conceptInValueSet(MccCodeableConcept cc, MccValueSet valueSet)
+    {
+        if (cc == null)
+            return false;
+
+        MccCoding[] codes = cc.getCoding();
+        for (MccCoding coding: codes)
+        {
+            String cd = coding.getCode();
+            String system = coding.getSystem();
+            if (valueSet.hasCode(system,cd))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -33,7 +33,7 @@ public class SocialConcernController {
     private String useValueSet;
     private boolean bUseValueSet = true;
 
-    private static String valueSetId = "SocialConcerns";
+    public static String valueSetId = "SocialConcerns";
 
     public SocialConcernController(QueryManager queryManager, IR4Mapper mapper)
     {
@@ -57,6 +57,7 @@ public class SocialConcernController {
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
         Map<String, String> values = new HashMap<>();
+        MccValueSet valueSet = ValueSetManager.getValueSetManager().findValueSet(valueSetId);
 
         String callUrl = null;
         if (bUseCategory)
@@ -85,7 +86,7 @@ public class SocialConcernController {
                 }
             }
         }
-        out.categorizeConditions();
+        out.categorizeConditions(bUseCategory, bUseValueSet, valueSet);
         return out;
     }
 
@@ -134,11 +135,11 @@ public class SocialConcernController {
         String callUrl = null;
         if (bUseCategory)
         {
-            callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns.use_category", values, webRequest);
+            callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns.ByCategory", values, webRequest);
         }
         else if (bUseValueSet)
         {
-            callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns.use_valueset", values, webRequest);
+            callUrl = queryManager.setupQuery("Condition.QueryHealthConcerns.ForValueSet", values, webRequest);
         }
 
         if (callUrl != null) {
@@ -165,7 +166,7 @@ public class SocialConcernController {
                 }
             }
         }
-        concerns.categorizeConditions();
+        concerns.categorizeConditions(bUseCategory, bUseValueSet, valueSet);
         SocialConcern[] outA = new SocialConcern[out.size()];
         for (ConditionSummary s : concerns.getActiveConcerns())
         {
