@@ -109,7 +109,7 @@ details on Spring boot.
  | mcc.provider.pullbyrole | MCC_PROVIDER_PULLBYROLE | Allow provider contact info to be fetched by practitioner role | TRUE | TRUE |
  | mcc.referral.require_category | MCC_REFERRAL_REQUIRE_CATEGORY| If true a ServiceRequest must have a category to be considered a Referral | FALSE | FALSE |
  | mcc.referral.require_performer | MCC_REFERRAL_REQUIRE_PERFORMER | If true a ServiceRequest must have a performer to be considered a Referral | TRUE | TRUE |
- | mcc.referral.use_valueset| MCC_REFERRAL_USE_VALUESSET | If true a ServiceRequest in valueswet to be considerred a Referral | TRUE | TRUE |
+ | mcc.referral.use_valueset| MCC_REFERRAL_USE_VALUESSET | If true a ServiceRequest in valueset to be considerred a Referral | TRUE | TRUE |
  | mcc.social_concern.use_category | MCC_SOCIAL_CONCERN_USE_CATEGORY | If true Social Concerns use the HealthConcern Category | TRUE | TRUE |
  | mcc.social_concern.use_valueset | MCC_SOCIAL_CONCERN_USE_VALUESET | If true Social Concerns are identified by membership in a valuse set | FALSE | FALSE |
  
@@ -170,37 +170,99 @@ The follow is an example of passing a new default FHIR server address to the API
 $ docker run -d -e FHIR_DEFAULT_SERVER_ADDRESS='http://myfhireServer' -p 8080:8080 mcccareplan/mccapi
 
 
-### Running with an FHIR Query Override file
+### Running with Customization
 
-Path to set the override file to: /usr/local/mcc-api/fhirqueries.properties using the -v parameter
+All basis customization is done by adding files to a mapped area of the docker container. From the container perspective the root directory is /usr/local/mcc-api. 
 
-$ docker run -v {Full Directory Path}:/usr/local/mcc-api -d -p 8080:8080 mcccareplan/mccapi
+#### General Directory Structure used
+>
+>
+>       mcc-api (root  - on container file system this is /usr/local/mcc-api)
+>         +----- valuesets
+>                   +----------- override  
+>                   +----------- supplement
 
-#### Confirming the configuration on a detached image
-$ docker exec {image name} ls /usr/local/mcc-api
-fhirqueries.properties
+#### Useing FHIR Query Override file
 
-$ docker exec {image name} cat /usr/local/mcc-api/fhirqueries.properties
+Path to set the override file to: /usr/local/mcc-api/fhirqueries.properties using the -v parameter. Once you have established the customization file linkage for the docker container you just need to place your fhirqueries.properties in the root location.
+
+> $ docker run -v {Full Directory Path}:/usr/local/mcc-api -d -p 8080:8080 mcccareplan/mccapi
 
 
-#### Worked example
+##### Confirming the configuration on a detached image
+>   $ docker exec {image name} ls /usr/local/mcc-api
+> 
+>   fhirqueries.properties
+> 
+>   $ docker exec {image name} cat /usr/local/mcc-api/fhirqueries.properties
 
-$mkdir ~/mcc-api
-$cp src/test/over
-$docker run -v /Users/jerrygoodnough/mccapi:/usr/local/mcc-api -p 8081:8080 mcccareplan/mccapi
 
-c.c.nih.niddk.mccapi.MccApiApplication   : The following profiles are active: prod
-o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.35]
-o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 3319 ms
-c.c.n.n.m.managers.FHIRServerManager     : Default FHIR Server = https://api.logicahealth.org/MCCeCarePlanTest/open
-c.c.n.n.m.managers.FHIRServerManager     : Default FHIR Secure Server = https://api.logicahealth.org/MCCeCarePlanTest/data
-c.c.n.n.mccapi.managers.QueryManager     : Using a FHIR Query Override file:/usr/local/mcc-api/fhirqueries.properties
-o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-c.c.nih.niddk.mccapi.MccApiApplication   : Started MccApiApplication in 7.955 seconds (JVM running for 9.071)
+##### Worked example
 
+> $mkdir ~/mcc-api
+> 
+> $cp src/test/over
+> 
+> $docker run -v /Users/jerrygoodnough/mccapi:/usr/local/mcc-api -p 8081:8080 mcccareplan/mccapi
+>
+> c.c.nih.niddk.mccapi.MccApiApplication   : The following profiles are active: prod
+> 
+> o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+> 
+> o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+> 
+> org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.35]
+> 
+> o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+> 
+> o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 3319 ms
+> 
+> c.c.n.n.m.managers.FHIRServerManager     : Default FHIR Server = https://api.logicahealth.org/MCCeCarePlanTest/open>
+>
+> c.c.n.n.m.managers.FHIRServerManager     : Default FHIR Secure Server = https://api.logicahealth.org/MCCeCarePlanTest/data
+> 
+> c.c.n.n.mccapi.managers.QueryManager     : Using a FHIR Query Override file:/usr/local/mcc-api/fhirqueries.properties
+> 
+> o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+> 
+> c.c.nih.niddk.mccapi.MccApiApplication   : Started MccApiApplication in 7.955 seconds (JVM running for 9.071)
+
+### Overriding and Supplementing Value Sets
+In order to override or supplement contents on the value sets used the docker container must be configured with a customization directory. Blow that directory there must be a subdirectory named "valuesets".
+Below this directory there should be two subsdirectorys "override" and "supplement". See the section above on general directory structure.
+
+All values sets are stored as .cvs files - The exact set pof valuesets used and thier initial values can be fould by looking at the source code on github under /src/main/resources/valuesets. The file name is the same as the value set name.
+
+The general form of the csv file is in the following example fragment:
+
+>   System,Version,Code,Display
+>
+>   http://snomed.info/sct,2020-09,10725009,Benign hypertension (disorder)
+
+To customize the value set contents deployers have two related options. First they may choose to totally replace an valueset being usef by the system. 
+This is called overriding the valueset. Secondly a deployer may choose to extend a valueset with additional codes, this is called supplementing the valueset.
+Generally deployers should choose to override a valueset if the stock value set contains value that you do not want to use, otherwise it is suggested that supplementing the valueset and extending with the addtional code is best.
+The actions of overriding and supplementing a valueset are not exclusive, and is possible to do both for a single valueset.
+
+As a simple example; suppose you want to add a code to the concept of the Labs what make up eGFR (Estimated Glomerular filtration rate). This value set is identified as "2.16.840.1.113762.1.4.1222.179". 
+The name of the file for this valueset is therefore "2.16.840.1.113762.1.4.1222.179.csv".
+
+If you wanted to add an additional code then you would create a .cvs file with this name with the additional code as the second line after the column headers. 
+This file would then be placed under "mcc-api/valuseset/supplement" directory and on the container startup the file will be parsed and new code added to the value set. 
+
+The log file on the server will indicate if a valueset is overriden and/or supplemented.
+
+Overriding a value set is similar. It is suggested that deployers first copy the basic value set out of github, make their edits to it and then place it under "mcc-api/valuseset/override".
+
+
+#### Value Sets - General Info
+
+Most of the value sets referred are available on VSAC and what is included in the application is an expanded snapshot of the values sets. There are however as few application specific value sets that not maintained in a standard form. The table below decribes these.
+
+|Name | File | Description |
+|---------- | --------- | ------ |
+| Referrals | Referrals.csv | List of those Service requests considered to be a referral. Based on the Implementation Guide|
+| SocialConcerns | SocialConcerns.cvs | List of Conditions considered to be social concerns. Based on the Gravity project |
 
 ### Confirming the image is running
 
@@ -273,7 +335,7 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 - Updated the Patient mapping to support the mcc.patient.id.system to allow deployers to define the system to match for patent Id - see the section "Configuring the patient identifier" in the README.MD
 - Updated the logic for context setup
 - changed mapper naming,
-- fixed check on careteam id
+- fixed check on care team id
 - Removed static call to QuestionnaireResponse Mapper.
 
 ## Release 1.0.16-RELEASE
