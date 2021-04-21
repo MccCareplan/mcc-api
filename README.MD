@@ -182,7 +182,7 @@ All basis customization is done by adding files to a mapped area of the docker c
 >                   +----------- override  
 >                   +----------- supplement
 
-#### Useing FHIR Query Override file
+#### Using FHIR Query Override file
 
 Path to set the override file to: /usr/local/mcc-api/fhirqueries.properties using the -v parameter. Once you have established the customization file linkage for the docker container you just need to place your fhirqueries.properties in the root location.
 
