@@ -32,7 +32,7 @@ public class ReferralController {
     private static HashMap<String, Integer> activeStatus = new HashMap<>();
     private static HashMap<String, Integer> activeIntent = new HashMap<>();
 
-    private static String valueSetId = "Referral";
+    private static String valueSetId = "Referrals";
 
     static {
         // List of categories: 440379008,3457005,409073007,409063005
@@ -108,6 +108,17 @@ public class ReferralController {
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
+
+        MccValueSet valueSet = null;
+        if (bUseValueSet)
+        {
+            valueSet= ValueSetManager.getValueSetManager().findValueSet(valueSetId);
+            if (valueSet == null)
+            {
+                log.warn("Referrals based on valueset enabled, but value set "+valueSetId+" is not present");
+            }
+        }
+
         Map<String, String> values = new HashMap<>();
 
         String callUrl = queryManager.setupQuery("Referral.ServiceRequest.Query", values, webRequest);
@@ -116,8 +127,9 @@ public class ReferralController {
         //Possible Sources
         //     ServiceRequests - Education category = 409073007, Counseling 409063005
 
-        if (callUrl != null) {
-            MccValueSet valueSet = ValueSetManager.getValueSetManager().findValueSet(valueSetId);
+        if ((callUrl != null) && (bUseValueSet?(valueSet!=null):true) ) {
+
+
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
@@ -170,8 +182,8 @@ public class ReferralController {
                     if (bRequirePerformer) {
 
                         if (p.hasPerformer()) {
-                            if (isPerformerProvider(p.getPerformer())) {
-                                //Skip - perfromer is not a provisder
+                            if (!isPerformerProvider(p.getPerformer())) {
+                                //Skip - performer is not a provider
                                 continue;
                             }
                         } else {
