@@ -28,6 +28,7 @@ public class ValueSetManager {
     private boolean possibleSupplements = false;
     private Path override;
     private Path supplement;
+
     public ValueSetManager() {
     }
 
@@ -103,10 +104,40 @@ public class ValueSetManager {
         //Check if the various directories exist
         override = Paths.get(overridepath);
         possibleOverrides = Files.isDirectory(override);
+        log.info("Checking for possible values set overrides: "+Boolean.toString(possibleOverrides));
         supplement = Paths.get(supplementpath);
         possibleSupplements = Files.isDirectory(supplement);
+        log.info("Checking for possible values set supplements: "+Boolean.toString(possibleSupplements));
         //TODO: Enhance for database loading
         loadValueSets();
+    }
+
+    public void loadFromInputStream(InputStream inputStream, String setId, MccValueSet vs) {
+        try {
+            Reader in = new InputStreamReader(inputStream);
+            Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
+            for (CSVRecord record : records) {
+                String system = record.get("System");
+                //String version = record.get("Version");
+                String code = record.get("Code");
+                //String display = record.get("Display");
+
+                String key = getCodeKey(system, code);
+                if (codeMap.containsKey(key)) {
+                    ArrayList<String> array = codeMap.get(key);
+                    array.add(setId);
+                    //Consider a String list here
+                } else {
+                    ArrayList<String> array = new ArrayList<>();
+                    array.add(setId);
+                    codeMap.put(key, array);
+                }
+                vs.addCode(key);
+            }
+        } catch (Exception exp) {
+            log.warn("Error loading value set [" + setId+"]", exp);
+        }
+
     }
 
     public void loadValueSet(String setId) {
@@ -123,7 +154,7 @@ public class ValueSetManager {
                     Path overrideFile = override.resolve(fileName);
                     if (Files.exists(overrideFile)) {
                         inputStream = Files.newInputStream(overrideFile);
-                        log.info("Using an override file for the value set:  "+setId);
+                        log.info("Using an override file for the value set:  " + setId);
                     } else {
                         inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
                     }
@@ -140,41 +171,18 @@ public class ValueSetManager {
 
                 //Ok now either the original or an override is loaded, so we check for a supplement
                 if (possibleSupplements) {
-                    Path overrideFile = override.resolve(fileName);
-                    if (Files.exists(overrideFile)) {
-                        inputStream = Files.newInputStream(overrideFile);
+                    Path supplementFile = supplement.resolve(fileName);
+                    if (Files.exists(supplementFile)) {
+                        inputStream = Files.newInputStream(supplementFile);
                         log.info("Using an supplements file for the value set:  " + setId);
                         loadFromInputStream(inputStream, setId, vs);
                     }
                 }
 
             } catch (IOException exp) {
-                log.error("Error loading valueset " + setId, exp);
+                log.error("Error loading valueset (" + setId +")", exp);
             }
 
-        }
-    }
-
-    public void loadFromInputStream(InputStream inputStream, String setId, MccValueSet vs ) throws IOException {
-        Reader in = new InputStreamReader(inputStream);
-        Iterable<CSVRecord> records = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
-        for (CSVRecord record : records) {
-            String system = record.get("System");
-            //String version = record.get("Version");
-            String code = record.get("Code");
-            //String display = record.get("Display");
-
-            String key = getCodeKey(system, code);
-            if (codeMap.containsKey(key)) {
-                ArrayList<String> array = codeMap.get(key);
-                array.add(setId);
-                //Consider a String list here
-            } else {
-                ArrayList<String> array = new ArrayList<>();
-                array.add(setId);
-                codeMap.put(key, array);
-            }
-            vs.addCode(key);
         }
     }
 
