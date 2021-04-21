@@ -1,5 +1,4 @@
 System,Version,Code,Display
-urn:oid:1.2.840.114350.1.13.135.3.7.2.696580,339713,IMC PSYCH CLINIC REFERRAL
 http://snomed.info/sct,2020-09,306068001,Referral by dietitian (procedure)
 http://snomed.info/sct,2020-09,306069009,Referral by community-based dietitian (procedure)
 http://snomed.info/sct,2020-09,306070005,Referral by hospital-based dietitian (procedure)
@@ -35,7 +34,7 @@ http://snomed.info/sct,2020-09,306367002,Referral to social services department 
 http://snomed.info/sct,2020-09,308440001,Referral to social worker (procedure)
 http://snomed.info/sct,2020-09,309630000,Child referral-social services (procedure)
 http://snomed.info/sct,2020-09,31751007,Social service referral of home patient (procedure)
-http://snomed.info/sct,2020-09,428481000124106.Referral to clinical social worker (procedure)
+http://snomed.info/sct,2020-09,428481000124106,Referral to clinical social worker (procedure)
 http://snomed.info/sct,2020-09,444543005,Referral to social services for adult protection (procedure)
 http://snomed.info/sct,2020-09,453691000124103,Referral to certified diabetes educator (procedure)
 http://snomed.info/sct,2020-09,183917008,Referral by nurse (procedure)
@@ -75,4 +74,3 @@ http://snomed.info/sct,2020-09,306265007,Referral to pain management specialist 
 http://snomed.info/sct,2020-09,306330005,Referral to pain management nurse (procedure)
 http://snomed.info/sct,2020-09,307373005,Referral to acute pain service (procedure)
 http://snomed.info/sct,2020-09,745233009,Referral to chronic pain management service (procedure)
-
