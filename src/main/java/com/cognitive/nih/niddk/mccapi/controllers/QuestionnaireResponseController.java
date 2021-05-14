@@ -236,7 +236,7 @@ public class QuestionnaireResponseController {
             Map<String, String> obsValues = new HashMap<>();
             values.put("code", code);
             String baseQuery = "Observation.QueryLatest";
-            ArrayList<Observation> list = observationController.QueryObservationsRaw(baseQuery, "code", client, subjectId, "descending", webRequest, headers, obsValues);
+            ArrayList<Observation> list = observationController.QueryObservationsRaw(baseQuery, "code", client, subjectId, "descending",null,  webRequest, headers, obsValues);
             //OK we found some matching observations
             if (list.size() > 0) {
                 Observation obs = list.get(0);

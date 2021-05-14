@@ -46,9 +46,9 @@ public class ConditionController {
     public void config() {
 
         bUseCategory = Boolean.parseBoolean(useCategopry);
-        log.info("Config: mcc.social_concern.require_category = " + useCategopry);
+        log.info("Config: mcc.social_concern.require_category (Condition) = " + useCategopry);
         bUseValueSet = Boolean.parseBoolean(useValueSet);
-        log.info("Config: mcc.social_concern.use_valueset = " + useValueSet);
+        log.info("Config: mcc.social_concern.use_valueset (Condition) = " + useValueSet);
     }
 
     private void addConditionToConditionList(ConditionLists list, Condition c, Context ctx) {

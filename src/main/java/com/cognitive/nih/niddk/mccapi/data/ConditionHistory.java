@@ -7,9 +7,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hl7.fhir.r4.model.CodeableConcept;
 
 import javax.validation.constraints.NotBlank;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ConditionHistory implements Comparable<ConditionHistory> {
+    private static final String dateFormat = "MM/dd/yyyy";
+    private static final SimpleDateFormat fmtDate = new SimpleDateFormat(dateFormat);
+
     @NotBlank
     private MccCodeableConcept code;
     private String onset;
@@ -24,6 +30,7 @@ public class ConditionHistory implements Comparable<ConditionHistory> {
 
     private FuzzyDate onsetDate;
     private FuzzyDate abatementDate;
+    private Date recorded;
 
     @Override
     public int compareTo(ConditionHistory o) {
@@ -51,12 +58,34 @@ public class ConditionHistory implements Comparable<ConditionHistory> {
             //The onset of the first is not known - sort it first
             return 1;
         }
+        else if (o.onsetDate != null)
+        {
+
+            return -1;
+        }
         else
         {
-            return -1;
+            // Niether hase a condtion date so we will use the recorded dates
+            if (recorded != null & o.recorded!=null)
+            {
+                return recorded.compareTo(o.recorded);
+            }
+            if (recorded != null){
+                return 1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
     }
+
+    public Date getRecorded() { return recorded;}
+
+    public void setRecorded(Date d) { recorded = d;}
+
+    public String getRecordedAsText() { return recorded == null?"":fmtDate.format(recorded);}
 
     public String getOnset() {
         return onset;

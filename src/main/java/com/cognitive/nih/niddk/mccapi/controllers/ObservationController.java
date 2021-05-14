@@ -6,6 +6,7 @@ import com.cognitive.nih.niddk.mccapi.data.MccObservation;
 import com.cognitive.nih.niddk.mccapi.data.MccValueSet;
 import com.cognitive.nih.niddk.mccapi.data.primative.GenericType;
 import com.cognitive.nih.niddk.mccapi.data.primative.MccCodeableConcept;
+import com.cognitive.nih.niddk.mccapi.data.primative.MccQuantity;
 import com.cognitive.nih.niddk.mccapi.data.primative.ObservationCollection;
 import com.cognitive.nih.niddk.mccapi.exception.ItemNotFoundException;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
@@ -17,6 +18,7 @@ import com.cognitive.nih.niddk.mccapi.util.MccHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Quantity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -42,12 +44,37 @@ public class ObservationController {
         this.mapper = mapper;
     }
 
-    protected ArrayList<Observation> QueryObservationsRaw(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
+    protected boolean includeObservation(Observation o, LinkedHashSet unitSet)
+    {
+        if (unitSet == null) return true;
+        if (o.hasValue()== false) return true;
+        if (o.getValue().fhirType().compareTo(MccQuantity.fhirType)!=0) return true;
+        Quantity q = o.getValueQuantity();
+        if (q.hasUnit() == false)
+        {
+            String[] a = (String[])unitSet.toArray();
+            q.setUnit(a[0]);
+            return true;
+        }
+        if (q.getUnit().isEmpty())
+        {
+            String[] a = (String[])unitSet.toArray();
+            q.setUnit(a[0]);
+            return true;
+        }
+        return unitSet.contains(q.getUnit());
+    }
+
+    protected ArrayList<Observation> QueryObservationsRaw(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, String unit, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
         ArrayList<Observation> out = new ArrayList<>();
         List<String> calls = getQueryStrings(baseQuery, mode);
 
         if (calls.size() > 0) {
             Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+
+            LinkedHashSet<String> unitHashSet = null;
+            if (unit != null && !unit.isEmpty()) unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
+                    .split(",")));
 
             for (String key : calls) {
                 String callUrl = queryManager.setupQuery(key, values, webRequest);
@@ -57,7 +84,9 @@ public class ObservationController {
                 for (Bundle.BundleEntryComponent e : results.getEntry()) {
                     if (e.getResource().fhirType().compareTo("Observation") == 0) {
                         Observation o = (Observation) e.getResource();
-                        out.add(o);
+                        if (includeObservation(o,unitHashSet)) {
+                            out.add(o);
+                        }
                     }
                 }
             }
@@ -80,14 +109,18 @@ public class ObservationController {
         return out;
     }
 
-    protected ArrayList<MccObservation> QueryObservations(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
+    protected ArrayList<MccObservation> QueryObservations(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, String unit, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
         ArrayList<MccObservation> out = new ArrayList<>();
         List<String> calls = getQueryStrings(baseQuery, mode);
 
         if (calls.size() > 0) {
             Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
 
+            LinkedHashSet<String> unitHashSet = null;
+            if (unit != null && !unit.isEmpty()) unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
+                    .split(",")));
             for (String key : calls) {
+
                 String callUrl = queryManager.setupQuery(key, values, webRequest);
                 Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
                 //In general the we expect the return value to be in descending date order
@@ -95,7 +128,10 @@ public class ObservationController {
                 for (Bundle.BundleEntryComponent e : results.getEntry()) {
                     if (e.getResource().fhirType().compareTo("Observation") == 0) {
                         Observation o = (Observation) e.getResource();
-                        out.add(mapper.fhir2local(o, ctx));
+                        if (includeObservation(o, unitHashSet))
+                        {
+                            out.add(mapper.fhir2local(o, ctx));
+                        }
                     }
                 }
             }
@@ -117,12 +153,16 @@ public class ObservationController {
         return out;
     }
 
-    private ObservationCollection QueryObservationsSegmented(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
+    private ObservationCollection QueryObservationsSegmented(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, String unit, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
         ObservationCollection out = new ObservationCollection();
         List<String> calls = getQueryStrings(baseQuery, mode);
 
         if (calls.size() > 0) {
             Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+
+            LinkedHashSet<String> unitHashSet = null;
+            if (unit != null && !unit.isEmpty()) unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
+                    .split(",")));
 
             for (String key : calls) {
                 String callUrl = queryManager.setupQuery(key, values, webRequest);
@@ -132,7 +172,9 @@ public class ObservationController {
                 for (Bundle.BundleEntryComponent e : results.getEntry()) {
                     if (e.getResource().fhirType().compareTo("Observation") == 0) {
                         Observation o = (Observation) e.getResource();
-                        out.add(mapper.fhir2local(o, ctx),"http://loinc.org");
+                        if (includeObservation(o,unitHashSet)) {
+                            out.add(mapper.fhir2local(o, ctx), "http://loinc.org");
+                        }
                     }
                 }
             }
@@ -164,7 +206,7 @@ public class ObservationController {
     }
 
     @GetMapping("/find/latest/observation")
-    public MccObservation getLatestObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code,  @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestParam(name = "translate", defaultValue = "false") String translate, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+    public MccObservation getLatestObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code,  @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestParam(name = "translate", defaultValue = "false") String translate,@RequestParam(required = false, name = "requiredunit") String unit,@RequestHeader Map<String, String> headers, WebRequest webRequest) {
 
         ArrayList<MccObservation> list = new ArrayList<>();
         //Implement a mode that will translate a single code to it's containing value set
@@ -199,7 +241,7 @@ public class ObservationController {
         Map<String, String> values = new HashMap<>();
         values.put("code",code);
         String baseQuery = "Observation.QueryLatest";
-        list = this.QueryObservations(baseQuery, mode, client, subjectId, "descending", webRequest, headers, values);
+        list = this.QueryObservations(baseQuery, mode, client, subjectId, "descending",unit, webRequest, headers, values);
 
         if (list.size() == 0) {
             //throw new ItemNotFoundException(code);
@@ -213,7 +255,7 @@ public class ObservationController {
 
 
     @GetMapping("/observations")
-    public MccObservation[] getObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code, @RequestParam(name = "count", defaultValue = "100") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+    public MccObservation[] getObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code, @RequestParam(name = "count", defaultValue = "100") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestParam(required = false, name = "requiredunit") String unit, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
 
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
@@ -222,7 +264,7 @@ public class ObservationController {
         Map<String, String> values = new HashMap<>();
         values.put("count", Integer.toString(maxItems));
         String baseQuery = "Observation.Query";
-        List<MccObservation> out = this.QueryObservations(baseQuery, mode, client, subjectId, sortOrder, webRequest, headers, values);
+        List<MccObservation> out = this.QueryObservations(baseQuery, mode, client, subjectId, sortOrder, unit, webRequest, headers, values);
 
         if (out.size()>maxItems)
         {
@@ -234,8 +276,8 @@ public class ObservationController {
     }
 
     @GetMapping("/observationsbyvalueset")
-    public MccObservation[] getObservationsByValueSet(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "valueset") String valueset, @RequestParam(name = "max", defaultValue = "100") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
-
+    public MccObservation[] getObservationsByValueSet(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "valueset") String valueset, @RequestParam(name = "max", defaultValue = "100") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode,@RequestParam(required = false, name = "requiredunit") String unit, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+        log.info("Get: /observationsbyvalueset for valueset "+valueset);
         List<MccObservation> out = new ArrayList<>();
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
@@ -251,7 +293,7 @@ public class ObservationController {
             values.put("codes", valueSetObj.asQueryString());
             values.put("count", Integer.toString(maxItems));
             String baseQuery = "Observation.QueryValueSetExpanded";
-            out = this.QueryObservations(baseQuery, mode, client, subjectId, sortOrder, webRequest, headers, values);
+            out = this.QueryObservations(baseQuery, mode, client, subjectId, sortOrder,unit, webRequest, headers, values);
 
         } else {
             throw new ItemNotFoundException("No such valaue set: " + valueset);
@@ -267,14 +309,16 @@ public class ObservationController {
         return outA;
     }
     @GetMapping("/observationssegmented")
-    public ObservationCollection getObservationsSegmented(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "valueset") String valueset, @RequestParam(name = "max", defaultValue = "1000") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+    public ObservationCollection getObservationsSegmented(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "valueset") String valueset, @RequestParam(name = "max", defaultValue = "1000") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode,@RequestParam(required = false, name = "requiredunit") String unit, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
+
+        log.info("Get: /observationssegmented for valueset "+valueset);
 
         ObservationCollection out;
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
 
 
-        //Right now this search is using the local expanded version of the value set
+        //Right now this search is using the local expanded version of the value s
         //If the server supports code:in then it would be better to use that feature
         MccValueSet valueSetObj = ValueSetManager.getValueSetManager().findValueSet(valueset);
         if (valueSetObj != null) {
@@ -283,11 +327,10 @@ public class ObservationController {
             values.put("codes", valueSetObj.asQueryString());
             values.put("count", Integer.toString(maxItems));
             String baseQuery = "Observation.QueryValueSetExpanded";
-            out = this.QueryObservationsSegmented(baseQuery, mode, client, subjectId, sortOrder, webRequest, headers, values);
+            out = this.QueryObservationsSegmented(baseQuery, mode, client, subjectId, sortOrder,unit, webRequest, headers, values);
 
         } else {
             throw new ItemNotFoundException("No such valaue set: " + valueset);
-
         }
 
         return out;

@@ -8,6 +8,7 @@ import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.matcher.CodeableConceptMatcher;
 import com.cognitive.nih.niddk.mccapi.util.MCC2HFHIRHelper;
 import com.cognitive.nih.niddk.mccapi.util.MccHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Condition;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
+@Slf4j
 public class ConditionLists {
     @NotBlank
     private ArrayList<ConditionSummary> activeConditions;
@@ -280,10 +281,13 @@ public class ConditionLists {
                     case IGNORE:
                     {
                         //Maybe log an debug message
+                        log.info("Ignoring condition "+c.getCode().toString()+" status: "+activeStatus);
                         break;
                     }
                     default:
                     {
+                        //Maybe log an debug message
+                        log.info("Undefined State, Ignoring condition "+c.getCode().toString()+" status: "+activeStatus);
                         //TODO:  log an warning message
                         break;
 
