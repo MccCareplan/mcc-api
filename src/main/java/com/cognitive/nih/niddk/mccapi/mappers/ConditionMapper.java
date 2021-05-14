@@ -68,6 +68,9 @@ public class ConditionMapper implements IConditionMapper {
             out.setOnset(FuzzyDate.buildString(in.getOnset(), ctx));
             out.setOnsetDate(new FuzzyDate(in.getOnset()));
         }
+        if (in.hasRecordedDate()) {
+            out.setRecorded(in.getRecordedDate());
+        }
         out.setCategoriesList(in.getCategory());
         out.setCode(mapper.fhir2local(in.getCode(),ctx));
         return out;
