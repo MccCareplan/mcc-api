@@ -1,3 +1,14 @@
+## Release 1.0.24
+- Revision of condition summary and history to support recorded vs onset
+  + Condition structure changes to support firstOnset and firstRecord
+  + Condition date removed
+  + ConditionSummary updated for firstRecorded and firstRecordedAsText
+  + ConditionHostory updated for recorded and recordedAsText 
+- Observation calls now support a list of required units via the optional paramter requiredunits. The list is comma seperated and the first entry is use as a default when no unit is specified. This parameter currently acts as a filter and no unit conversion is attempted.
+
+## Release 1.0.23
++ Added obdsrvation related Diagnostics
+
 ## Release 1.0.22
 - More Date Conversion Fixes
 - Updated Referrals, additional configuration options and support for valueset
