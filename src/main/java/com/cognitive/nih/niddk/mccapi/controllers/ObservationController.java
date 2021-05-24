@@ -44,7 +44,7 @@ public class ObservationController {
         this.mapper = mapper;
     }
 
-    protected boolean includeObservation(Observation o, LinkedHashSet unitSet)
+    protected boolean includeObservation(Observation o, LinkedHashSet<String> unitSet)
     {
         if (unitSet == null) return true;
         if (o.hasValue()== false) return true;
@@ -52,9 +52,14 @@ public class ObservationController {
         Quantity q = o.getValueQuantity();
         if (q.hasUnit() == false)
         {
-            String[] a = (String[])unitSet.toArray();
-            q.setUnit(a[0]);
-            return true;
+            Iterator<String> itr = unitSet.iterator();
+            if ( itr.hasNext())
+            {
+                String defUnit = itr.next();
+                q.setUnit(defUnit);
+                return true;
+            }
+            return false;
         }
         if (q.getUnit().isEmpty())
         {
