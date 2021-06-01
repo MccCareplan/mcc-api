@@ -95,6 +95,8 @@ details on Spring boot.
  | fhir.secure.server.address | FHIR_SECURE_SERVER_ADDRESS |Default secure fhir server | https://api.logicahealth.org/MCCeCarePlanTest/data | https://api.logicahealth.org/MCCeCarePlanTest/data |
  | logging.level.org.springframework | | | WARN | WARN |
  | server.port | SERVER_PORT | The port on which tomcat runs | 8081 | Tomcat Def (8080) |
+ | fhir.request.timeout |  FHIR_REQUEST_TIMEOUT| FHIR Request TCP Timeout in Milliseconds | 30000 | 30000 |
+ | fhir.connect.timeout | FHIR_CONNECT_TIMEOUT | FHIR Initial connection TCP Timeout in Milliseconds | 30000 | 30000 |
 
 ### Environment variables for API Behavior control
  | Property Name | System Env. Variable eqv | Description | Dev | Prod |
@@ -274,16 +276,20 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 #Recent Changes log
 
+## Release 1.0.25 
+- Added fhir.request.timeout to control the TCP/IP Socket timeout when making a FHIR Request. 
+- Added fhir.connect.timeout to control the TCP/IP Socket timeout when making an initial FHIR Connection.
+
 ## Release 1.0.24
 - Revision of condition summary and history to support recorded vs onset
   + Condition structure changes to support firstOnset and firstRecord
   + Condition date removed
   + ConditionSummary updated for firstRecorded and firstRecordedAsText
   + ConditionHostory updated for recorded and recordedAsText
-- Observation calls now support a list of required units via the optional paramter requiredunits. The list is comma seperated and the first entry is use as a default when no unit is specified. This parameter currently acts as a filter and no unit conversion is attempted.
+- Observation calls now support a list of required units via the optional parameter requiredunits. The list is comma seperated and the first entry is use as a default when no unit is specified. This parameter currently acts as a filter and no unit conversion is attempted.
 
 ## Release 1.0.23
-  + Added obdsrvation related Diagnostics  
+  + Added observation related Diagnostics  
 
 
 ## Release 1.0.22

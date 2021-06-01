@@ -1,3 +1,7 @@
+## Release 1.0.25
+- Added fhir.request.timeout to control the TCP/IP Socket timeout when making a FHIR Request.
+- Added fhir.connect.timeout to control the TCP/IP Socket timeout when making an initial FHIR Connection.
+
 ## Release 1.0.24
 - Revision of condition summary and history to support recorded vs onset
   + Condition structure changes to support firstOnset and firstRecord
