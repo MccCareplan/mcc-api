@@ -1,3 +1,7 @@
+## Release 1.0.26
+- Fix medication request status - support 'stopped' and 'draft'
+- Fix medication summary drop through logging messages
+
 ## Release 1.0.25
 - Added fhir.request.timeout to control the TCP/IP Socket timeout when making a FHIR Request.
 - Added fhir.connect.timeout to control the TCP/IP Socket timeout when making an initial FHIR Connection.

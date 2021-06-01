@@ -34,13 +34,16 @@ public class MedicationSummaryList {
         Integer ignore = Integer.valueOf(IGNORE);
 
         //Medication Request Status: 	active | on-hold | cancelled | completed | entered-in-error | not-taken | draft | unknown
+        //   4.01 active | on-hold | cancelled | completed | entered-in-error | stopped | draft | unknown
         activeMedReqKeys.put("active",active);
         activeMedReqKeys.put("on-hold",inactive);
         activeMedReqKeys.put("cancelled",inactive);
         activeMedReqKeys.put("completed",inactive);
         activeMedReqKeys.put("entered-in-error",ignore);
-        activeMedReqKeys.put("not-taken",inactive);
+        activeMedReqKeys.put("not-taken",inactive);   //Not in 4.01
         activeMedReqKeys.put("unknown",inactive);
+        activeMedReqKeys.put("stopped",inactive);
+        activeMedReqKeys.put("draft",inactive);
 
         //Medication Statement Status: 	active | completed | entered-in-error | intended | stopped | on-hold | unknown | not-taken
         activeMedStmtKeys.put("active",active);
@@ -97,13 +100,13 @@ public class MedicationSummaryList {
                     break;
                 }
                 default: {
-                    log.debug("Code error - Unhandled status swithc");
+                    log.debug("Code error - Unhandled status switch");
                 }
             }
         }
         else
         {
-            log.warn("Unknown Medication Status: "+status);
+            log.warn("Unknown Medication Statement Status: "+status);
         }
     }
 
@@ -133,13 +136,13 @@ public class MedicationSummaryList {
                     break;
                 }
                 default: {
-                    log.debug("Code error - Unhandled status swithc");
+                    log.debug("Code error - Unhandled status switch");
                 }
             }
         }
         else
         {
-            log.warn("Unknown Medication Status: "+status);
+            log.warn("Unknown Medication Request Status: "+status);
         }
 
     }
