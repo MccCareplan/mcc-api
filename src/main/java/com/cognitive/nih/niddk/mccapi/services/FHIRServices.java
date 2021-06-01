@@ -24,8 +24,9 @@ public class FHIRServices {
     public FHIRServices() {
 
         stu4Context = FhirContext.forR4();
-
-
+        FHIRServerManager srvMgr = FHIRServerManager.getManager();
+        stu4Context.getRestfulClientFactory().setConnectTimeout(srvMgr.connTimeout);
+        stu4Context.getRestfulClientFactory().setSocketTimeout(srvMgr.reqTimeout);
     }
 
     public FhirContext getR4Context() {

@@ -2,6 +2,7 @@ package com.cognitive.nih.niddk.mccapi.managers;
 
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 import com.cognitive.nih.niddk.mccapi.data.FHIRServer;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +12,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 
 @Log
 @Component
@@ -20,7 +22,10 @@ public class FHIRServerManager {
     private String defaultFHIRServerAddress;
     @Value("${fhir.secure.server.address:https://api.logicahealth.org/MCCeCarePlanTest/data}")
     private String defaultFHIRSecureAddress;
-
+    @Value("${fhir.connect.timeout:30000}")
+    private String connectTimeout;
+    @Value("${fhir.request.timeout:30000}")
+    private String requestTimeout;
     @Value("${hapi.logging.enabled:false}")
     private String enableLogging;
     @Value("${hapi.logging.request.summary:true}")
@@ -49,6 +54,8 @@ public class FHIRServerManager {
     }
 
     private boolean enableFHIRLogging;
+    public int connTimeout = 30 * 1000;
+    public int reqTimeout = 30 * 1000;
 
     private LoggingInterceptor loggingInterceptor;
     private static FHIRServerManager singleton; // = new FHIRServerManager();
@@ -96,6 +103,35 @@ public class FHIRServerManager {
             singleton = this;
         }
 
+        if (requestTimeout != null)
+        {
+            if (requestTimeout.length()>0)
+            {
+                try {
+                    reqTimeout = Integer.parseInt(requestTimeout);
+                    log.info("Config: fhir.request.timeout = "+requestTimeout);
+                }
+                catch(Exception e)
+                {
+                  log.log(Level.WARNING,"Failed to parse FHIR request timeout ("+requestTimeout+"), using default",e);
+                }
+            }
+        }
+
+        if (connectTimeout != null)
+        {
+            if (connectTimeout.length()>0)
+            {
+                try {
+                    connTimeout = Integer.parseInt(connectTimeout);
+                    log.info("Config: fhir.connect.timeout = "+connectTimeout);
+                }
+                catch(Exception e)
+                {
+                    log.log(Level.WARNING,"Failed to parse FHIR conect timeout ("+connectTimeout+"), using default",e);
+                }
+            }
+        }
         enableFHIRLogging = Boolean.valueOf(enableLogging).booleanValue();
 
         if (enableFHIRLogging)
