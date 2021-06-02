@@ -33,10 +33,12 @@ public class CareplanController {
 
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
+    private final ContextManager contextManager;
 
-    public CareplanController(QueryManager queryManager, IR4Mapper mapper) {
+    public CareplanController(QueryManager queryManager, IR4Mapper mapper, ContextManager contextManager) {
         this.queryManager = queryManager;
         this.mapper = mapper;
+        this.contextManager = contextManager;
     }
 
     @PostConstruct
@@ -64,7 +66,7 @@ public class CareplanController {
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
 
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType() == "CarePlan") {
@@ -106,7 +108,7 @@ public class CareplanController {
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
 
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType() == "CarePlan") {
@@ -222,7 +224,7 @@ public class CareplanController {
         if (callUrl != null) {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
 
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType() == "CarePlan") {
@@ -252,7 +254,7 @@ public class CareplanController {
             CarePlan fc = client.fetchResourceFromUrl(CarePlan.class, callUrl);
             //CarePlan fc = client.read().resource(CarePlan.class).withId(id).execute();
             String subjectId = fc.getSubject().getId();
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
             c = mapCarePlan(fc, client, ctx);
         }
         else

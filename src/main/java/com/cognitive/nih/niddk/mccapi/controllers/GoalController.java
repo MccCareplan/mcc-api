@@ -25,10 +25,12 @@ import java.util.Map;
 public class GoalController {
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
+    private final ContextManager contextManager;
 
-    public GoalController(QueryManager queryManager, IR4Mapper mapper) {
+    public GoalController(QueryManager queryManager, IR4Mapper mapper, ContextManager contextManager) {
         this.queryManager = queryManager;
         this.mapper = mapper;
+        this.contextManager = contextManager;
     }
 
 
@@ -70,7 +72,7 @@ public class GoalController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Goal")==0){
                     Goal g = (Goal) e.getResource();
@@ -94,7 +96,7 @@ public class GoalController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             //Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //        .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Goal") == 0) {
                     Goal g = (Goal) e.getResource();
@@ -121,7 +123,7 @@ public class GoalController {
 
             //Goal fg = client.read().resource(Goal.class).withId(id).execute();
             String subjectId = fg.getSubject().getId();
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
             g = mapper.fhir2local(fg, ctx);
         }
         else

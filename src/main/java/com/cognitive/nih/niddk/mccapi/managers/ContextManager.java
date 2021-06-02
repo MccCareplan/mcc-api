@@ -3,17 +3,20 @@ package com.cognitive.nih.niddk.mccapi.managers;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
+import org.springframework.stereotype.Component;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class ContextManager {
-    private static ContextManager singleton= new ContextManager();
-    public static ContextManager getManager() {return singleton;}
+    //private static ContextManager singleton= new ContextManager();
+    //public static ContextManager getManager() {return singleton;}
 
     //TODO: Replace with a cache
     HashMap<String, Context> subjectMap;
+
 
     public ContextManager(){
      subjectMap = new HashMap<>();

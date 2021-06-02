@@ -26,6 +26,7 @@ import java.util.Map;
 public class SocialConcernController {
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
+    private final ContextManager contextManager;
     @Value("${mcc.social_concern.use_category:true}")
     private String useCategopry;
     private boolean bUseCategory = true;
@@ -35,10 +36,11 @@ public class SocialConcernController {
 
     public static String valueSetId = "SocialConcerns";
 
-    public SocialConcernController(QueryManager queryManager, IR4Mapper mapper)
+    public SocialConcernController(QueryManager queryManager, IR4Mapper mapper, ContextManager contextManager)
     {
         this.queryManager = queryManager;
         this.mapper = mapper;
+        this.contextManager = contextManager;
     }
 
     @PostConstruct
@@ -74,7 +76,7 @@ public class SocialConcernController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             //Bundle results = client.search().forResource(Condition.class).where(Condition.SUBJECT.hasId(subjectId))
             //        .and(Condition.CATEGORY.exactly().code("health-concern")).returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Condition")==0) {
                     if (bUseValueSet)
@@ -102,7 +104,7 @@ public class SocialConcernController {
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
 
-        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+        Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
         //TODO: Query for concerns
         //Bundle results = client.search().forResource(CarePlan.class).where(CarePlan.SUBJECT.hasId(subjectId))
         //        .returnBundle(Bundle.class).execute();

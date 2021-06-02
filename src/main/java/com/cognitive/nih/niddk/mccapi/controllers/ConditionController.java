@@ -30,6 +30,8 @@ public class ConditionController {
 
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
+    private final ContextManager contextManager;
+
     @Value("${mcc.social_concern.use_category:true}")
     private String useCategopry;
     private boolean bUseCategory = true;
@@ -37,9 +39,11 @@ public class ConditionController {
     private String useValueSet;
     private boolean bUseValueSet = true;
 
-    public ConditionController(QueryManager queryManager, IR4Mapper mapper) {
+
+    public ConditionController(QueryManager queryManager, IR4Mapper mapper, ContextManager contextManager) {
         this.queryManager = queryManager;
         this.mapper = mapper;
+        this.contextManager = contextManager;
     }
 
     @PostConstruct
@@ -60,7 +64,7 @@ public class ConditionController {
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
-        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+        Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
         MccValueSet valueSet = ValueSetManager.getValueSetManager().findValueSet(SocialConcernController.valueSetId);
 
         log.info("Fetching condition summary");
@@ -122,7 +126,7 @@ public class ConditionController {
                 throw new ItemNotFoundException(id);
             }
             String subjectId = fc.getSubject().getId();
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx =contextManager.setupContext(subjectId, client, mapper, headers);
             c = mapCondition(fc, client, ctx);
         } else {
             c = new MccCondition();
@@ -163,7 +167,7 @@ public class ConditionController {
 
         Bundle results;
         Map<String, String> values = new HashMap<>();
-        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+        Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
         MccValueSet valueSet = ValueSetManager.getValueSetManager().findValueSet(SocialConcernController.valueSetId);
 
         log.info("Fetching all conditions");

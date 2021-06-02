@@ -62,6 +62,7 @@ public class QuestionnaireResponseController {
     private final QuestionnaireResolver questionnaireResolver;
     private final IR4Mapper mapper;
     private final ObservationController observationController;
+    private final ContextManager contextManager;
     private final boolean SERVICE_REQUEST_ENABLED = false;
     @Value("${mcc.patient.reported.data.use.questionnaires:true}")
     private String useQuestionnaires;
@@ -70,13 +71,14 @@ public class QuestionnaireResponseController {
     private String useObservatiions;
     private boolean bUseObservations = false;
 
-    public QuestionnaireResponseController(QueryManager queryManager, QuestionnaireResolver questionnaireResolver, IR4Mapper mapper, ObservationController observationController) {
+    public QuestionnaireResponseController(QueryManager queryManager, QuestionnaireResolver questionnaireResolver, IR4Mapper mapper, ObservationController observationController, ContextManager contextManager) {
         this.queryManager = queryManager;
         this.questionnaireResolver = questionnaireResolver;
         this.mapper = mapper;
         this.observationController = observationController;
 
 
+        this.contextManager = contextManager;
     }
 
     @GetMapping("/find/latest/questionnaireresponse")
@@ -87,7 +89,7 @@ public class QuestionnaireResponseController {
         IGenericClient client = fhirSrv.getClient(headers);
         Map<String, String> values = new HashMap<>();
 
-        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+        Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
         if (queryManager.doesQueryExist("Questionnaire.FindForCode")) {
             // find questionnaires for the code
@@ -167,7 +169,7 @@ public class QuestionnaireResponseController {
         IGenericClient client = fhirSrv.getClient(headers);
         Map<String, String> values = new HashMap<>();
 
-        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+        Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
         if (bUseQuestionnaires) {
             if (queryManager.doesQueryExist("Questionnaire.FindForCode")) {
@@ -293,7 +295,7 @@ public class QuestionnaireResponseController {
         IGenericClient client = fhirSrv.getClient(headers);
         Map<String, String> values = new HashMap<>();
 
-        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+        Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
         if (queryManager.doesQueryExist("Questionnaire.FindForCode")) {
             // find questionnaires for the code
@@ -369,7 +371,7 @@ public class QuestionnaireResponseController {
             QuestionnaireResponse qr = client.fetchResourceFromUrl(QuestionnaireResponse.class, callUrl);
             if (qr != null) {
                 String subjectId = qr.getSubject().getId();
-                Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+                Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
                 out = mapper.fhir2local(qr, ctx);
             }
         }
@@ -396,7 +398,7 @@ public class QuestionnaireResponseController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("QuestionnaireResponse") == 0) {
@@ -432,7 +434,7 @@ public class QuestionnaireResponseController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("QuestionnaireResponse") == 0) {
                     QuestionnaireResponse qr = (QuestionnaireResponse) e.getResource();

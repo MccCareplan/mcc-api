@@ -5,7 +5,6 @@ import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.data.MccPatient;
 import com.cognitive.nih.niddk.mccapi.managers.ContextManager;
 import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
-import com.cognitive.nih.niddk.mccapi.mappers.IPatientMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +23,14 @@ public class PatientController {
 
     private final IR4Mapper mapper;
     private final QueryManager queryManager;
+    private final ContextManager contextManager;
 
 
-    public PatientController(IR4Mapper mapper, QueryManager queryManager)
+    public PatientController(IR4Mapper mapper, QueryManager queryManager, ContextManager contextManager)
     {
         this.mapper = mapper;
         this.queryManager = queryManager;
+        this.contextManager = contextManager;
     }
 
     @GetMapping("/patient")
@@ -53,7 +54,7 @@ public class PatientController {
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Patient") == 0) {
                     Patient bp = (Patient) e.getResource();
-                    Context ctx = ContextManager.getManager().setupContext(bp.hasIdentifier() ? bp.getIdentifierFirstRep().getValue() : "Unknown", client, mapper, headers);
+                    Context ctx = contextManager.setupContext(bp.hasIdentifier() ? bp.getIdentifierFirstRep().getValue() : "Unknown", client, mapper, headers);
                     p = mapper.fhir2local(bp, ctx);
                     out.add(p);
                 }
@@ -80,7 +81,7 @@ public class PatientController {
 
         if (callUrl != null) {
             Patient fp = client.fetchResourceFromUrl(Patient.class, callUrl);
-            Context ctx = ContextManager.getManager().setupContext(id, client, mapper, headers);
+            Context ctx = contextManager.setupContext(id, client, mapper, headers);
             //Patient fp = client.read().resource(Patient.class).withId(id).execute();
             p = mapper.fhir2local(fp, ctx);
         }
