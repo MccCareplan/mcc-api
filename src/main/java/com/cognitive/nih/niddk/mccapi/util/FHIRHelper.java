@@ -345,7 +345,7 @@ public class FHIRHelper {
         return out.toString();
     }
 
-    public static List<Address> filterToCurrentAddresses(List<Address> addresses) {
+    public static List<Address> filterToCurrentAddresses(List<Address> addresses, String use) {
         Date now = new Date();
         //Use an array list since this is a filter and it will not get larger
         ArrayList<Address> out = new ArrayList<>();
@@ -353,6 +353,22 @@ public class FHIRHelper {
             if (addresses.size() > 0) {
                 out.ensureCapacity(addresses.size());
                 for (Address a : addresses) {
+                    if (use != null)
+                    {
+                        if (a.hasUse())
+                        {
+                            if (a.getUse().toCode().compareTo(use)!=0)
+                            {
+                                //Filter if type does not match
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            //Skip if type is required and not present
+                            continue;
+                        }
+                    }
                     if (a.hasPeriod()) {
                         if (isInPeriod(a.getPeriod(), now)) {
                             out.add(a);
@@ -387,19 +403,67 @@ public class FHIRHelper {
         return out;
     }
 
-    public static Address findBestAddress(List<Address> addresses, @NonNull String type) {
+    public static Address findBestAddress(List<Address> addresses, @NonNull String use) {
         Address out = null;
         if (addresses != null) {
-            List<Address> filtered = filterToCurrentAddresses(addresses);
+            List<Address> filtered = filterToCurrentAddresses(addresses,use);
             if (filtered.size() > 0) {
                 //Default to the first
-                out = filtered.get(0);
-                for (Address a : filtered) {
-                    if (a.hasType()) {
-                        if (a.getType().toCode().compareTo(type) == 0) {
-                            out = a;
-                            break;
+                if (filtered.size() ==  1)
+                {
+                    out = filtered.get(0);
+                }
+                else
+                {
+                    // We should find most recent
+                    for (Address a : filtered) {
+                        if (a.hasPeriod())
+                        {
+                            if (out == null)
+                            {
+                                out = a;
+                            }
+                            else
+                            {
+                                if (a.getPeriod().hasStart())
+                                {
+                                    if (out.getPeriod().hasStart())
+                                    {
+                                        if (a.getPeriod().getStart().compareTo(out.getPeriod().getStart())>0 )
+                                        {
+                                            out = a;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        out = a;
+                                    }
+                                }
+                                else
+                                {
+                                    if (out.getPeriod().hasStart()==false)
+                                    {
+                                        //Had the case of the current default not having an end
+                                        if (a.getPeriod().hasEnd() && out.getPeriod().hasEnd()) {
+                                            if (a.getPeriod().getEnd().compareTo(out.getPeriod().getEnd()) > 0) {
+                                                out = a;
+                                            }
+                                        }
+                                        else {
+                                            //One of the two does does not have and end - If is the new one then it is our new default
+                                            if (out.getPeriod().hasEnd())
+                                            {
+                                                out = a;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
+                    }
+                    if (out == null)
+                    {
+                        out = filtered.get(0);
                     }
                 }
             }
