@@ -112,6 +112,8 @@ details on Spring boot.
  | mcc.referral.require_category | MCC_REFERRAL_REQUIRE_CATEGORY| If true a ServiceRequest must have a category to be considered a Referral | FALSE | FALSE |
  | mcc.referral.require_performer | MCC_REFERRAL_REQUIRE_PERFORMER | If true a ServiceRequest must have a performer to be considered a Referral | TRUE | TRUE |
  | mcc.referral.use_valueset| MCC_REFERRAL_USE_VALUESSET | If true a ServiceRequest in valueset to be considerred a Referral | TRUE | TRUE |
+ | mcc.request.header.require.server | MCC_REQUEST_HEADER_REQUIRE_SERVER | If true only requests with the header mcc-fhir-server are considered valid | FALSE | TRUE | 
+ | mcc.request.header.require.token | MCC_REQUEST_HEADER_REQUIRE_TOKEN | If true only requests with the header mcc-fhir-token are considered valid | FALSE | TRUE |
  | mcc.social_concern.use_category | MCC_SOCIAL_CONCERN_USE_CATEGORY | If true Social Concerns use the HealthConcern Category | TRUE | TRUE |
  | mcc.social_concern.use_valueset | MCC_SOCIAL_CONCERN_USE_VALUESET | If true Social Concerns are identified by membership in a valuse set | FALSE | FALSE |
  
@@ -277,6 +279,11 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 #Recent Changes log
 
 ## Release 1.0.26
+- ContextManager update to enforce the new header related requirement options
+- Added new interanl exception classes to support header requirement exceptions
+- Added mcc.request.header.require.token & mcc.request.header.require.server config flags
+- Convert ContextManager from a Singleton to a Spring Component to support configuration.
+- Fix the handling of Address selection when there is possible conflict
 - Fix medication request status - support 'stopped' and 'draft'
 - Fix medication summary drop through logging messages
 
@@ -289,7 +296,7 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
   + Condition structure changes to support firstOnset and firstRecord
   + Condition date removed
   + ConditionSummary updated for firstRecorded and firstRecordedAsText
-  + ConditionHostory updated for recorded and recordedAsText
+  + ConditionHistory updated for recorded and recordedAsText
 - Observation calls now support a list of required units via the optional parameter requiredunits. The list is comma seperated and the first entry is use as a default when no unit is specified. This parameter currently acts as a filter and no unit conversion is attempted.
 
 ## Release 1.0.23
