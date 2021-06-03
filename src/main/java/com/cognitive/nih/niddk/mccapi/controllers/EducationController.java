@@ -53,12 +53,14 @@ public class EducationController {
 
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
+    private final ContextManager contextManager;
     private final boolean SERVICE_REQUEST_ENABLED = false;
 
 
-    public EducationController(QueryManager queryManager, IR4Mapper mapper) {
+    public EducationController(QueryManager queryManager, IR4Mapper mapper, ContextManager contextManager) {
         this.queryManager = queryManager;
         this.mapper = mapper;
+        this.contextManager = contextManager;
     }
 
     @GetMapping("/summary/educations")
@@ -80,7 +82,7 @@ public class EducationController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("Procedure") == 0) {
                     Procedure p = (Procedure) e.getResource();
@@ -108,7 +110,7 @@ public class EducationController {
             Bundle results = client.fetchResourceFromUrl(Bundle.class, callUrl);
             // Bundle results = client.search().forResource(Goal.class).where(Goal.SUBJECT.hasId(subjectId))
             //         .returnBundle(Bundle.class).execute();
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("ServiceRequest") == 0) {
                     ServiceRequest p = (ServiceRequest) e.getResource();

@@ -77,6 +77,7 @@ public class ReferralController {
 
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
+    private final ContextManager contextManager;
     @Value("${mcc.referral.require_performer:true}")
     private String requirePerformer;
     private boolean bRequirePerformer = true;
@@ -87,9 +88,10 @@ public class ReferralController {
     private String useValueSet;
     private boolean bUseValueSet = true;
 
-    public ReferralController(QueryManager queryManager, IR4Mapper mapper) {
+    public ReferralController(QueryManager queryManager, IR4Mapper mapper, ContextManager contextManager) {
         this.queryManager = queryManager;
         this.mapper = mapper;
+        this.contextManager = contextManager;
     }
 
     @PostConstruct
@@ -135,7 +137,7 @@ public class ReferralController {
             //         .returnBundle(Bundle.class).execute();
 
             out.ensureCapacity(results.getTotal());
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
             for (Bundle.BundleEntryComponent e : results.getEntry()) {
                 if (e.getResource().fhirType().compareTo("ServiceRequest") == 0) {
                     ServiceRequest p = (ServiceRequest) e.getResource();

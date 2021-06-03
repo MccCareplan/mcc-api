@@ -1,3 +1,13 @@
+## Release 1.0.26
+- ContextManager update to enforce the new header related requirement options
+- Added new interanl exception classes to support header requirement exceptions
+- Added mcc.request.header.require.token & mcc.request.header.require.server config flags
+- Convert ContextManager from a Singleton to a Spring Component to support configuration.
+- Fix the handling of Address selection when there is possible conflict
+- Fix medication request status - support 'stopped' and 'draft'
+- Fix medication summary drop through logging messages
+
+
 ## Release 1.0.25
 - Added fhir.request.timeout to control the TCP/IP Socket timeout when making a FHIR Request.
 - Added fhir.connect.timeout to control the TCP/IP Socket timeout when making an initial FHIR Connection.

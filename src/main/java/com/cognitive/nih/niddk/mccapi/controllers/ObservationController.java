@@ -30,6 +30,7 @@ import java.util.*;
 public class ObservationController {
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
+    private final ContextManager contextManager;
 
     private static HashMap<String,String> revPanelMap = new HashMap<>();
 
@@ -39,9 +40,10 @@ public class ObservationController {
         revPanelMap.put("8462-4","85354-9");
         revPanelMap.put("8480-6","85354-9");
     }
-    public ObservationController(QueryManager queryManager, IR4Mapper mapper) {
+    public ObservationController(QueryManager queryManager, IR4Mapper mapper, ContextManager contextManager) {
         this.queryManager = queryManager;
         this.mapper = mapper;
+        this.contextManager = contextManager;
     }
 
     protected boolean includeObservation(Observation o, LinkedHashSet<String> unitSet)
@@ -75,7 +77,7 @@ public class ObservationController {
         List<String> calls = getQueryStrings(baseQuery, mode);
 
         if (calls.size() > 0) {
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
             LinkedHashSet<String> unitHashSet = null;
             if (unit != null && !unit.isEmpty()) unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
@@ -119,7 +121,7 @@ public class ObservationController {
         List<String> calls = getQueryStrings(baseQuery, mode);
 
         if (calls.size() > 0) {
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
             LinkedHashSet<String> unitHashSet = null;
             if (unit != null && !unit.isEmpty()) unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
@@ -163,7 +165,7 @@ public class ObservationController {
         List<String> calls = getQueryStrings(baseQuery, mode);
 
         if (calls.size() > 0) {
-            Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+            Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
             LinkedHashSet<String> unitHashSet = null;
             if (unit != null && !unit.isEmpty()) unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit

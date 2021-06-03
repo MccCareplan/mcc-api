@@ -23,10 +23,12 @@ import java.util.Map;
 public class MedicationController {
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
+    private final ContextManager contextManager;
 
-    public MedicationController(QueryManager queryManager, IR4Mapper mapper) {
+    public MedicationController(QueryManager queryManager, IR4Mapper mapper, ContextManager contextManager) {
         this.queryManager = queryManager;
         this.mapper = mapper;
+        this.contextManager = contextManager;
         ;
     }
 
@@ -35,7 +37,7 @@ public class MedicationController {
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
-        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+        Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
         HashMap<String, String> carePlanMedicationsRequests = new HashMap<>();
         getClanPlanMedReqIds(careplanId, carePlanMedicationsRequests, client, ctx);
 
@@ -115,7 +117,7 @@ public class MedicationController {
         IGenericClient client = fhirSrv.getClient(headers);
         MccMedicationRecord out = null;
 
-        Context ctx = ContextManager.getManager().setupContext(null, client, mapper, headers);
+        Context ctx = contextManager.setupContext(null, client, mapper, headers);
 
         if (type.compareTo("MedicationRequest") == 0) {
             //DIRECT-FHIR-REF
@@ -139,7 +141,7 @@ public class MedicationController {
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
-        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+        Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
         HashMap<String, String> carePlanMedicationsRequests = new HashMap<>();
         getClanPlanMedReqIds(careplanId, carePlanMedicationsRequests, client, ctx);

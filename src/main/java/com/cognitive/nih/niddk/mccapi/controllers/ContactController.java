@@ -27,6 +27,7 @@ import java.util.Map;
 public class ContactController {
     private final QueryManager queryManager;
     private final IR4Mapper mapper;
+    private final ContextManager contextManager;
 
     @Value("${mcc.careteam.use.active}")
     private String useActiveCareTeams;
@@ -36,9 +37,10 @@ public class ContactController {
     private String useCareTeamsFromPlan;
     private boolean isUseCareTeamsFromPlan;
 
-    public ContactController(QueryManager queryManager, IR4Mapper mapper) {
+    public ContactController(QueryManager queryManager, IR4Mapper mapper, ContextManager contextManager) {
         this.queryManager = queryManager;
         this.mapper = mapper;
+        this.contextManager = contextManager;
     }
 
     @PostConstruct
@@ -64,7 +66,7 @@ public class ContactController {
         ArrayList<Contact> out = new ArrayList<>();
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
-        Context ctx = ContextManager.getManager().setupContext(subjectId, client, mapper, headers);
+        Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
         Contact contact;
         Patient fp = client.read().resource(Patient.class).withId(subjectId).execute();
