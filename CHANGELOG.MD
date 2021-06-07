@@ -1,3 +1,7 @@
+## Release 1.0.27
+- Fix handling of mcc-token header
+
+
 ## Release 1.0.26
 - ContextManager update to enforce the new header related requirement options
 - Added new interanl exception classes to support header requirement exceptions
