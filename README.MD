@@ -278,6 +278,10 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 #Recent Changes log
 
+## Release 1.0.28
+- Enhanced header check logging
+- Security fix - Move to logback classic 1.2.0+
+
 ## Release 1.0.27
 - Fix handling of mcc-token header
 

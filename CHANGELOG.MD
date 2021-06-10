@@ -1,6 +1,9 @@
+## Release 1.0.28
+- Enhanced header check logging
+- Security fix - Move to logback classic 1.2.0+
+
 ## Release 1.0.27
 - Fix handling of mcc-token header
-
 
 ## Release 1.0.26
 - ContextManager update to enforce the new header related requirement options
