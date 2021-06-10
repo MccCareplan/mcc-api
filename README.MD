@@ -113,7 +113,7 @@ details on Spring boot.
  | mcc.referral.require_performer | MCC_REFERRAL_REQUIRE_PERFORMER | If true a ServiceRequest must have a performer to be considered a Referral | TRUE | TRUE |
  | mcc.referral.use_valueset| MCC_REFERRAL_USE_VALUESSET | If true a ServiceRequest in valueset to be considerred a Referral | TRUE | TRUE |
  | mcc.request.header.require.server | MCC_REQUEST_HEADER_REQUIRE_SERVER | If true only requests with the header mcc-fhir-server are considered valid | FALSE | TRUE | 
- | mcc.request.header.require.token | MCC_REQUEST_HEADER_REQUIRE_TOKEN | If true only requests with the header mcc-fhir-token are considered valid | FALSE | TRUE |
+ | mcc.request.header.require.token | MCC_REQUEST_HEADER_REQUIRE_TOKEN | If true only requests with the header mcc-token are considered valid | FALSE | TRUE |
  | mcc.social_concern.use_category | MCC_SOCIAL_CONCERN_USE_CATEGORY | If true Social Concerns use the HealthConcern Category | TRUE | TRUE |
  | mcc.social_concern.use_valueset | MCC_SOCIAL_CONCERN_USE_VALUESET | If true Social Concerns are identified by membership in a valuse set | FALSE | FALSE |
  
@@ -277,6 +277,9 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 
 #Recent Changes log
+
+## Release 1.0.27
+- Fix handling of mcc-token header
 
 ## Release 1.0.26
 - ContextManager update to enforce the new header related requirement options

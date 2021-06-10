@@ -30,7 +30,7 @@ public class ContextManager {
     private boolean reqServer = false;
 
     private static String headerServer = "mcc-fhir-server";
-    private static String headerToken = "mcc-fhir-token";
+    private static String headerToken = "mcc-token";
 
     public ContextManager(){
      subjectMap = new HashMap<>();
@@ -94,7 +94,7 @@ public class ContextManager {
     {
         HashMap<String, String> out = new HashMap<String, String>();
         copyHeader("mcc-fhir-server", in, out);
-        copyHeader("mcc-fhir-token", in, out);
+        copyHeader("mcc-token", in, out);
         return out;
     }
     private static void copyHeader(String header, Map<String,String> in, Map<String ,String> out)
