@@ -4,6 +4,7 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import com.cognitive.nih.niddk.mccapi.data.Context;
 import com.cognitive.nih.niddk.mccapi.exception.FHIRServerHeaderMissingException;
 import com.cognitive.nih.niddk.mccapi.exception.FHIRTokenHeaderMissingException;
+import com.cognitive.nih.niddk.mccapi.exception.RequiredHeaderException;
 import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,14 +51,22 @@ public class ContextManager {
         Context out = null;
         Context fnd = null;
 
-        //Enfor
-        if (reqServer && !headers.containsKey(headerServer))
-        {
-            throw new FHIRServerHeaderMissingException();
+        try {
+
+            //Enforce required headers
+            if (reqServer && !headers.containsKey(headerServer))
+            {
+                throw new FHIRServerHeaderMissingException();
+            }
+            if (reqToken && !headers.containsKey(headerToken))
+            {
+                throw new FHIRTokenHeaderMissingException();
+            }
         }
-        if (reqToken && !headers.containsKey(headerToken))
+        catch(RequiredHeaderException e)
         {
-            throw new FHIRTokenHeaderMissingException();
+            log.warn("Missing required header",e);
+            throw e;
         }
 
         //Deal with calls with no subject - Which get a unique context
