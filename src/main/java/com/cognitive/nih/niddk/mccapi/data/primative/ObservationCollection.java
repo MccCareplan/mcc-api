@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class ObservationCollection {
@@ -45,6 +46,20 @@ public class ObservationCollection {
         {
             list.sort(comparator);
         }
+    }
+
+    public String simpleCensus()
+    {
+        int segments = observationMap.size();
+        int tot = 0;
+
+        Iterator<ObservationList> itr = observationMap.values().iterator();
+        while (itr.hasNext())
+        {
+            ObservationList l = itr.next();
+            tot += l.size();
+        }
+        return segments+" segements with "+tot+" total items";
     }
 }
 

@@ -25,4 +25,9 @@ public class ObservationList {
            observations.sort(comparator);
         }
     }
+
+    public int size()
+    {
+        return observations.size();
+    }
 }
