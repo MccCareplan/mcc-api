@@ -105,6 +105,8 @@ details on Spring boot.
  | mcc.careteam.use.careplan | MCC_CARETEAM_USE_CAREPLAN | Enable Contacts to us the currently selected Care plan to determine teams | TRUE | TRUE |
  | mcc.careplan.use.fallback | MCC_CAREPLAN_USE_FALLBACK | Enable fallback careplan matching | TRUE | TRUE |
  | mcc.codeableconcept.use.additive.normalization | MCC_CODEABLECONCEPT_USE_ADDITIVE_NORMALIZATION  | When true codings in codeable concepts that require normalization are preserved and a normalized copy is added | FALSE | FALSE |
+ | mcc.observation.log.calls | MCC_OBSERVATION_LOG_CALLS | When true any extra logging around observations calls is enabled | TRUE | FALSE |
+ | mcc.observation.log.unit.failure |MCC_OBSERVATION_LOG_UNIT_FAILURE | When true any observations that are rejected due to expected errors are loggged | TRUE | FALSE | 
  | mcc.patient.id.system | MCC_PATIENT_ID_SYSTEM | System used to determine the Patient Id| | | |
  | mcc.patient.reported.data.use.observations | MCC_PATIENT_REPORTED_DATA_USE_OBSERVATIONS | When true observations will be check for patient reported reported data | TRUE | TRUE |
  | mcc.patient.reported.data.use.questionnaires | MCC_PATIENT_REPORTED_DATA_USE_QUESTIONNAIRES | When true questionnaire responses will be check for patient reported data | TRUE | TRUE |
@@ -277,6 +279,10 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 
 #Recent Changes log
+## Release 1.0.29 
+- Added mcc.observation.log.unit.failure to help track missing units
+- Enhance logging around Pratitioner Role and organization lookup
+- Added mcc.observation.log.calls to control extra logging arround observation calls
 
 ## Release 1.0.28
 - Enhanced header check logging

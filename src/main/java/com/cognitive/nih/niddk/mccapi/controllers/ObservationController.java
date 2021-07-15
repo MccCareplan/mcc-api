@@ -19,9 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Quantity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Slf4j
@@ -33,7 +35,12 @@ public class ObservationController {
     private final ContextManager contextManager;
 
     private static HashMap<String,String> revPanelMap = new HashMap<>();
-
+    @Value("${mcc.observation.log.unit.failure:false}")
+    private String logUnitFailure;
+    private boolean bLogUnitFailure = true;
+    @Value("${mcc.observation.log.calls:false}")
+    private String logCalls;
+    private boolean bLogCalls = true;
 
     static {
         //Blood Pressure
@@ -45,6 +52,16 @@ public class ObservationController {
         this.mapper = mapper;
         this.contextManager = contextManager;
     }
+    @PostConstruct
+    public void config() {
+        bLogCalls = Boolean.parseBoolean(logCalls);
+        log.info("Config: mcc.observation.log.calls (Observation)= " + logCalls);
+
+        bLogUnitFailure = Boolean.parseBoolean(logUnitFailure);
+        log.info("Config: mcc.observation.log.unit.failure (Observation)= " + logUnitFailure);
+    }
+
+
 
     protected boolean includeObservation(Observation o, LinkedHashSet<String> unitSet)
     {
@@ -61,6 +78,10 @@ public class ObservationController {
                 q.setUnit(defUnit);
                 return true;
             }
+            if (bLogUnitFailure)
+            {
+                log.info("Observation suppressed, not units or default units present, code = "+o.getCode().getCodingFirstRep().getCode());
+            }
             return false;
         }
         if (q.getUnit().isEmpty())
@@ -69,7 +90,12 @@ public class ObservationController {
             q.setUnit(a[0]);
             return true;
         }
-        return unitSet.contains(q.getUnit());
+        boolean out = unitSet.contains(q.getUnit());
+        if (bLogUnitFailure && out == false)
+        {
+            log.info("Observation suppressed, unit "+q.getUnit()+" not in accepted set, code = "+o.getCode().getCodingFirstRep().getCode());
+        }
+        return out;
     }
 
     protected ArrayList<Observation> QueryObservationsRaw(String baseQuery, String mode, IGenericClient client, String subjectId, String sortOrder, String unit, WebRequest webRequest, Map<String, String> headers, Map<String, String> values) {
@@ -80,8 +106,14 @@ public class ObservationController {
             Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
             LinkedHashSet<String> unitHashSet = null;
-            if (unit != null && !unit.isEmpty()) unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
-                    .split(",")));
+            if (unit != null && !unit.isEmpty())
+            {
+                unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
+                        .split(",")));
+                if (bLogUnitFailure) {
+                    log.info("QueryObserveratationRaw called for " +baseQuery+", using units = " + unit);
+                }
+            }
 
             for (String key : calls) {
                 String callUrl = queryManager.setupQuery(key, values, webRequest);
@@ -124,8 +156,13 @@ public class ObservationController {
             Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
             LinkedHashSet<String> unitHashSet = null;
-            if (unit != null && !unit.isEmpty()) unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
-                    .split(",")));
+            if (unit != null && !unit.isEmpty()) {
+                unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
+                        .split(",")));
+                if (bLogUnitFailure) {
+                    log.info("QueryObserveratation called for " +baseQuery+", using units = " + unit);
+                }
+            }
             for (String key : calls) {
 
                 String callUrl = queryManager.setupQuery(key, values, webRequest);
@@ -168,8 +205,13 @@ public class ObservationController {
             Context ctx = contextManager.setupContext(subjectId, client, mapper, headers);
 
             LinkedHashSet<String> unitHashSet = null;
-            if (unit != null && !unit.isEmpty()) unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
-                    .split(",")));
+            {
+                if (unit != null && !unit.isEmpty()) unitHashSet = new LinkedHashSet<String>(Arrays.asList(unit
+                        .split(",")));
+                if (bLogUnitFailure) {
+                    log.info("QueryObserveratationSegmented called for " + baseQuery + ", using units = " + unit);
+                }
+            }
 
             for (String key : calls) {
                 String callUrl = queryManager.setupQuery(key, values, webRequest);
@@ -215,6 +257,10 @@ public class ObservationController {
     @GetMapping("/find/latest/observation")
     public MccObservation getLatestObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code,  @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestParam(name = "translate", defaultValue = "false") String translate,@RequestParam(required = false, name = "requiredunit") String unit,@RequestHeader Map<String, String> headers, WebRequest webRequest) {
 
+        if (bLogCalls)
+        {
+            log.info("Get: /find/latest/observation for "+subjectId+", code = "+code);
+        }
         ArrayList<MccObservation> list = new ArrayList<>();
         //Implement a mode that will translate a single code to it's containing value set
         if (translate.toLowerCase().compareTo("true")==0)
@@ -252,7 +298,16 @@ public class ObservationController {
 
         if (list.size() == 0) {
             //throw new ItemNotFoundException(code);
+            if (bLogCalls)
+            {
+                log.info("/find/latest/observation - No Item found");
+            }
             return notFound(code);
+        }
+
+        if (bLogCalls)
+        {
+            log.info("/find/latest/observation - returning first item");
         }
 
         return list.get(0);
@@ -264,6 +319,10 @@ public class ObservationController {
     @GetMapping("/observations")
     public MccObservation[] getObservation(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "code") String code, @RequestParam(name = "count", defaultValue = "100") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode, @RequestParam(required = false, name = "requiredunit") String unit, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
 
+        if (bLogCalls)
+        {
+            log.info("Get: /observations "+subjectId+", code = "+code);
+        }
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
         IGenericClient client = fhirSrv.getClient(headers);
@@ -272,7 +331,10 @@ public class ObservationController {
         values.put("count", Integer.toString(maxItems));
         String baseQuery = "Observation.Query";
         List<MccObservation> out = this.QueryObservations(baseQuery, mode, client, subjectId, sortOrder, unit, webRequest, headers, values);
-
+        if (bLogCalls)
+        {
+            log.info("/observations found "+out.size()+" items");
+        }
         if (out.size()>maxItems)
         {
             out = out.subList(0,maxItems-1);
@@ -284,7 +346,12 @@ public class ObservationController {
 
     @GetMapping("/observationsbyvalueset")
     public MccObservation[] getObservationsByValueSet(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "valueset") String valueset, @RequestParam(name = "max", defaultValue = "100") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode,@RequestParam(required = false, name = "requiredunit") String unit, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
-        log.info("Get: /observationsbyvalueset for valueset "+valueset);
+
+        if (bLogCalls)
+        {
+            log.info("Get: /observationsbyvalueset "+subjectId+", for valueset "+valueset);
+        }
+
         List<MccObservation> out = new ArrayList<>();
 
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
@@ -303,10 +370,13 @@ public class ObservationController {
             out = this.QueryObservations(baseQuery, mode, client, subjectId, sortOrder,unit, webRequest, headers, values);
 
         } else {
-            throw new ItemNotFoundException("No such valaue set: " + valueset);
+            throw new ItemNotFoundException("No such value set: " + valueset);
 
         }
-
+        if (bLogCalls)
+        {
+            log.info("/observationsbyvalueset found "+out.size()+" items");
+        }
         if (out.size()>maxItems)
         {
             out = out.subList(0,maxItems-1);
@@ -318,7 +388,9 @@ public class ObservationController {
     @GetMapping("/observationssegmented")
     public ObservationCollection getObservationsSegmented(@RequestParam(required = true, name = "subject") String subjectId, @RequestParam(required = true, name = "valueset") String valueset, @RequestParam(name = "max", defaultValue = "1000") int maxItems, @RequestParam(name = "sort", defaultValue = "ascending") String sortOrder, @RequestParam(name = "mode", defaultValue = "code") String mode,@RequestParam(required = false, name = "requiredunit") String unit, @RequestHeader Map<String, String> headers, WebRequest webRequest) {
 
-        log.info("Get: /observationssegmented for valueset "+valueset);
+        if (bLogCalls) {
+            log.info("Get: /observationssegmented for "+subjectId+", for valueset "+valueset);
+        }
 
         ObservationCollection out;
         FHIRServices fhirSrv = FHIRServices.getFhirServices();
@@ -340,6 +412,10 @@ public class ObservationController {
             throw new ItemNotFoundException("No such valaue set: " + valueset);
         }
 
+        if (bLogCalls)
+        {
+            log.info("/observationssegmented found "+out.simpleCensus());
+        }
         return out;
     }
 
