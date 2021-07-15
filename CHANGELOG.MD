@@ -1,3 +1,8 @@
+## Release 1.0.29
+- Added mcc.observation.log.unit.failure to help track missing units
+- Enhance logging around Pratitioner Role and organization lookup
+- Added mcc.observation.log.calls to control extra logging arround observation calls
+
 ## Release 1.0.28
 - Enhanced header check logging
 - Security fix - Move to logback classic 1.2.0+

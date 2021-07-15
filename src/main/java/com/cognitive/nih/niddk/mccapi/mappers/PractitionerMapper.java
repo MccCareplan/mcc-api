@@ -63,13 +63,13 @@ public class PractitionerMapper implements IPractitionerMapper {
         if (bestEmail != null) {
             out.setEmail(bestEmail.getValue());
         }
+        String id = in.getIdElement().getIdPart();
+        Map<String, String> values = new HashMap<>();
+        values.put("id",id);
+
+        String callUrl = queryManager.setupQuery("PractitionerRole.Query", values);
         try {
 
-            Map<String, String> values = new HashMap<>();
-            String id = in.getIdElement().getIdPart();
-            values.put("id",id);
-
-            String callUrl = queryManager.setupQuery("PractitionerRole.Query", values);
 
 
             Bundle bundle = ctx.getClient().fetchResourceFromUrl(Bundle.class,callUrl);
@@ -120,7 +120,7 @@ public class PractitionerMapper implements IPractitionerMapper {
         }
         catch(Exception e)
         {
-            log.warn("Error fetching organization name",e);
+            log.warn("Error fetching organization name for Practitioner, id = "+id+", callURL = "+callUrl,e);
         }
         out.setType(Contact.TYPE_PERSON);
         out.setRole(Contact.ROLE_PROVIDER);
