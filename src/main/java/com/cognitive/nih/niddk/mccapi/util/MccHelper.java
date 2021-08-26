@@ -20,7 +20,7 @@ public class MccHelper {
         if (code.contains("|"))
         {
             //We have a system
-            String[] parts = code.split("|");
+            String[] parts = code.split("\\|");
             if (parts.length>1)
             {
                 coding.setSystem(parts[0]);

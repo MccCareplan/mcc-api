@@ -7,7 +7,7 @@ import com.cognitive.nih.niddk.mccapi.managers.QueryManager;
 import com.cognitive.nih.niddk.mccapi.managers.ValueSetManager;
 import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
-import com.cognitive.nih.niddk.mccapi.util.MCC2HFHIRHelper;
+import com.cognitive.nih.niddk.mccapi.util.MCC2FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
@@ -157,7 +157,7 @@ public class SocialConcernController {
                     {
                         //Verify the condition is in the value set
                         if (c.hasCode()) {
-                            if (!MCC2HFHIRHelper.conceptInValueSet(c.getCode(),valueSet))
+                            if (!MCC2FHIRHelper.conceptInValueSet(c.getCode(),valueSet))
                             {
                                 //Skip - this concept is not one we consider to be a referral
                                 continue;

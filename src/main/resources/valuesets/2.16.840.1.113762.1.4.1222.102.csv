@@ -1,18 +1,18 @@
 System,Version,Code,Display
-http://snomed.info/sct,2020-09,1091000119108,Obstructive sleep apnea of child (disorder)
-http://snomed.info/sct,2020-09,1101000119103,Obstructive sleep apnea of adult (disorder)
-http://snomed.info/sct,2020-09,16275741000119100,Severe pediatric obstructive sleep apnea (disorder)
-http://snomed.info/sct,2020-09,230493001,Mixed sleep apnea (disorder)
-http://snomed.info/sct,2020-09,361208003,Primary sleep apnea of newborn (disorder)
-http://snomed.info/sct,2020-09,41975002,Insomnia with sleep apnea (disorder)
-http://snomed.info/sct,2020-09,442164004,Organic sleep apnea (disorder)
-http://snomed.info/sct,2020-09,719976001,Glaucoma and sleep apnea syndrome (disorder)
-http://snomed.info/sct,2020-09,73430006,Sleep apnea (disorder)
-http://snomed.info/sct,2020-09,765751002,Autoimmune encephalopathy with parasomnia and obstructive sleep apnea (disorder)
-http://snomed.info/sct,2020-09,774068004,AT-hook DNA binding motif containing 1-related intellectual disability, obstructive sleep apnea, mild dysmorphism syndrome (disorder)
-http://snomed.info/sct,2020-09,78275009,Obstructive sleep apnea syndrome (disorder)
-http://hl7.org/fhir/sid/icd-10-cm,2021,G47.30,Sleep apnea, unspecified
-http://hl7.org/fhir/sid/icd-10-cm,2021,G47.31,Primary central sleep apnea
-http://hl7.org/fhir/sid/icd-10-cm,2021,G47.33,Obstructive sleep apnea (adult) (pediatric)
-http://hl7.org/fhir/sid/icd-10-cm,2021,G47.37,Central sleep apnea in conditions classified elsewhere
-http://hl7.org/fhir/sid/icd-10-cm,2021,G47.39,Other sleep apnea
+http://snomed.info/sct,2021-03,1091000119108,Obstructive sleep apnea of child (disorder)
+http://snomed.info/sct,2021-03,1101000119103,Obstructive sleep apnea of adult (disorder)
+http://snomed.info/sct,2021-03,16275741000119100,Severe pediatric obstructive sleep apnea (disorder)
+http://snomed.info/sct,2021-03,230493001,Mixed sleep apnea (disorder)
+http://snomed.info/sct,2021-03,361208003,Primary sleep apnea of newborn (disorder)
+http://snomed.info/sct,2021-03,41975002,Insomnia with sleep apnea (disorder)
+http://snomed.info/sct,2021-03,442164004,Organic sleep apnea (disorder)
+http://snomed.info/sct,2021-03,719976001,Glaucoma and sleep apnea syndrome (disorder)
+http://snomed.info/sct,2021-03,73430006,Sleep apnea (disorder)
+http://snomed.info/sct,2021-03,765751002,Autoimmune encephalopathy with parasomnia and obstructive sleep apnea (disorder)
+http://snomed.info/sct,2021-03,774068004,AT-hook DNA binding motif containing 1-related intellectual disability, obstructive sleep apnea, mild dysmorphism syndrome (disorder)
+http://snomed.info/sct,2021-03,78275009,Obstructive sleep apnea syndrome (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2022,G47.30,Sleep apnea, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2022,G47.31,Primary central sleep apnea
+http://hl7.org/fhir/sid/icd-10-cm,2022,G47.33,Obstructive sleep apnea (adult) (pediatric)
+http://hl7.org/fhir/sid/icd-10-cm,2022,G47.37,Central sleep apnea in conditions classified elsewhere
+http://hl7.org/fhir/sid/icd-10-cm,2022,G47.39,Other sleep apnea

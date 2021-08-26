@@ -418,4 +418,10 @@ public class R4Mapper implements IR4Mapper {
     public MccDateTime[] fhir2local_dateTimeArray(List<DateTimeType> in, Context ctx) {
         return genericTypeMapper.fhir2local(in,ctx);
     }
+
+    @Override
+    public Demographics fhir2Demographics(Patient in, Context ctx)
+    {
+        return patientMapper.fhir2Demographics(in,ctx);
+    }
 }

@@ -38,6 +38,7 @@ public interface IR4Mapper {
     Contact fhir2Contact(Patient.ContactComponent in, Context ctx);
     Contact fhir2Contact(Patient in, Context ctx);
     MccPatient fhir2local(Patient in, Context ctx);
+    Demographics fhir2Demographics(Patient in, Context ctx);
     Contact fhir2Contact(Practitioner in, Context ctx);
     String performerToString(List<Procedure.ProcedurePerformerComponent> performers, Context ctx);
     String[] performerToStringArray(List<Procedure.ProcedurePerformerComponent> performers, Context ctx);

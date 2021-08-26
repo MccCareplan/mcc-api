@@ -2,6 +2,7 @@ package com.cognitive.nih.niddk.mccapi.mappers;
 
 import com.cognitive.nih.niddk.mccapi.data.Contact;
 import com.cognitive.nih.niddk.mccapi.data.Context;
+import com.cognitive.nih.niddk.mccapi.data.Demographics;
 import com.cognitive.nih.niddk.mccapi.data.MccPatient;
 import com.cognitive.nih.niddk.mccapi.services.NameResolver;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
@@ -163,6 +164,16 @@ public class PatientMapper implements IPatientMapper {
         return out;
     }
 
+    public Demographics fhir2Demographics(Patient in, Context ctx)
+    {
+        Demographics out = new Demographics();
+        out.setDob(in.getBirthDate());
+        out.setGender(in.getGender().toCode());
+        out.setRace(FHIRHelper.getCodingDisplayExtensionAsString(in, RACE_KEY, OMB_CATEGORY, "Undefined"));
+        out.setEthnicity(FHIRHelper.getCodingDisplayExtensionAsString(in, ENTHNICITY_KEY, OMB_CATEGORY, "Undefined"));
+
+        return out;
+    }
 
     public MccPatient fhir2local(Patient in, Context ctx) {
         MccPatient out = new MccPatient();

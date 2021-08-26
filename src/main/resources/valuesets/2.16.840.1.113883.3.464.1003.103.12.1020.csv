@@ -1,14 +1,15 @@
 System,Version,Code,Display
-http://snomed.info/sct,2020-09,102781000119107,Sensory neuropathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,104941000119109,Ischemia of retina due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,109171000119104,Retinal edema due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,138881000119106,Mild nonproliferative retinopathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,138891000119109,Moderate nonproliferative retinopathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,190330002,Hyperosmolar coma due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,190368000,Type I diabetes mellitus with ulcer (disorder)
-http://snomed.info/sct,2020-09,190372001,Type I diabetes mellitus maturity onset (disorder)
-http://snomed.info/sct,2020-09,199229001,Pre-existing type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,23045005,Insulin dependent diabetes mellitus type IA (disorder)
+http://snomed.info/sct,2021-03,102781000119107,Sensory neuropathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,104941000119109,Ischemia of retina due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,109171000119104,Retinal edema due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,138881000119106,Mild nonproliferative retinopathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,138891000119109,Moderate nonproliferative retinopathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,138901000119108,Severe nonproliferative retinopathy due to diabetes mellitus type 1 (disorder)
+http://snomed.info/sct,2021-03,190330002,Hyperosmolar coma due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,190368000,Type I diabetes mellitus with ulcer (disorder)
+http://snomed.info/sct,2021-03,190372001,Type I diabetes mellitus maturity onset (disorder)
+http://snomed.info/sct,2021-03,199229001,Pre-existing type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,23045005,Insulin dependent diabetes mellitus type IA (disorder)
 2.16.840.1.113883.6.103,2013,250.01,Diabetes mellitus without mention of complication, type I [juvenile type], not stated as uncontrolled
 2.16.840.1.113883.6.103,2013,250.03,Diabetes mellitus without mention of complication, type I [juvenile type], uncontrolled
 2.16.840.1.113883.6.103,2013,250.11,Diabetes with ketoacidosis, type I [juvenile type], not stated as uncontrolled
@@ -29,132 +30,133 @@ http://snomed.info/sct,2020-09,23045005,Insulin dependent diabetes mellitus type
 2.16.840.1.113883.6.103,2013,250.83,Diabetes with other specified manifestations, type I [juvenile type], uncontrolled
 2.16.840.1.113883.6.103,2013,250.91,Diabetes with unspecified complication, type I [juvenile type], not stated as uncontrolled
 2.16.840.1.113883.6.103,2013,250.93,Diabetes with unspecified complication, type I [juvenile type], uncontrolled
-http://snomed.info/sct,2020-09,28032008,Insulin dependent diabetes mellitus type IB (disorder)
-http://snomed.info/sct,2020-09,31211000119101,Peripheral angiopathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,31321000119102,Diabetes mellitus type 1 without retinopathy (disorder)
-http://snomed.info/sct,2020-09,313435000,Type I diabetes mellitus without complication (disorder)
-http://snomed.info/sct,2020-09,314893005,Arthropathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,368521000119107,Disorder of nerve co-occurrent and due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,420486006,Exudative maculopathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,420789003,Retinopathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,420918009,Mononeuropathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,421468001,Disorder of nervous system due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,421920002,Cataract of eye due to diabetes mellitus type 1 (disorder)
-http://snomed.info/sct,2020-09,427571000,Lumbosacral radiculoplexus neuropathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,46635009,Diabetes mellitus type 1 (disorder)
-http://snomed.info/sct,2020-09,4783006,Maternal diabetes mellitus with hypoglycemia affecting fetus OR newborn (disorder)
-http://snomed.info/sct,2020-09,609562003,Maturity onset diabetes of the young, type 1 (disorder)
-http://snomed.info/sct,2020-09,609564002,Pre-existing type 1 diabetes mellitus in pregnancy (disorder)
-http://snomed.info/sct,2020-09,60961000119107,Nonproliferative diabetic retinopathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,60971000119101,Proliferative retinopathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,60991000119100,Blindness due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,691000119103,Erectile dysfunction due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,712882000,Autonomic neuropathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,713702000,Gastroparesis due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,713705003,Polyneuropathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,71791000119104,Peripheral neuropathy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,739681000,Disorder of eye due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,75682002,Diabetes mellitus caused by insulin receptor antibodies (disorder)
-http://snomed.info/sct,2020-09,76751001,Diabetes mellitus in mother complicating pregnancy, childbirth AND/OR puerperium (disorder)
-http://snomed.info/sct,2020-09,769219006,Macular edema due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,770098001,Cranial nerve palsy due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,82571000119107,Traction detachment of retina due to type 1 diabetes mellitus (disorder)
-http://snomed.info/sct,2020-09,82581000119105,Rubeosis iridis due to type 1 diabetes mellitus (disorder)
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.10,Type 1 diabetes mellitus with ketoacidosis without coma
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.11,Type 1 diabetes mellitus with ketoacidosis with coma
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.21,Type 1 diabetes mellitus with diabetic nephropathy
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.22,Type 1 diabetes mellitus with diabetic chronic kidney disease
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.29,Type 1 diabetes mellitus with other diabetic kidney complication
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.311,Type 1 diabetes mellitus with unspecified diabetic retinopathy with macular edema
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.319,Type 1 diabetes mellitus with unspecified diabetic retinopathy without macular edema
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.321,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy with macular edema
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3211,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy with macular edema, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3212,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy with macular edema, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3213,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy with macular edema, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3219,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy with macular edema, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.329,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3291,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3292,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3293,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3299,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.331,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy with macular edema
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3311,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy with macular edema, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3312,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy with macular edema, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3313,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy with macular edema, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3319,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy with macular edema, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.339,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy without macular edema
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3391,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy without macular edema, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3392,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy without macular edema, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3393,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy without macular edema, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3399,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy without macular edema, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.341,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy with macular edema
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3411,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy with macular edema, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3412,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy with macular edema, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3413,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy with macular edema, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3419,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy with macular edema, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.349,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy without macular edema
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3491,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy without macular edema, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3492,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy without macular edema, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3493,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy without macular edema, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3499,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy without macular edema, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.351,Type 1 diabetes mellitus with proliferative diabetic retinopathy with macular edema
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3511,Type 1 diabetes mellitus with proliferative diabetic retinopathy with macular edema, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3512,Type 1 diabetes mellitus with proliferative diabetic retinopathy with macular edema, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3513,Type 1 diabetes mellitus with proliferative diabetic retinopathy with macular edema, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3519,Type 1 diabetes mellitus with proliferative diabetic retinopathy with macular edema, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3521,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment involving the macula, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3522,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment involving the macula, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3523,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment involving the macula, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3529,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment involving the macula, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3531,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment not involving the macula, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3532,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment not involving the macula, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3533,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment not involving the macula, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3539,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment not involving the macula, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3541,Type 1 diabetes mellitus with proliferative diabetic retinopathy with combined traction retinal detachment and rhegmatogenous retinal detachment, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3542,Type 1 diabetes mellitus with proliferative diabetic retinopathy with combined traction retinal detachment and rhegmatogenous retinal detachment, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3543,Type 1 diabetes mellitus with proliferative diabetic retinopathy with combined traction retinal detachment and rhegmatogenous retinal detachment, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3549,Type 1 diabetes mellitus with proliferative diabetic retinopathy with combined traction retinal detachment and rhegmatogenous retinal detachment, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3551,Type 1 diabetes mellitus with stable proliferative diabetic retinopathy, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3552,Type 1 diabetes mellitus with stable proliferative diabetic retinopathy, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3553,Type 1 diabetes mellitus with stable proliferative diabetic retinopathy, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3559,Type 1 diabetes mellitus with stable proliferative diabetic retinopathy, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.359,Type 1 diabetes mellitus with proliferative diabetic retinopathy without macular edema
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3591,Type 1 diabetes mellitus with proliferative diabetic retinopathy without macular edema, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3592,Type 1 diabetes mellitus with proliferative diabetic retinopathy without macular edema, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3593,Type 1 diabetes mellitus with proliferative diabetic retinopathy without macular edema, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.3599,Type 1 diabetes mellitus with proliferative diabetic retinopathy without macular edema, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.36,Type 1 diabetes mellitus with diabetic cataract
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.37X1,Type 1 diabetes mellitus with diabetic macular edema, resolved following treatment, right eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.37X2,Type 1 diabetes mellitus with diabetic macular edema, resolved following treatment, left eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.37X3,Type 1 diabetes mellitus with diabetic macular edema, resolved following treatment, bilateral
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.37X9,Type 1 diabetes mellitus with diabetic macular edema, resolved following treatment, unspecified eye
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.39,Type 1 diabetes mellitus with other diabetic ophthalmic complication
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.40,Type 1 diabetes mellitus with diabetic neuropathy, unspecified
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.41,Type 1 diabetes mellitus with diabetic mononeuropathy
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.42,Type 1 diabetes mellitus with diabetic polyneuropathy
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.43,Type 1 diabetes mellitus with diabetic autonomic (poly)neuropathy
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.44,Type 1 diabetes mellitus with diabetic amyotrophy
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.49,Type 1 diabetes mellitus with other diabetic neurological complication
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.51,Type 1 diabetes mellitus with diabetic peripheral angiopathy without gangrene
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.52,Type 1 diabetes mellitus with diabetic peripheral angiopathy with gangrene
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.59,Type 1 diabetes mellitus with other circulatory complications
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.610,Type 1 diabetes mellitus with diabetic neuropathic arthropathy
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.618,Type 1 diabetes mellitus with other diabetic arthropathy
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.620,Type 1 diabetes mellitus with diabetic dermatitis
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.621,Type 1 diabetes mellitus with foot ulcer
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.622,Type 1 diabetes mellitus with other skin ulcer
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.628,Type 1 diabetes mellitus with other skin complications
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.630,Type 1 diabetes mellitus with periodontal disease
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.638,Type 1 diabetes mellitus with other oral complications
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.641,Type 1 diabetes mellitus with hypoglycemia with coma
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.649,Type 1 diabetes mellitus with hypoglycemia without coma
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.65,Type 1 diabetes mellitus with hyperglycemia
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.69,Type 1 diabetes mellitus with other specified complication
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.8,Type 1 diabetes mellitus with unspecified complications
-http://hl7.org/fhir/sid/icd-10-cm,2021,E10.9,Type 1 diabetes mellitus without complications
-http://hl7.org/fhir/sid/icd-10-cm,2021,O24.011,Pre-existing type 1 diabetes mellitus, in pregnancy, first trimester
-http://hl7.org/fhir/sid/icd-10-cm,2021,O24.012,Pre-existing type 1 diabetes mellitus, in pregnancy, second trimester
-http://hl7.org/fhir/sid/icd-10-cm,2021,O24.013,Pre-existing type 1 diabetes mellitus, in pregnancy, third trimester
-http://hl7.org/fhir/sid/icd-10-cm,2021,O24.019,Pre-existing type 1 diabetes mellitus, in pregnancy, unspecified trimester
-http://hl7.org/fhir/sid/icd-10-cm,2021,O24.02,Pre-existing type 1 diabetes mellitus, in childbirth
-http://hl7.org/fhir/sid/icd-10-cm,2021,O24.03,Pre-existing type 1 diabetes mellitus, in the puerperium
+http://snomed.info/sct,2021-03,28032008,Insulin dependent diabetes mellitus type IB (disorder)
+http://snomed.info/sct,2021-03,31211000119101,Peripheral angiopathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,31321000119102,Diabetes mellitus type 1 without retinopathy (disorder)
+http://snomed.info/sct,2021-03,313435000,Type I diabetes mellitus without complication (disorder)
+http://snomed.info/sct,2021-03,314893005,Arthropathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,368521000119107,Disorder of nerve co-occurrent and due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,420486006,Exudative maculopathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,420789003,Retinopathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,420918009,Mononeuropathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,421075007,Ketoacidotic coma due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,421365002,Peripheral circulatory disorder due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,421437000,Hypoglycemic coma due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,421468001,Disorder of nervous system due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,421893009,Renal disorder due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,427571000,Lumbosacral radiculoplexus neuropathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,46635009,Diabetes mellitus type 1 (disorder)
+http://snomed.info/sct,2021-03,609562003,Maturity onset diabetes of the young, type 1 (disorder)
+http://snomed.info/sct,2021-03,609564002,Pre-existing type 1 diabetes mellitus in pregnancy (disorder)
+http://snomed.info/sct,2021-03,609566000,Pregnancy and type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,60961000119107,Nonproliferative diabetic retinopathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,60971000119101,Proliferative retinopathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,60991000119100,Blindness due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,691000119103,Erectile dysfunction due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,712882000,Autonomic neuropathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,713702000,Gastroparesis due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,713705003,Polyneuropathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,71721000119101,Nephrotic syndrome due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,71791000119104,Peripheral neuropathy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,739681000,Disorder of eye due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,770098001,Cranial nerve palsy due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,82571000119107,Traction detachment of retina due to type 1 diabetes mellitus (disorder)
+http://snomed.info/sct,2021-03,82581000119105,Rubeosis iridis due to type 1 diabetes mellitus (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.10,Type 1 diabetes mellitus with ketoacidosis without coma
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.11,Type 1 diabetes mellitus with ketoacidosis with coma
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.21,Type 1 diabetes mellitus with diabetic nephropathy
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.22,Type 1 diabetes mellitus with diabetic chronic kidney disease
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.29,Type 1 diabetes mellitus with other diabetic kidney complication
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.311,Type 1 diabetes mellitus with unspecified diabetic retinopathy with macular edema
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.319,Type 1 diabetes mellitus with unspecified diabetic retinopathy without macular edema
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.321,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy with macular edema
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3211,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy with macular edema, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3212,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy with macular edema, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3213,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy with macular edema, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3219,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy with macular edema, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.329,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3291,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3292,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3293,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3299,Type 1 diabetes mellitus with mild nonproliferative diabetic retinopathy without macular edema, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.331,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy with macular edema
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3311,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy with macular edema, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3312,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy with macular edema, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3313,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy with macular edema, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3319,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy with macular edema, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.339,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy without macular edema
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3391,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy without macular edema, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3392,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy without macular edema, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3393,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy without macular edema, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3399,Type 1 diabetes mellitus with moderate nonproliferative diabetic retinopathy without macular edema, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.341,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy with macular edema
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3411,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy with macular edema, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3412,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy with macular edema, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3413,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy with macular edema, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3419,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy with macular edema, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.349,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy without macular edema
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3491,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy without macular edema, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3492,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy without macular edema, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3493,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy without macular edema, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3499,Type 1 diabetes mellitus with severe nonproliferative diabetic retinopathy without macular edema, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.351,Type 1 diabetes mellitus with proliferative diabetic retinopathy with macular edema
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3511,Type 1 diabetes mellitus with proliferative diabetic retinopathy with macular edema, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3512,Type 1 diabetes mellitus with proliferative diabetic retinopathy with macular edema, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3513,Type 1 diabetes mellitus with proliferative diabetic retinopathy with macular edema, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3519,Type 1 diabetes mellitus with proliferative diabetic retinopathy with macular edema, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3521,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment involving the macula, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3522,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment involving the macula, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3523,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment involving the macula, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3529,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment involving the macula, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3531,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment not involving the macula, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3532,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment not involving the macula, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3533,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment not involving the macula, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3539,Type 1 diabetes mellitus with proliferative diabetic retinopathy with traction retinal detachment not involving the macula, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3541,Type 1 diabetes mellitus with proliferative diabetic retinopathy with combined traction retinal detachment and rhegmatogenous retinal detachment, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3542,Type 1 diabetes mellitus with proliferative diabetic retinopathy with combined traction retinal detachment and rhegmatogenous retinal detachment, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3543,Type 1 diabetes mellitus with proliferative diabetic retinopathy with combined traction retinal detachment and rhegmatogenous retinal detachment, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3549,Type 1 diabetes mellitus with proliferative diabetic retinopathy with combined traction retinal detachment and rhegmatogenous retinal detachment, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3551,Type 1 diabetes mellitus with stable proliferative diabetic retinopathy, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3552,Type 1 diabetes mellitus with stable proliferative diabetic retinopathy, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3553,Type 1 diabetes mellitus with stable proliferative diabetic retinopathy, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3559,Type 1 diabetes mellitus with stable proliferative diabetic retinopathy, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.359,Type 1 diabetes mellitus with proliferative diabetic retinopathy without macular edema
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3591,Type 1 diabetes mellitus with proliferative diabetic retinopathy without macular edema, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3592,Type 1 diabetes mellitus with proliferative diabetic retinopathy without macular edema, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3593,Type 1 diabetes mellitus with proliferative diabetic retinopathy without macular edema, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.3599,Type 1 diabetes mellitus with proliferative diabetic retinopathy without macular edema, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.36,Type 1 diabetes mellitus with diabetic cataract
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.37X1,Type 1 diabetes mellitus with diabetic macular edema, resolved following treatment, right eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.37X2,Type 1 diabetes mellitus with diabetic macular edema, resolved following treatment, left eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.37X3,Type 1 diabetes mellitus with diabetic macular edema, resolved following treatment, bilateral
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.37X9,Type 1 diabetes mellitus with diabetic macular edema, resolved following treatment, unspecified eye
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.39,Type 1 diabetes mellitus with other diabetic ophthalmic complication
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.40,Type 1 diabetes mellitus with diabetic neuropathy, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.41,Type 1 diabetes mellitus with diabetic mononeuropathy
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.42,Type 1 diabetes mellitus with diabetic polyneuropathy
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.43,Type 1 diabetes mellitus with diabetic autonomic (poly)neuropathy
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.44,Type 1 diabetes mellitus with diabetic amyotrophy
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.49,Type 1 diabetes mellitus with other diabetic neurological complication
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.51,Type 1 diabetes mellitus with diabetic peripheral angiopathy without gangrene
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.52,Type 1 diabetes mellitus with diabetic peripheral angiopathy with gangrene
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.59,Type 1 diabetes mellitus with other circulatory complications
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.610,Type 1 diabetes mellitus with diabetic neuropathic arthropathy
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.618,Type 1 diabetes mellitus with other diabetic arthropathy
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.620,Type 1 diabetes mellitus with diabetic dermatitis
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.621,Type 1 diabetes mellitus with foot ulcer
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.622,Type 1 diabetes mellitus with other skin ulcer
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.628,Type 1 diabetes mellitus with other skin complications
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.630,Type 1 diabetes mellitus with periodontal disease
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.638,Type 1 diabetes mellitus with other oral complications
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.641,Type 1 diabetes mellitus with hypoglycemia with coma
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.649,Type 1 diabetes mellitus with hypoglycemia without coma
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.65,Type 1 diabetes mellitus with hyperglycemia
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.69,Type 1 diabetes mellitus with other specified complication
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.8,Type 1 diabetes mellitus with unspecified complications
+http://hl7.org/fhir/sid/icd-10-cm,2022,E10.9,Type 1 diabetes mellitus without complications
+http://hl7.org/fhir/sid/icd-10-cm,2022,O24.011,Pre-existing type 1 diabetes mellitus, in pregnancy, first trimester
+http://hl7.org/fhir/sid/icd-10-cm,2022,O24.012,Pre-existing type 1 diabetes mellitus, in pregnancy, second trimester
+http://hl7.org/fhir/sid/icd-10-cm,2022,O24.013,Pre-existing type 1 diabetes mellitus, in pregnancy, third trimester
+http://hl7.org/fhir/sid/icd-10-cm,2022,O24.019,Pre-existing type 1 diabetes mellitus, in pregnancy, unspecified trimester
+http://hl7.org/fhir/sid/icd-10-cm,2022,O24.02,Pre-existing type 1 diabetes mellitus, in childbirth
+http://hl7.org/fhir/sid/icd-10-cm,2022,O24.03,Pre-existing type 1 diabetes mellitus, in the puerperium

@@ -472,7 +472,7 @@ public class FHIRHelper {
     }
 
     public static ContactPoint findBestContactByType(Map<String, List<ContactPoint>> cpBySystem, String type, String usePriority) {
-        String[] uses = usePriority.split("|");
+        String[] uses = usePriority.split("\\|");
         ContactPoint best = null;
         List<ContactPoint> contacts = cpBySystem.get(type);
         if (contacts != null) {
@@ -1122,7 +1122,7 @@ public class FHIRHelper {
         if (code.contains("|"))
         {
             //We have a system
-            String[] parts = code.split("|");
+            String[] parts = code.split("\\|");
             if (parts.length>1)
             {
                 coding.setSystem(parts[0]);

@@ -1,13 +1,13 @@
 System,Version,Code,Display
-http://snomed.info/sct,2020-09,192042008,Acute post-trauma stress state (disorder)
-http://snomed.info/sct,2020-09,313182004,Chronic post-traumatic stress disorder (disorder)
-http://snomed.info/sct,2020-09,318784009,Posttraumatic stress disorder, delayed onset (disorder)
-http://snomed.info/sct,2020-09,443919007,Complex posttraumatic stress disorder (disorder)
-http://snomed.info/sct,2020-09,446175003,Acute posttraumatic stress disorder following military combat (disorder)
-http://snomed.info/sct,2020-09,446180007,Delayed posttraumatic stress disorder following military combat (disorder)
-http://snomed.info/sct,2020-09,47505003,Posttraumatic stress disorder (disorder)
-http://snomed.info/sct,2020-09,699241002,Chronic post-traumatic stress disorder following military combat (disorder)
-http://hl7.org/fhir/sid/icd-10-cm,2021,F43.1,Post-traumatic stress disorder (PTSD)
-http://hl7.org/fhir/sid/icd-10-cm,2021,F43.10,Post-traumatic stress disorder, unspecified
-http://hl7.org/fhir/sid/icd-10-cm,2021,F43.11,Post-traumatic stress disorder, acute
-http://hl7.org/fhir/sid/icd-10-cm,2021,F43.12,Post-traumatic stress disorder, chronic
+http://snomed.info/sct,2021-03,192042008,Acute post-trauma stress state (disorder)
+http://snomed.info/sct,2021-03,313182004,Chronic post-traumatic stress disorder (disorder)
+http://snomed.info/sct,2021-03,318784009,Posttraumatic stress disorder, delayed onset (disorder)
+http://snomed.info/sct,2021-03,443919007,Complex posttraumatic stress disorder (disorder)
+http://snomed.info/sct,2021-03,446175003,Acute posttraumatic stress disorder following military combat (disorder)
+http://snomed.info/sct,2021-03,446180007,Delayed posttraumatic stress disorder following military combat (disorder)
+http://snomed.info/sct,2021-03,47505003,Posttraumatic stress disorder (disorder)
+http://snomed.info/sct,2021-03,699241002,Chronic post-traumatic stress disorder following military combat (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2022,F43.1,Post-traumatic stress disorder (PTSD)
+http://hl7.org/fhir/sid/icd-10-cm,2022,F43.10,Post-traumatic stress disorder, unspecified
+http://hl7.org/fhir/sid/icd-10-cm,2022,F43.11,Post-traumatic stress disorder, acute
+http://hl7.org/fhir/sid/icd-10-cm,2022,F43.12,Post-traumatic stress disorder, chronic

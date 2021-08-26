@@ -105,6 +105,7 @@ details on Spring boot.
  | mcc.careteam.use.careplan | MCC_CARETEAM_USE_CAREPLAN | Enable Contacts to us the currently selected Care plan to determine teams | TRUE | TRUE |
  | mcc.careplan.use.fallback | MCC_CAREPLAN_USE_FALLBACK | Enable fallback careplan matching | TRUE | TRUE |
  | mcc.codeableconcept.use.additive.normalization | MCC_CODEABLECONCEPT_USE_ADDITIVE_NORMALIZATION  | When true codings in codeable concepts that require normalization are preserved and a normalized copy is added | FALSE | FALSE |
+ | mcc.observation.egfr.calculate | MCC_OBSERVATION_EGFR_CALCULATE | When true eGFR is calculated used Scr and the CKD-EPI | TRUE | FALSE |
  | mcc.observation.log.calls | MCC_OBSERVATION_LOG_CALLS | When true any extra logging around observations calls is enabled | TRUE | FALSE |
  | mcc.observation.log.unit.failure |MCC_OBSERVATION_LOG_UNIT_FAILURE | When true any observations that are rejected due to expected errors are loggged | TRUE | FALSE | 
  | mcc.patient.id.system | MCC_PATIENT_ID_SYSTEM | System used to determine the Patient Id| | | |
@@ -279,6 +280,16 @@ The latest docker images are found on docker hub at https://hub.docker.com/repos
 
 
 #Recent Changes log
+## Release 1.0.30
+- Updated all VSAC Value sets to the current expansion as of 8/23/21 added
+- Added mcc.observation.egfr.calculate to allow eGFR to be calculated based on Serum Creatinine-based using the formula (CKD-EPI)
+- updated /observationssegmented to support egfr calculation
+- Added basic ucum support for conversions
+- Added code to support mg/dL to umol/L since the java ucum library convert does not support conversion with mol and molecular weight
+- updated /find/latest/observation to support egfr calculation
+- update observationsbyvalueset to support egfr calculation
+- General fix to regex expressions usong "|" fixed to properly escape the "|" as "\\|"
+
 ## Release 1.0.29 
 - Added mcc.observation.log.unit.failure to help track missing units
 - Enhance logging around Pratitioner Role and organization lookup

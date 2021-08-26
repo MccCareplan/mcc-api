@@ -1,3 +1,13 @@
+## Release 1.0.30
+- Updated all VSAC Value sets to the current expansion as of 8/23/21 added
+- Added mcc.observation.egfr.calculate to allow eGFR to be calculated base on Serum Creatinine-based formula (CKD-EPI)
+- updated /observationssegmented to support egfr calculation
+- Added basic ucum support for conversions
+- Added code to support mg/dL to umol/L since the java ucum library convert does not support conversion with mol and molecular weight
+- updated /find/latest/observation to support egfr calculation
+- update observationsbyvalueset to support egfr calculation
+- General fix to regex expressions usong "|" fixed to properly escape the "|" as "\\|"
+
 ## Release 1.0.29
 - Added mcc.observation.log.unit.failure to help track missing units
 - Enhance logging around Pratitioner Role and organization lookup

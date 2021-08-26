@@ -1,5 +1,5 @@
 System,Version,Code,Display
-http://snomed.info/sct,2020-09,190920002,Hyperuricemia without signs of inflammatory arthritis and tophaceous disease (disorder)
-http://snomed.info/sct,2020-09,35885006,Hyperuricemia (disorder)
-http://snomed.info/sct,2020-09,721840000,Hyperuricemia, anemia, renal failure syndrome (disorder)
-http://hl7.org/fhir/sid/icd-10-cm,2021,E79.0,Hyperuricemia without signs of inflammatory arthritis and tophaceous disease
+http://snomed.info/sct,2021-03,190920002,Hyperuricemia without signs of inflammatory arthritis and tophaceous disease (disorder)
+http://snomed.info/sct,2021-03,35885006,Hyperuricemia (disorder)
+http://snomed.info/sct,2021-03,721840000,Hyperuricemia, anemia, renal failure syndrome (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2022,E79.0,Hyperuricemia without signs of inflammatory arthritis and tophaceous disease
