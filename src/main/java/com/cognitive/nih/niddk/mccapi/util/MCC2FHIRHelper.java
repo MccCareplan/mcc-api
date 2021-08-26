@@ -6,7 +6,7 @@ import org.hl7.fhir.r4.model.Coding;
 
 import java.util.List;
 
-public class MCC2HFHIRHelper {
+public class MCC2FHIRHelper {
 
     public static boolean conceptInValueSet(CodeableConcept cc, MccValueSet valueSet)
     {

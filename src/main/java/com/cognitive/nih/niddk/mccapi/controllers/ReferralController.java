@@ -11,7 +11,7 @@ import com.cognitive.nih.niddk.mccapi.managers.ValueSetManager;
 import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.services.FHIRServices;
 import com.cognitive.nih.niddk.mccapi.util.FHIRHelper;
-import com.cognitive.nih.niddk.mccapi.util.MCC2HFHIRHelper;
+import com.cognitive.nih.niddk.mccapi.util.MCC2FHIRHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -201,7 +201,7 @@ public class ReferralController {
                     if (bUseValueSet)
                     {
                         if (p.hasCode()) {
-                            if (!MCC2HFHIRHelper.conceptInValueSet(p.getCode(),valueSet))
+                            if (!MCC2FHIRHelper.conceptInValueSet(p.getCode(),valueSet))
                             {
                                 //Skip - this concept is not one we consider to be a referral
                                 continue;
