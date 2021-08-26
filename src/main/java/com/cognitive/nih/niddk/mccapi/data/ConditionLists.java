@@ -1,12 +1,8 @@
 package com.cognitive.nih.niddk.mccapi.data;
 
 import com.cognitive.nih.niddk.mccapi.managers.ProfileManager;
-import com.cognitive.nih.niddk.mccapi.mappers.CodeableConceptMapper;
-import com.cognitive.nih.niddk.mccapi.mappers.ConditionMapper;
-import com.cognitive.nih.niddk.mccapi.mappers.IConditionMapper;
 import com.cognitive.nih.niddk.mccapi.mappers.IR4Mapper;
 import com.cognitive.nih.niddk.mccapi.matcher.CodeableConceptMatcher;
-import com.cognitive.nih.niddk.mccapi.util.MCC2HFHIRHelper;
 import com.cognitive.nih.niddk.mccapi.util.MccHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.CodeableConcept;
