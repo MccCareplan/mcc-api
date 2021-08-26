@@ -1,10 +1,10 @@
 System,Version,Code,Display
-http://loinc.org,2.68,20509-6,Hemoglobin [Mass/volume] in Blood by calculation
-http://loinc.org,2.68,30313-1,Hemoglobin [Mass/volume] in Arterial blood
-http://loinc.org,2.68,30350-3,Hemoglobin [Mass/volume] in Venous blood
-http://loinc.org,2.68,30351-1,Hemoglobin [Mass/volume] in Mixed venous blood
-http://loinc.org,2.68,30352-9,Hemoglobin [Mass/volume] in Capillary blood
-http://loinc.org,2.68,59260-0,Hemoglobin [Moles/volume] in Blood
-http://loinc.org,2.68,718-7,Hemoglobin [Mass/volume] in Blood
-http://loinc.org,2.68,75928-2,Hemoglobin [Moles/volume] in Arterial blood
-http://loinc.org,2.68,76768-1,Hemoglobin [Mass/volume] in Mixed venous blood by Oximetry
+http://loinc.org,2.70,20509-6,Hemoglobin [Mass/volume] in Blood by calculation
+http://loinc.org,2.70,30313-1,Hemoglobin [Mass/volume] in Arterial blood
+http://loinc.org,2.70,30350-3,Hemoglobin [Mass/volume] in Venous blood
+http://loinc.org,2.70,30351-1,Hemoglobin [Mass/volume] in Mixed venous blood
+http://loinc.org,2.70,30352-9,Hemoglobin [Mass/volume] in Capillary blood
+http://loinc.org,2.70,59260-0,Hemoglobin [Moles/volume] in Blood
+http://loinc.org,2.70,718-7,Hemoglobin [Mass/volume] in Blood
+http://loinc.org,2.70,75928-2,Hemoglobin [Moles/volume] in Arterial blood
+http://loinc.org,2.70,76768-1,Hemoglobin [Mass/volume] in Mixed venous blood by Oximetry

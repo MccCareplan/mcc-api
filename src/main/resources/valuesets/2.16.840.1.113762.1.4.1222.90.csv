@@ -1,10 +1,6 @@
 System,Version,Code,Display
-http://snomed.info/sct,2020-09,21972006,Hereditary vitamin D dependency syndrome, type I (disorder)
-http://snomed.info/sct,2020-09,34713006,Vitamin D deficiency (disorder)
-http://snomed.info/sct,2020-09,386070008,Deficiency of vitamin D2 (disorder)
-http://snomed.info/sct,2020-09,386072000,Deficiency of vitamin D3 (disorder)
-http://snomed.info/sct,2020-09,47063001,Hereditary vitamin D dependency syndrome type, II (disorder)
-http://snomed.info/sct,2020-09,74818001,Hereditary vitamin D dependency syndrome (disorder)
-http://hl7.org/fhir/sid/icd-10-cm,2021,E55,Vitamin D deficiency
-http://hl7.org/fhir/sid/icd-10-cm,2021,E55.0,Rickets, active
-http://hl7.org/fhir/sid/icd-10-cm,2021,E55.9,Vitamin D deficiency, unspecified
+http://snomed.info/sct,2021-03,34713006,Vitamin D deficiency (disorder)
+http://snomed.info/sct,2021-03,386070008,Deficiency of vitamin D2 (disorder)
+http://snomed.info/sct,2021-03,386072000,Deficiency of vitamin D3 (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2022,E55,Vitamin D deficiency
+http://hl7.org/fhir/sid/icd-10-cm,2022,E55.9,Vitamin D deficiency, unspecified

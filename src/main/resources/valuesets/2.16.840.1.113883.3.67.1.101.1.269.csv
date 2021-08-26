@@ -1,32 +1,32 @@
 System,Version,Code,Display
-http://snomed.info/sct,2020-09,1116000,Chronic aggressive type B viral hepatitis (disorder)
-http://snomed.info/sct,2020-09,111891008,Viral hepatitis B without hepatic coma (disorder)
-http://snomed.info/sct,2020-09,13265006,Acute fulminating type B viral hepatitis (disorder)
-http://snomed.info/sct,2020-09,186624004,Hepatic coma due to acute hepatitis B with delta agent (disorder)
-http://snomed.info/sct,2020-09,186626002,Acute hepatitis B with delta-agent (coinfection) without hepatic coma (disorder)
-http://snomed.info/sct,2020-09,186639003,Chronic viral hepatitis B without delta-agent (disorder)
-http://snomed.info/sct,2020-09,235864009,Acute hepatitis B with hepatitis D (disorder)
-http://snomed.info/sct,2020-09,235865005,Hepatitis D superinfection of hepatitis B carrier (disorder)
-http://snomed.info/sct,2020-09,235869004,Chronic viral hepatitis B with hepatitis D (disorder)
-http://snomed.info/sct,2020-09,235871004,Hepatitis B carrier (finding)
-http://snomed.info/sct,2020-09,26206000,Hepatic coma due to viral hepatitis B (disorder)
-http://snomed.info/sct,2020-09,38662009,Chronic persistent type B viral hepatitis (disorder)
-http://snomed.info/sct,2020-09,424099008,Hepatic coma due to acute hepatitis B (disorder)
-http://snomed.info/sct,2020-09,424340000,Hepatic coma due to chronic hepatitis B (disorder)
-http://snomed.info/sct,2020-09,442134007,Hepatitis B associated with Human immunodeficiency virus infection (disorder)
-http://snomed.info/sct,2020-09,442374005,Hepatitis B and hepatitis C (disorder)
-http://snomed.info/sct,2020-09,446698005,Reactivation of hepatitis B viral hepatitis (disorder)
-http://snomed.info/sct,2020-09,50167007,Chronic active type B viral hepatitis (disorder)
-http://snomed.info/sct,2020-09,53425008,Anicteric type B viral hepatitis (disorder)
-http://snomed.info/sct,2020-09,60498001,Congenital viral hepatitis B infection (disorder)
-http://snomed.info/sct,2020-09,61977001,Chronic type B viral hepatitis (disorder)
-http://snomed.info/sct,2020-09,66071002,Viral hepatitis type B (disorder)
-http://snomed.info/sct,2020-09,76795007,Acute type B viral hepatitis (disorder)
-http://hl7.org/fhir/sid/icd-10-cm,2021,B16.0,Acute hepatitis B with delta-agent with hepatic coma
-http://hl7.org/fhir/sid/icd-10-cm,2021,B16.1,Acute hepatitis B with delta-agent without hepatic coma
-http://hl7.org/fhir/sid/icd-10-cm,2021,B16.2,Acute hepatitis B without delta-agent with hepatic coma
-http://hl7.org/fhir/sid/icd-10-cm,2021,B16.9,Acute hepatitis B without delta-agent and without hepatic coma
-http://hl7.org/fhir/sid/icd-10-cm,2021,B18.0,Chronic viral hepatitis B with delta-agent
-http://hl7.org/fhir/sid/icd-10-cm,2021,B18.1,Chronic viral hepatitis B without delta-agent
-http://hl7.org/fhir/sid/icd-10-cm,2021,B19.10,Unspecified viral hepatitis B without hepatic coma
-http://hl7.org/fhir/sid/icd-10-cm,2021,B19.11,Unspecified viral hepatitis B with hepatic coma
+http://snomed.info/sct,2021-03,1116000,Chronic aggressive type B viral hepatitis (disorder)
+http://snomed.info/sct,2021-03,111891008,Viral hepatitis B without hepatic coma (disorder)
+http://snomed.info/sct,2021-03,13265006,Acute fulminating type B viral hepatitis (disorder)
+http://snomed.info/sct,2021-03,186624004,Hepatic coma due to acute hepatitis B with delta agent (disorder)
+http://snomed.info/sct,2021-03,186626002,Acute hepatitis B with delta-agent (coinfection) without hepatic coma (disorder)
+http://snomed.info/sct,2021-03,186639003,Chronic viral hepatitis B without delta-agent (disorder)
+http://snomed.info/sct,2021-03,235864009,Acute hepatitis B with hepatitis D (disorder)
+http://snomed.info/sct,2021-03,235865005,Hepatitis D superinfection of hepatitis B carrier (disorder)
+http://snomed.info/sct,2021-03,235869004,Chronic viral hepatitis B with hepatitis D (disorder)
+http://snomed.info/sct,2021-03,235871004,Hepatitis B carrier (finding)
+http://snomed.info/sct,2021-03,26206000,Hepatic coma due to viral hepatitis B (disorder)
+http://snomed.info/sct,2021-03,38662009,Chronic persistent type B viral hepatitis (disorder)
+http://snomed.info/sct,2021-03,424099008,Hepatic coma due to acute hepatitis B (disorder)
+http://snomed.info/sct,2021-03,424340000,Hepatic coma due to chronic hepatitis B (disorder)
+http://snomed.info/sct,2021-03,442134007,Hepatitis B associated with Human immunodeficiency virus infection (disorder)
+http://snomed.info/sct,2021-03,442374005,Hepatitis B and hepatitis C (disorder)
+http://snomed.info/sct,2021-03,446698005,Reactivation of hepatitis B viral hepatitis (disorder)
+http://snomed.info/sct,2021-03,50167007,Chronic active type B viral hepatitis (disorder)
+http://snomed.info/sct,2021-03,53425008,Anicteric type B viral hepatitis (disorder)
+http://snomed.info/sct,2021-03,60498001,Congenital viral hepatitis B infection (disorder)
+http://snomed.info/sct,2021-03,61977001,Chronic type B viral hepatitis (disorder)
+http://snomed.info/sct,2021-03,66071002,Viral hepatitis type B (disorder)
+http://snomed.info/sct,2021-03,76795007,Acute type B viral hepatitis (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2022,B16.0,Acute hepatitis B with delta-agent with hepatic coma
+http://hl7.org/fhir/sid/icd-10-cm,2022,B16.1,Acute hepatitis B with delta-agent without hepatic coma
+http://hl7.org/fhir/sid/icd-10-cm,2022,B16.2,Acute hepatitis B without delta-agent with hepatic coma
+http://hl7.org/fhir/sid/icd-10-cm,2022,B16.9,Acute hepatitis B without delta-agent and without hepatic coma
+http://hl7.org/fhir/sid/icd-10-cm,2022,B18.0,Chronic viral hepatitis B with delta-agent
+http://hl7.org/fhir/sid/icd-10-cm,2022,B18.1,Chronic viral hepatitis B without delta-agent
+http://hl7.org/fhir/sid/icd-10-cm,2022,B19.10,Unspecified viral hepatitis B without hepatic coma
+http://hl7.org/fhir/sid/icd-10-cm,2022,B19.11,Unspecified viral hepatitis B with hepatic coma

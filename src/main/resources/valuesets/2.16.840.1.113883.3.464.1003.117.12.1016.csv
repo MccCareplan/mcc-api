@@ -1,20 +1,20 @@
 System,Version,Code,Display
-http://snomed.info/sct,2020-09,19034001,Hyperparathyroidism due to renal insufficiency (disorder)
-http://snomed.info/sct,2020-09,237653008,Familial primary hyperparathyroidism (disorder)
+http://snomed.info/sct,2021-03,19034001,Hyperparathyroidism due to renal insufficiency (disorder)
+http://snomed.info/sct,2021-03,237653008,Familial primary hyperparathyroidism (disorder)
 2.16.840.1.113883.6.103,2013,252.00,Hyperparathyroidism, unspecified
 2.16.840.1.113883.6.103,2013,252.01,Primary hyperparathyroidism
 2.16.840.1.113883.6.103,2013,252.02,Secondary hyperparathyroidism, non-renal
 2.16.840.1.113883.6.103,2013,252.08,Other hyperparathyroidism
-http://snomed.info/sct,2020-09,361128007,Hyperparathyroidism caused by lithium therapy (disorder)
-http://snomed.info/sct,2020-09,36348003,Primary hyperparathyroidism (disorder)
-http://snomed.info/sct,2020-09,363627009,Parathyromatosis (disorder)
-http://snomed.info/sct,2020-09,47445009,Hyperparathyroidism due to vitamin D deficiency (disorder)
-http://snomed.info/sct,2020-09,66999008,Hyperparathyroidism (disorder)
-http://snomed.info/sct,2020-09,78200003,Tertiary hyperparathyroidism (disorder)
-http://snomed.info/sct,2020-09,78625002,Hyperparathyroidism due to intestinal malabsorption (disorder)
-http://snomed.info/sct,2020-09,9092004,Parathyroid hyperplasia (disorder)
-http://snomed.info/sct,2020-09,91478007,Secondary hyperparathyroidism (disorder)
-http://hl7.org/fhir/sid/icd-10-cm,2021,E21.0,Primary hyperparathyroidism
-http://hl7.org/fhir/sid/icd-10-cm,2021,E21.1,Secondary hyperparathyroidism, not elsewhere classified
-http://hl7.org/fhir/sid/icd-10-cm,2021,E21.2,Other hyperparathyroidism
-http://hl7.org/fhir/sid/icd-10-cm,2021,E21.3,Hyperparathyroidism, unspecified
+http://snomed.info/sct,2021-03,361128007,Hyperparathyroidism caused by lithium therapy (disorder)
+http://snomed.info/sct,2021-03,36348003,Primary hyperparathyroidism (disorder)
+http://snomed.info/sct,2021-03,363627009,Parathyromatosis (disorder)
+http://snomed.info/sct,2021-03,47445009,Hyperparathyroidism due to vitamin D deficiency (disorder)
+http://snomed.info/sct,2021-03,66999008,Hyperparathyroidism (disorder)
+http://snomed.info/sct,2021-03,78200003,Tertiary hyperparathyroidism (disorder)
+http://snomed.info/sct,2021-03,78625002,Hyperparathyroidism due to intestinal malabsorption (disorder)
+http://snomed.info/sct,2021-03,9092004,Parathyroid hyperplasia (disorder)
+http://snomed.info/sct,2021-03,91478007,Secondary hyperparathyroidism (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2022,E21.0,Primary hyperparathyroidism
+http://hl7.org/fhir/sid/icd-10-cm,2022,E21.1,Secondary hyperparathyroidism, not elsewhere classified
+http://hl7.org/fhir/sid/icd-10-cm,2022,E21.2,Other hyperparathyroidism
+http://hl7.org/fhir/sid/icd-10-cm,2022,E21.3,Hyperparathyroidism, unspecified

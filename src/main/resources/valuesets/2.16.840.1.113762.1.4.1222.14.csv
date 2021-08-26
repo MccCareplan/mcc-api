@@ -1,20 +1,20 @@
 System,Version,Code,Display
-2.16.840.1.113883.6.4,2021,0TY00Z0,Transplantation of Right Kidney, Allogeneic, Open Approach
-2.16.840.1.113883.6.4,2021,0TY00Z1,Transplantation of Right Kidney, Syngeneic, Open Approach
-2.16.840.1.113883.6.4,2021,0TY00Z2,Transplantation of Right Kidney, Zooplastic, Open Approach
-2.16.840.1.113883.6.4,2021,0TY10Z0,Transplantation of Left Kidney, Allogeneic, Open Approach
-2.16.840.1.113883.6.4,2021,0TY10Z1,Transplantation of Left Kidney, Syngeneic, Open Approach
-2.16.840.1.113883.6.4,2021,0TY10Z2,Transplantation of Left Kidney, Zooplastic, Open Approach
-http://snomed.info/sct,2020-09,175899003,Autotransplantation of kidney (procedure)
-http://snomed.info/sct,2020-09,175902000,Cadaveric renal transplant (procedure)
-http://snomed.info/sct,2020-09,398887003,Renal replacement (procedure)
-http://www.ama-assn.org/go/cpt,2020,50360,Renal allotransplantation, implantation of graft; without recipient nephrectomy
-http://www.ama-assn.org/go/cpt,2020,50365,Renal allotransplantation, implantation of graft; with recipient nephrectomy
-http://www.ama-assn.org/go/cpt,2020,50380,Renal autotransplantation, reimplantation of kidney
-http://snomed.info/sct,2020-09,6471000179103,Transplantation of kidney and pancreas (procedure)
-http://snomed.info/sct,2020-09,70536003,Transplant of kidney (procedure)
-http://snomed.info/sct,2020-09,711411006,Allotransplantation of kidney from beating heart cadaver (procedure)
-http://snomed.info/sct,2020-09,711413009,Allotransplantation of kidney from non-beating heart cadaver (procedure)
-http://snomed.info/sct,2020-09,765478004,Allotransplantation of left kidney (procedure)
-http://snomed.info/sct,2020-09,765479007,Allotransplantation of right kidney (procedure)
-http://snomed.info/sct,2020-09,782655004,Laparoscopic transplant of kidney using robotic assistance (procedure)
+2.16.840.1.113883.6.4,2022,0TY00Z0,Transplantation of Right Kidney, Allogeneic, Open Approach
+2.16.840.1.113883.6.4,2022,0TY00Z1,Transplantation of Right Kidney, Syngeneic, Open Approach
+2.16.840.1.113883.6.4,2022,0TY00Z2,Transplantation of Right Kidney, Zooplastic, Open Approach
+2.16.840.1.113883.6.4,2022,0TY10Z0,Transplantation of Left Kidney, Allogeneic, Open Approach
+2.16.840.1.113883.6.4,2022,0TY10Z1,Transplantation of Left Kidney, Syngeneic, Open Approach
+2.16.840.1.113883.6.4,2022,0TY10Z2,Transplantation of Left Kidney, Zooplastic, Open Approach
+http://snomed.info/sct,2021-03,175899003,Autotransplantation of kidney (procedure)
+http://snomed.info/sct,2021-03,175902000,Cadaveric renal transplant (procedure)
+http://snomed.info/sct,2021-03,398887003,Renal replacement (procedure)
+http://www.ama-assn.org/go/cpt,2021,50360,Renal allotransplantation, implantation of graft; without recipient nephrectomy
+http://www.ama-assn.org/go/cpt,2021,50365,Renal allotransplantation, implantation of graft; with recipient nephrectomy
+http://www.ama-assn.org/go/cpt,2021,50380,Renal autotransplantation, reimplantation of kidney
+http://snomed.info/sct,2021-03,6471000179103,Transplantation of kidney and pancreas (procedure)
+http://snomed.info/sct,2021-03,70536003,Transplant of kidney (procedure)
+http://snomed.info/sct,2021-03,711411006,Allotransplantation of kidney from beating heart cadaver (procedure)
+http://snomed.info/sct,2021-03,711413009,Allotransplantation of kidney from non-beating heart cadaver (procedure)
+http://snomed.info/sct,2021-03,765478004,Allotransplantation of left kidney (procedure)
+http://snomed.info/sct,2021-03,765479007,Allotransplantation of right kidney (procedure)
+http://snomed.info/sct,2021-03,782655004,Laparoscopic transplant of kidney using robotic assistance (procedure)

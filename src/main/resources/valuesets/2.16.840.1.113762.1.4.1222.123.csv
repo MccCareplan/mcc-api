@@ -1,7 +1,7 @@
 System,Version,Code,Display
-http://loinc.org,2.68,14879-1,Phosphate [Moles/volume] in Serum or Plasma
-http://loinc.org,2.68,2777-1,Phosphate [Mass/volume] in Serum or Plasma
-http://loinc.org,2.68,35221-1,Phosphate [Mass or Moles/volume] in Serum or Plasma
-http://loinc.org,2.68,48617-5,Phosphate [Mass/volume] in Serum or Plasma --post dialysis
-http://loinc.org,2.68,48641-5,Phosphate [Mass/volume] in Serum or Plasma --pre dialysis
-http://loinc.org,2.68,55972-4,Phosphate [Moles/volume] in Serum or Plasma --post dialysis
+http://loinc.org,2.70,14879-1,Phosphate [Moles/volume] in Serum or Plasma
+http://loinc.org,2.70,2777-1,Phosphate [Mass/volume] in Serum or Plasma
+http://loinc.org,2.70,35221-1,Phosphate [Mass or Moles/volume] in Serum or Plasma
+http://loinc.org,2.70,48617-5,Phosphate [Mass/volume] in Serum or Plasma --post dialysis
+http://loinc.org,2.70,48641-5,Phosphate [Mass/volume] in Serum or Plasma --pre dialysis
+http://loinc.org,2.70,55972-4,Phosphate [Moles/volume] in Serum or Plasma --post dialysis

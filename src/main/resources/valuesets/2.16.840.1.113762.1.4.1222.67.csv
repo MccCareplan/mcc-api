@@ -1,73 +1,63 @@
 System,Version,Code,Display
-http://snomed.info/sct,2020-09,16698651000119109,Asymptomatic microscopic hematuria (disorder)
-http://snomed.info/sct,2020-09,197627003,Recurrent benign hematuria syndrome (disorder)
-http://snomed.info/sct,2020-09,197688006,Acute nephritic syndrome, diffuse crescentic glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,197707007,Chronic nephritic syndrome (disorder)
-http://snomed.info/sct,2020-09,197708002,Chronic nephritic syndrome, minor glomerular abnormality (disorder)
-http://snomed.info/sct,2020-09,197938001,Painless hematuria (disorder)
-http://snomed.info/sct,2020-09,197939009,Painful hematuria (disorder)
-http://snomed.info/sct,2020-09,197940006,Microscopic hematuria (disorder)
-http://snomed.info/sct,2020-09,197941005,Frank hematuria (disorder)
-http://snomed.info/sct,2020-09,197942003,Clot hematuria (disorder)
-http://snomed.info/sct,2020-09,20407004,Benign hematuria (disorder)
-http://snomed.info/sct,2020-09,236717007,Upper urinary tract hematuria (disorder)
-http://snomed.info/sct,2020-09,236718002,Chemical hematuria (disorder)
-http://snomed.info/sct,2020-09,281855006,Persistent frank hematuria (disorder)
-http://snomed.info/sct,2020-09,281856007,Recurrent frank hematuria (disorder)
-http://snomed.info/sct,2020-09,281857003,Persistent microscopic hematuria (disorder)
-http://snomed.info/sct,2020-09,281858008,Recurrent microscopic hematuria (disorder)
-http://snomed.info/sct,2020-09,281859000,Persistent hematuria (disorder)
-http://snomed.info/sct,2020-09,281860005,Recurrent hematuria (disorder)
-http://snomed.info/sct,2020-09,28191000119109,Chronic nephritic syndrome with membranous glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,314280007,Hematuria of undiagnosed cause (disorder)
-http://snomed.info/sct,2020-09,366941000119107,Hematuria co-occurrent and due to acute cystitis (disorder)
-http://snomed.info/sct,2020-09,367011000119109,Benign essential microscopic hematuria (disorder)
-http://snomed.info/sct,2020-09,367171000119100,Hematuria co-occurrent and due to cystitis (disorder)
-http://snomed.info/sct,2020-09,367661000119102,Hematuria co-occurrent and due to chronic interstitial cystitis (disorder)
-http://snomed.info/sct,2020-09,367671000119108,Hematuria co-occurrent and due to irradiation cystitis (disorder)
-http://snomed.info/sct,2020-09,368371000119102,Hematuria co-occurrent and due to trigonitis (disorder)
-http://snomed.info/sct,2020-09,368901000119106,Chronic nephritic syndrome co-occurrent and due to membranoproliferative glomerulonephritis type III (disorder)
-http://snomed.info/sct,2020-09,368921000119102,Nephritic syndrome co-occurrent and due to membranoproliferative glomerulonephritis type III (disorder)
-http://snomed.info/sct,2020-09,368971000119101,Hematuria co-occurrent and due to chronic cystitis (disorder)
-http://snomed.info/sct,2020-09,371020003,Renal hematuria (disorder)
-http://snomed.info/sct,2020-09,399094007,Familial hematuria (disorder)
-http://snomed.info/sct,2020-09,40233000,Nephrotic-nephritic syndrome (disorder)
-http://snomed.info/sct,2020-09,53298000,Hematuria syndrome (disorder)
-http://snomed.info/sct,2020-09,714813000,Recurrent hematuria co-occurrent and due to dense deposit disease (disorder)
-http://snomed.info/sct,2020-09,714814006,Persistent hematuria co-occurrent and due to dense deposit disease (disorder)
-http://snomed.info/sct,2020-09,714815007,Recurrent hematuria co-occurrent and due to diffuse crescentic glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,714816008,Persistent hematuria co-occurrent and due to diffuse crescentic glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,714817004,Recurrent hematuria co-occurrent and due to diffuse endocapillary proliferative glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,714818009,Persistent hematuria co-occurrent and due to diffuse endocapillary proliferative glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,714819001,Recurrent hematuria co-occurrent and due to diffuse mesangiocapillary glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,714820007,Persistent hematuria co-occurrent and due to diffuse mesangiocapillary glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,714821006,Recurrent hematuria co-occurrent and due to diffuse membranous glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,714822004,Persistent hematuria co-occurrent and due to diffuse membranous glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,714823009,Recurrent hematuria co-occurrent and due to minor glomerular abnormality (disorder)
-http://snomed.info/sct,2020-09,714824003,Persistent hematuria co-occurrent and due to minor glomerular abnormality (disorder)
-http://snomed.info/sct,2020-09,714825002,Recurrent hematuria co-occurrent and due to diffuse mesangial proliferative glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,714826001,Persistent hematuria co-occurrent and due to diffuse mesangial proliferative glomerulonephritis (disorder)
-http://snomed.info/sct,2020-09,714827005,Recurrent hematuria co-occurrent and due to focal and segmental glomerular lesions (disorder)
-http://snomed.info/sct,2020-09,714828000,Persistent hematuria co-occurrent and due to focal and segmental glomerular lesions (disorder)
-http://snomed.info/sct,2020-09,719551008,Hematuria due to radiation cystitis (disorder)
-http://snomed.info/sct,2020-09,7724006,Nephritic syndrome (disorder)
-http://snomed.info/sct,2020-09,95567008,Traumatic hematuria (disorder)
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02,Recurrent and persistent hematuria
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.0,Recurrent and persistent hematuria with minor glomerular abnormality
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.1,Recurrent and persistent hematuria with focal and segmental glomerular lesions
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.2,Recurrent and persistent hematuria with diffuse membranous glomerulonephritis
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.3,Recurrent and persistent hematuria with diffuse mesangial proliferative glomerulonephritis
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.4,Recurrent and persistent hematuria with diffuse endocapillary proliferative glomerulonephritis
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.5,Recurrent and persistent hematuria with diffuse mesangiocapillary glomerulonephritis
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.6,Recurrent and persistent hematuria with dense deposit disease
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.7,Recurrent and persistent hematuria with diffuse crescentic glomerulonephritis
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.8,Recurrent and persistent hematuria with other morphologic changes
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.9,Recurrent and persistent hematuria with unspecified morphologic changes
-http://hl7.org/fhir/sid/icd-10-cm,2021,N02.A,Recurrent and persistent hematuria with C3 glomerulonephritis
-http://hl7.org/fhir/sid/icd-10-cm,2021,R31,Hematuria
-http://hl7.org/fhir/sid/icd-10-cm,2021,R31.0,Gross hematuria
-http://hl7.org/fhir/sid/icd-10-cm,2021,R31.1,Benign essential microscopic hematuria
-http://hl7.org/fhir/sid/icd-10-cm,2021,R31.2,Other microscopic hematuria
-http://hl7.org/fhir/sid/icd-10-cm,2021,R31.21,Asymptomatic microscopic hematuria
-http://hl7.org/fhir/sid/icd-10-cm,2021,R31.29,Other microscopic hematuria
-http://hl7.org/fhir/sid/icd-10-cm,2021,R31.9,Hematuria, unspecified
+http://snomed.info/sct,2021-03,16698651000119109,Asymptomatic microscopic hematuria (disorder)
+http://snomed.info/sct,2021-03,197627003,Recurrent benign hematuria syndrome (disorder)
+http://snomed.info/sct,2021-03,197688006,Acute nephritic syndrome, diffuse crescentic glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,197707007,Chronic nephritic syndrome (disorder)
+http://snomed.info/sct,2021-03,197708002,Chronic nephritic syndrome, minor glomerular abnormality (disorder)
+http://snomed.info/sct,2021-03,197938001,Painless hematuria (disorder)
+http://snomed.info/sct,2021-03,197939009,Painful hematuria (disorder)
+http://snomed.info/sct,2021-03,197940006,Microscopic hematuria (disorder)
+http://snomed.info/sct,2021-03,197941005,Frank hematuria (disorder)
+http://snomed.info/sct,2021-03,197942003,Clot hematuria (disorder)
+http://snomed.info/sct,2021-03,20407004,Benign hematuria (disorder)
+http://snomed.info/sct,2021-03,236717007,Upper urinary tract hematuria (disorder)
+http://snomed.info/sct,2021-03,236718002,Chemical hematuria (disorder)
+http://snomed.info/sct,2021-03,281855006,Persistent frank hematuria (disorder)
+http://snomed.info/sct,2021-03,281856007,Recurrent frank hematuria (disorder)
+http://snomed.info/sct,2021-03,281857003,Persistent microscopic hematuria (disorder)
+http://snomed.info/sct,2021-03,281858008,Recurrent microscopic hematuria (disorder)
+http://snomed.info/sct,2021-03,281859000,Persistent hematuria (disorder)
+http://snomed.info/sct,2021-03,281860005,Recurrent hematuria (disorder)
+http://snomed.info/sct,2021-03,28191000119109,Chronic nephritic syndrome with membranous glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,314280007,Hematuria of undiagnosed cause (disorder)
+http://snomed.info/sct,2021-03,366941000119107,Hematuria co-occurrent and due to acute cystitis (disorder)
+http://snomed.info/sct,2021-03,367011000119109,Benign essential microscopic hematuria (disorder)
+http://snomed.info/sct,2021-03,367171000119100,Hematuria co-occurrent and due to cystitis (disorder)
+http://snomed.info/sct,2021-03,367661000119102,Hematuria co-occurrent and due to chronic interstitial cystitis (disorder)
+http://snomed.info/sct,2021-03,367671000119108,Hematuria co-occurrent and due to irradiation cystitis (disorder)
+http://snomed.info/sct,2021-03,368371000119102,Hematuria co-occurrent and due to trigonitis (disorder)
+http://snomed.info/sct,2021-03,368901000119106,Chronic nephritic syndrome co-occurrent and due to membranoproliferative glomerulonephritis type III (disorder)
+http://snomed.info/sct,2021-03,368921000119102,Nephritic syndrome co-occurrent and due to membranoproliferative glomerulonephritis type III (disorder)
+http://snomed.info/sct,2021-03,368971000119101,Hematuria co-occurrent and due to chronic cystitis (disorder)
+http://snomed.info/sct,2021-03,371020003,Renal hematuria (disorder)
+http://snomed.info/sct,2021-03,399094007,Familial hematuria (disorder)
+http://snomed.info/sct,2021-03,40233000,Nephrotic-nephritic syndrome (disorder)
+http://snomed.info/sct,2021-03,53298000,Hematuria syndrome (disorder)
+http://snomed.info/sct,2021-03,714813000,Recurrent hematuria co-occurrent and due to dense deposit disease (disorder)
+http://snomed.info/sct,2021-03,714814006,Persistent hematuria co-occurrent and due to dense deposit disease (disorder)
+http://snomed.info/sct,2021-03,714815007,Recurrent hematuria co-occurrent and due to diffuse crescentic glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,714816008,Persistent hematuria co-occurrent and due to diffuse crescentic glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,714817004,Recurrent hematuria co-occurrent and due to diffuse endocapillary proliferative glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,714818009,Persistent hematuria co-occurrent and due to diffuse endocapillary proliferative glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,714819001,Recurrent hematuria co-occurrent and due to diffuse mesangiocapillary glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,714820007,Persistent hematuria co-occurrent and due to diffuse mesangiocapillary glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,714821006,Recurrent hematuria co-occurrent and due to diffuse membranous glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,714822004,Persistent hematuria co-occurrent and due to diffuse membranous glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,714823009,Recurrent hematuria co-occurrent and due to minor glomerular abnormality (disorder)
+http://snomed.info/sct,2021-03,714824003,Persistent hematuria co-occurrent and due to minor glomerular abnormality (disorder)
+http://snomed.info/sct,2021-03,714825002,Recurrent hematuria co-occurrent and due to diffuse mesangial proliferative glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,714826001,Persistent hematuria co-occurrent and due to diffuse mesangial proliferative glomerulonephritis (disorder)
+http://snomed.info/sct,2021-03,714827005,Recurrent hematuria co-occurrent and due to focal and segmental glomerular lesions (disorder)
+http://snomed.info/sct,2021-03,714828000,Persistent hematuria co-occurrent and due to focal and segmental glomerular lesions (disorder)
+http://snomed.info/sct,2021-03,719551008,Hematuria due to radiation cystitis (disorder)
+http://snomed.info/sct,2021-03,7724006,Nephritic syndrome (disorder)
+http://hl7.org/fhir/sid/icd-10-cm,2022,N02,Recurrent and persistent hematuria
+http://hl7.org/fhir/sid/icd-10-cm,2022,N02.0,Recurrent and persistent hematuria with minor glomerular abnormality
+http://hl7.org/fhir/sid/icd-10-cm,2022,N02.1,Recurrent and persistent hematuria with focal and segmental glomerular lesions
+http://hl7.org/fhir/sid/icd-10-cm,2022,N02.4,Recurrent and persistent hematuria with diffuse endocapillary proliferative glomerulonephritis
+http://hl7.org/fhir/sid/icd-10-cm,2022,N02.5,Recurrent and persistent hematuria with diffuse mesangiocapillary glomerulonephritis
+http://hl7.org/fhir/sid/icd-10-cm,2022,N02.7,Recurrent and persistent hematuria with diffuse crescentic glomerulonephritis
+http://hl7.org/fhir/sid/icd-10-cm,2022,N02.9,Recurrent and persistent hematuria with unspecified morphologic changes
+http://hl7.org/fhir/sid/icd-10-cm,2022,R31,Hematuria
+http://hl7.org/fhir/sid/icd-10-cm,2022,R31.0,Gross hematuria
+http://hl7.org/fhir/sid/icd-10-cm,2022,R31.9,Hematuria, unspecified
