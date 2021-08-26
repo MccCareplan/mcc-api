@@ -11,6 +11,7 @@ import java.util.HashMap;
 public class Context {
     private String subjectId;
     private Date dob;
+    private Demographics demographics;
     private HashMap<String, String> headers;
     private Context parent;
     private IGenericClient client;
@@ -29,12 +30,20 @@ public class Context {
         this.parent = parent;
     }
 
+    public Demographics getDemographics() {
+        return demographics;
+    }
+
     public String getSubjectId() {
         if (parent == null)
         {
             return parent.subjectId;
         }
         return subjectId;
+    }
+
+    public void setDemographics(Demographics demographics) {
+        this.demographics = demographics;
     }
 
     public void setSubjectId(String subjectId) {
