@@ -1,3 +1,4 @@
+/*Copyright 2021 Cognitive Medical Systems*/
 package com.cognitive.nih.niddk.mccapi.util;
 
 import java.util.HashSet;

@@ -1,3 +1,4 @@
+/*Copyright 2021 Cognitive Medical Systems*/
 package com.cognitive.nih.niddk.mccapi.controllers;
 
 import ca.uhn.fhir.rest.client.api.IGenericClient;
@@ -18,7 +19,7 @@ import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Reference;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.PostConstruct;
 import java.util.*;

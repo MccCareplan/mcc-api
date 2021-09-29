@@ -1,3 +1,4 @@
+/*Copyright 2021 Cognitive Medical Systems*/
 package com.cognitive.nih.niddk.mccapi.data.primative;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

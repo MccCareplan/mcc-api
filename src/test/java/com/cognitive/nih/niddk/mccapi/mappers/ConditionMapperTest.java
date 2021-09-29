@@ -1,3 +1,4 @@
+/*Copyright 2021 Cognitive Medical Systems*/
 package com.cognitive.nih.niddk.mccapi.mappers;
 
 import org.junit.jupiter.api.AfterEach;

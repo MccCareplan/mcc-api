@@ -1,3 +1,4 @@
+/*Copyright 2021 Cognitive Medical Systems*/
 package com.cognitive.nih.niddk.mccapi.mappers;
 
 import org.hl7.fhir.r4.model.Coding;
